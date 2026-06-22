@@ -18,9 +18,96 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+// ── Cursor glow ──────────────────────────────────────────────────────────────
+function CursorGlow() {
+  const glowRef = useRef<HTMLDivElement>(null);
+  const pos = useRef({ x: -999, y: -999 });
+  const raf = useRef<number>(0);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      pos.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", onMove);
+
+    const tick = () => {
+      if (glowRef.current) {
+        glowRef.current.style.transform =
+          `translate(${pos.current.x - 300}px, ${pos.current.y - 300}px)`;
+      }
+      raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf.current);
+    };
+  }, []);
+
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-50 overflow-hidden"
+      aria-hidden
+    >
+      {/* soft outer bloom */}
+      <div
+        ref={glowRef}
+        className="absolute w-[600px] h-[600px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(79,142,247,0.13) 0%, rgba(124,58,237,0.07) 45%, transparent 70%)",
+          willChange: "transform",
+        }}
+      />
+      {/* tight inner dot */}
+      <div
+        ref={(el) => {
+          if (!el) return;
+          const sync = () => {
+            el.style.transform =
+              `translate(${pos.current.x - 4}px, ${pos.current.y - 4}px)`;
+            requestAnimationFrame(sync);
+          };
+          sync();
+        }}
+        className="absolute w-2 h-2 rounded-full"
+        style={{
+          background: "rgba(79,142,247,0.7)",
+          boxShadow: "0 0 12px 4px rgba(79,142,247,0.5)",
+          willChange: "transform",
+        }}
+      />
+    </div>
+  );
+}
+
+export function WhatsAppButton() {
+  const tag = "a";
+  const El = tag as "a";
+  return (
+    <El
+      href="https://wa.me/923198562747"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat on WhatsApp"
+      className="fixed bottom-6 right-6 z-50"
+      style={{ position: "fixed", bottom: 24, right: 24, zIndex: 50 }}
+    >
+      <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#25D366", opacity: 0.3 }} className="animate-ping" />
+      <span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: 56, height: 56, borderRadius: "50%", background: "#25D366", boxShadow: "0 4px 24px rgba(37,211,102,0.5)" }}>
+        <svg viewBox="0 0 32 32" width={28} height={28} fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.827 1.782 6.86L2 30l7.347-1.755A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 0 1-5.834-1.596l-.418-.248-4.36 1.042 1.074-4.25-.273-.437A11.46 11.46 0 0 1 4.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.316-.115-.547-.172-.777.172-.23.344-.892 1.12-1.093 1.35-.2.23-.402.258-.747.086-.345-.172-1.456-.537-2.773-1.71-1.025-.913-1.717-2.04-1.918-2.385-.2-.344-.021-.53.151-.702.154-.154.345-.402.517-.603.172-.2.23-.344.345-.573.115-.23.057-.43-.029-.603-.086-.172-.777-1.873-1.065-2.564-.28-.672-.565-.58-.777-.591l-.662-.011c-.23 0-.603.086-.918.43s-1.207 1.178-1.207 2.873 1.236 3.332 1.408 3.562c.172.23 2.433 3.714 5.895 5.208.824.356 1.467.569 1.969.728.827.263 1.58.226 2.174.137.663-.1 2.04-.834 2.327-1.638.287-.804.287-1.493.2-1.638-.086-.144-.315-.23-.66-.402z" />
+        </svg>
+      </span>
+    </El>
+  );
+}
+
 function Home() {
   return (
     <SiteLayout>
+      <CursorGlow />
       <Hero />
       <LogosBar />
       <ServicesOverview />
@@ -28,6 +115,7 @@ function Home() {
       <FeaturedProjects />
       <Process />
       <Testimonials />
+      <WhatsAppButton />
       <CtaBanner />
     </SiteLayout>
   );
@@ -89,21 +177,21 @@ function CodeWindow() {
           <span className="ml-3 mono text-[11px] text-muted-foreground normal-case tracking-normal">vextoratech_ai.py</span>
         </div>
         <pre className="p-5 text-[13px] leading-relaxed font-mono text-foreground/90 overflow-x-auto">
-<span className="text-secondary">from</span> <span className="text-primary">vextoratech</span> <span className="text-secondary">import</span> AIEngine{"\n"}
-{"\n"}
-<span className="text-muted-foreground"># Initialize smart assistant</span>{"\n"}
-engine = <span className="text-primary">AIEngine</span>(model=<span className="text-[#10B981]">"vxt-pro-v2"</span>){"\n"}
-{"\n"}
-<span className="text-muted-foreground"># Deploy in 3 lines</span>{"\n"}
-app = engine.<span className="text-primary">build</span>({"\n"}
-{"    "}stack=[<span className="text-[#10B981]">"FastAPI"</span>, <span className="text-[#10B981]">"React"</span>, <span className="text-[#10B981]">"PostgreSQL"</span>],{"\n"}
-{"    "}ai_features=[<span className="text-[#10B981]">"RAG"</span>, <span className="text-[#10B981]">"NLP"</span>, <span className="text-[#10B981]">"Vision"</span>],{"\n"}
-{"    "}deploy_target=<span className="text-[#10B981]">"cloud"</span>{"\n"}
-){"\n"}
-{"\n"}
-app.<span className="text-primary">launch</span>(){"\n"}
-<span className="text-muted-foreground"># ✓ Live at vextoratech.com/client-demo</span>
-<span className="cursor-blink text-primary">▌</span>
+          <span className="text-secondary">from</span> <span className="text-primary">vextoratech</span> <span className="text-secondary">import</span> AIEngine{"\n"}
+          {"\n"}
+          <span className="text-muted-foreground"># Initialize smart assistant</span>{"\n"}
+          engine = <span className="text-primary">AIEngine</span>(model=<span className="text-[#10B981]">"vxt-pro-v2"</span>){"\n"}
+          {"\n"}
+          <span className="text-muted-foreground"># Deploy in 3 lines</span>{"\n"}
+          app = engine.<span className="text-primary">build</span>({"\n"}
+          {"    "}stack=[<span className="text-[#10B981]">"FastAPI"</span>, <span className="text-[#10B981]">"React"</span>, <span className="text-[#10B981]">"PostgreSQL"</span>],{"\n"}
+          {"    "}ai_features=[<span className="text-[#10B981]">"RAG"</span>, <span className="text-[#10B981]">"NLP"</span>, <span className="text-[#10B981]">"Vision"</span>],{"\n"}
+          {"    "}deploy_target=<span className="text-[#10B981]">"cloud"</span>{"\n"}
+          ){"\n"}
+          {"\n"}
+          app.<span className="text-primary">launch</span>(){"\n"}
+          <span className="text-muted-foreground"># ✓ Live at vextoratech.com/client-demo</span>
+          <span className="cursor-blink text-primary">▌</span>
         </pre>
       </div>
     </div>
@@ -216,11 +304,41 @@ function Stats() {
 }
 
 const PROJECTS = [
-  { name: "DiagramAI Studio", tags: ["React", "FastAPI", "Ollama", "ComfyUI"], desc: "AI-powered diagram and image generation platform with RBAC and local LLM support.", color: "#4F8EF7", big: true },
-  { name: "EduRAG Learning Assistant", tags: ["RAG", "ChromaDB", "Next.js", "LLaMA"], desc: "Conversational RAG for students — zero-API-cost local architecture.", color: "#7C3AED", big: true },
-  { name: "PulseRetail Analytics", tags: ["React", "PostgreSQL", "Redis"], desc: "Real-time sales analytics with role-based dashboards.", color: "#06B6D4" },
-  { name: "MedaFlow Patient System", tags: ["Next.js", "AWS"], desc: "HIPAA-aligned patient scheduling and EMR integration.", color: "#10B981" },
-  { name: "AeroStack Fleet Tracker", tags: ["React Native", "WebSocket"], desc: "Real-time fleet GPS tracking and driver scoring.", color: "#F59E0B" },
+  {
+    name: "QClose Inventory",
+    cats: ["Web Apps"],
+    tags: ["Next.js 13", "TypeScript", "Node.js", "Tailwind"],
+    desc: "Inventory management dashboard with hardware scanner integration for product addition and retrieval, plus reporting modules for opening and closing stock levels.",
+    color: "#06B6D4",
+  },
+  {
+    name: "SWGNP",
+    cats: ["Web Apps"],
+    tags: ["Angular", "TypeScript", "Chart.js", "PrimeNG"],
+    desc: "IoT-based web portal for remote sensing devices used by government stakeholders, with advanced search and dynamic data visualization features.",
+    color: "#4F8EF7",
+  },
+  {
+    name: "PYLI",
+    cats: ["Web Apps"],
+    tags: ["React.js 18", "TypeScript", "MUI", "Emotion"],
+    desc: "Centralized platform for managing multiple business profiles with a customized UI tailored to client requirements.",
+    color: "#7C3AED",
+  },
+  {
+    name: "Facial Recognition Attendance System",
+    cats: ["AI / ML"],
+    tags: ["Python", "OpenCV", "DeepFace", "FastAPI"],
+    desc: "Automated employee attendance system using real-time facial recognition. Detects and identifies faces from live camera feeds, logs check-ins and check-outs, and generates attendance reports — eliminating manual tracking.",
+    color: "#6366F1",
+  },
+  {
+    name: "AI Surveillance System",
+    cats: ["AI / ML"],
+    tags: ["Python", "YOLOv8", "OpenCV", "WebSocket"],
+    desc: "Intelligent video surveillance platform with real-time object and anomaly detection across multiple camera feeds. Triggers instant alerts for restricted zone breaches, loitering, and suspicious activity.",
+    color: "#EF4444",
+  },
 ];
 
 function FeaturedProjects() {

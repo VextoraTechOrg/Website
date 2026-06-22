@@ -104,9 +104,15 @@ function ContactPage() {
                 <Clock className="w-6 h-6 text-primary shrink-0 mt-1" />
                 <p className="text-sm text-muted-foreground">We respond to every inquiry within 24 hours. For urgent projects, use WhatsApp.</p>
               </div>
-              <button className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-semibold rounded-lg py-3">
-                <MessageCircle className="w-4 h-4" /> WhatsApp Us
-              </button>
+              <a
+                href="https://wa.me/923198562747?text=Hi%20there,%20I%20would%20like%20to%20know%20more%20about%20your%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-semibold rounded-lg py-3"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp Us
+              </a>
             </div>
 
             <div className="bg-surface border border-border rounded-2xl p-7">
