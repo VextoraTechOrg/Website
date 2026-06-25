@@ -13,7 +13,7 @@ export default defineConfig({
       // SSR entry used by Nitro on Vercel (src/server.ts)
       server: { entry: "server" },
     }),
-    nitro(),
     viteReact(),
+    nitro(),
   ],
 });
