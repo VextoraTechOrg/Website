@@ -41,7 +41,7 @@ function AboutPage() {
       <PageHero
         eyebrow="OUR STORY"
         title={<>Built by Engineers, <br /><span className="text-gradient">for Founders</span></>}
-        subtitle="We're a new company — incorporated in 2026 — with experienced engineers who've seen great ideas fail from lack of trusted technical execution. VextoraTech exists to close that gap."
+        subtitle="Great ideas die in execution. VextoraTech exists to make sure yours doesn't."
       />
 
       <Section>
@@ -51,8 +51,8 @@ function AboutPage() {
             infrastructure that makes <span className="text-gradient">ambitious ideas inevitable.</span>"
           </blockquote>
           <div className="space-y-4 text-muted-foreground">
-            <p>VextoraTech is brand new. We incorporated in 2026 — no legacy agency, no rebrand, no borrowed history. We're a small team in Lahore building this company in public from day one.</p>
-            <p>Our people have shipped AI features, web products, and full-stack systems before — just not under this name yet. We're looking for founding partners who want direct access to the engineers doing the work, not a sales layer in between.</p>
+            <p>VextoraTech is brand new Startup. We incorporated in 2026,no legacy agency, no rebrand, no borrowed history. We're a small team in Lahore building this company in public from day one.</p>
+            <p>Our people have shipped AI features, web products, and full-stack systems before, just not under this name yet. We're looking for founding partners who want direct access to the engineers doing the work, not a sales layer in between.</p>
             <p>If you're building something you care about and want an honest technical partner from the start, we'd love to talk.</p>
           </div>
         </div>

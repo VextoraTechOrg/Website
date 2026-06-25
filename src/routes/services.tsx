@@ -18,6 +18,7 @@ const SERVICES = [
   {
     icon: Brain,
     name: "AI & Machine Learning",
+    image: "/ai-robot-analyzing-data-with-futuristic-interface.jpg",
     body: "We design and ship production AI systems — not demos. From LLM-powered features to custom vision pipelines, we build for accuracy, latency, and cost.",
     bullets: [
       "LLM fine-tuning and prompt engineering (GPT-4, Claude, Llama, Mistral)",
@@ -30,6 +31,7 @@ const SERVICES = [
   {
     icon: Code2,
     name: "Web Development",
+    image: "/website-development-links-seo-webinar-cyberspace-concept.jpg",
     body: "Fast, type-safe, production-grade web apps. We follow patterns we'd defend in a code review — not what's trending on Twitter.",
     bullets: [
       "React, Next.js, Vite — component-driven frontends",
@@ -42,6 +44,7 @@ const SERVICES = [
   {
     icon: Smartphone,
     name: "Mobile App Development",
+    image: "/pexels-simonptr-33607948.jpg",
     body: "Single codebase, native feel. Cross-platform apps shipped to App Store and Play Store with the polish your brand deserves.",
     bullets: [
       "React Native and Flutter cross-platform apps",
@@ -54,6 +57,7 @@ const SERVICES = [
   {
     icon: Cloud,
     name: "Cloud & DevOps",
+    image: "/cloud.png",
     body: "Infrastructure that scales when you do and costs what it should. Real observability, real rollback, real SLOs.",
     bullets: [
       "AWS, GCP, Azure — architecture and cost optimization",
@@ -66,6 +70,7 @@ const SERVICES = [
   {
     icon: Palette,
     name: "UI/UX Design",
+    image: "/UI_UX.png",
     body: "Design grounded in research and shipped as a system. Interfaces that move users — and that engineers can build without rework.",
     bullets: [
       "User research, personas, and journey mapping",
@@ -78,6 +83,7 @@ const SERVICES = [
   {
     icon: Plug,
     name: "API Development & Integrations",
+    image: "/pexels-kevin-ku-92347-577585.jpg",
     body: "APIs that other engineers actually enjoy using. Documented, versioned, rate-limited, and built to last.",
     bullets: [
       "RESTful API design following OpenAPI 3.0 spec",
@@ -121,10 +127,20 @@ function ServicesPage() {
             </div>
             <div className="relative">
               <div className="absolute -inset-4 bg-primary/15 blur-3xl rounded-3xl" aria-hidden />
-              <div className="relative bg-surface border border-border rounded-2xl p-10 aspect-[4/3] grid place-items-center">
-                <div className="w-24 h-24 rounded-3xl bg-gradient-brand grid place-items-center">
-                  <s.icon className="w-12 h-12 text-white" />
-                </div>
+              <div className="relative bg-surface border border-border rounded-2xl overflow-hidden aspect-[4/3]">
+                {s.image ? (
+                  <img
+                    src={s.image}
+                    alt={s.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="p-10 grid place-items-center h-full">
+                    <div className="w-24 h-24 rounded-3xl bg-gradient-brand grid place-items-center">
+                      <s.icon className="w-12 h-12 text-white" />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

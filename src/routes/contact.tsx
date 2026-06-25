@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import SiteLayout, { PageHero } from "@/components/site/SiteLayout";
-import { ArrowRight, Mail, Phone, MapPin, Clock, MessageCircle, Check, Linkedin, Github, Twitter } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin, Clock, MessageCircle, Check, Linkedin, Github, Twitter, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { sendContactEmail } from "@/lib/api/contact.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -17,6 +18,35 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [form, setForm] = useState({
+    name: "", company: "", email: "", phone: "",
+    service: "", budget: "", message: "", heardAbout: "",
+  });
+
+  const set = (field: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      await sendContactEmail({ data: form });
+      setSent(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly at info@vextoratech.com."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <SiteLayout>
@@ -39,21 +69,21 @@ function ContactPage() {
                 <Link to="/" className="inline-flex items-center gap-2 text-primary font-semibold">Back to Home <ArrowRight className="w-4 h-4" /></Link>
               </div>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <h2 className="text-2xl font-bold">Start a Conversation</h2>
                   <p className="text-sm text-muted-foreground">No commitment. Just an honest conversation.</p>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <Field label="Full Name*"><input required className="input" /></Field>
-                  <Field label="Company Name"><input className="input" /></Field>
+                  <Field label="Full Name*"><input required className="input" value={form.name} onChange={set("name")} /></Field>
+                  <Field label="Company Name"><input className="input" value={form.company} onChange={set("company")} /></Field>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <Field label="Email Address*"><input type="email" required className="input" /></Field>
-                  <Field label="Phone Number"><input type="tel" className="input" /></Field>
+                  <Field label="Email Address*"><input type="email" required className="input" value={form.email} onChange={set("email")} /></Field>
+                  <Field label="Phone Number"><input type="tel" className="input" value={form.phone} onChange={set("phone")} /></Field>
                 </div>
                 <Field label="Service Interested In*">
-                  <select required className="input" defaultValue="">
+                  <select required className="input" value={form.service} onChange={set("service")}>
                     <option value="" disabled>Select a service...</option>
                     <option>AI & Machine Learning</option>
                     <option>Web Development</option>
@@ -65,7 +95,7 @@ function ContactPage() {
                   </select>
                 </Field>
                 <Field label="Project Budget">
-                  <select className="input" defaultValue="">
+                  <select className="input" value={form.budget} onChange={set("budget")}>
                     <option value="" disabled>Select a range...</option>
                     <option>Under $5,000</option>
                     <option>$5k–$15k</option>
@@ -75,15 +105,25 @@ function ContactPage() {
                   </select>
                 </Field>
                 <Field label="Tell us about your project*">
-                  <textarea required rows={6} className="input" placeholder="Describe what you're building, what problem it solves, and any technical requirements or constraints..." />
+                  <textarea required rows={6} className="input" placeholder="Describe what you're building, what problem it solves, and any technical requirements or constraints..." value={form.message} onChange={set("message")} />
                 </Field>
-                <Field label="How did you hear about us?"><input className="input" /></Field>
+                <Field label="How did you hear about us?"><input className="input" value={form.heardAbout} onChange={set("heardAbout")} /></Field>
                 <label className="flex items-center gap-2 text-sm text-muted-foreground">
                   <input type="checkbox" required className="accent-primary" />
                   I agree to the Privacy Policy
                 </label>
-                <button className="w-full bg-gradient-brand text-white font-semibold rounded-xl py-4 inline-flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(79,142,247,0.4)] hover:scale-[1.01] transition-transform">
-                  Send Message <ArrowRight className="w-4 h-4" />
+                {error && (
+                  <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">{error}</p>
+                )}
+                <button
+                  disabled={loading}
+                  className="w-full bg-gradient-brand text-white font-semibold rounded-xl py-4 inline-flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(79,142,247,0.4)] hover:scale-[1.01] transition-transform disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {loading ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Sending…</>
+                  ) : (
+                    <>Send Message <ArrowRight className="w-4 h-4" /></>
+                  )}
                 </button>
                 <p className="text-xs text-muted-foreground text-center">We respond within 24 hours on business days.</p>
               </form>
