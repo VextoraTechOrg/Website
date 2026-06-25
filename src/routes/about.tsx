@@ -14,13 +14,21 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-const TEAM = [
-  { name: "Farjad kareem", role: "CEO", bio: "Full-stack AI Engineer. Obsessed with developer experience and scalable product design." },
+type TeamMember = {
+  name: string;
+  role: string;
+  bio: string;
+  linkedin?: string;
+  hiring?: boolean;
+};
+
+const TEAM: TeamMember[] = [
+  { name: "Farjad kareem", role: "CEO", bio: "Full-stack AI Engineer. Obsessed with developer experience and scalable product design.", linkedin: "https://www.linkedin.com/in/farjad-kareem-3a73aa2b6/" },
   { name: "Umar Azhar", role: "Product Manager", bio: "Product manager who turns founder vision into clear roadmaps. Aligns user needs, business goals, and engineering delivery from discovery to launch." },
-  { name: "Irfan Ahmad", role: "Sr. AI Engineer", bio: "Senior AI engineer with a decade of experience across ML systems, LLMs, and production deployments. Leads architecture and sets the technical bar for our AI practice." },
+  { name: "Irfan Ahmad", role: "Sr. AI Engineer", bio: "Senior AI engineer with a decade of experience across ML systems, LLMs, and production deployments. Leads architecture and sets the technical bar for our AI practice.", linkedin: "https://www.linkedin.com/in/irfan-ahmed-4ba99911b/" },
   { name: "Mateen Abid", role: "AI Engineer", bio: "AI engineer with one year in LLMs and local inference. Learning fast and shipping real integrations on client projects." },
   { name: "Taimoor Amir", role: "AI Engineer", bio: "AI engineer focused on model APIs and backend integration. A year into AI, already deploying RAG and inference pipelines." },
-  { name: "Saad Ishaq", role: "Full Stack Developer", bio: "Full-stack developer shipping end-to-end product features. Builds React frontends, APIs, and the integrations that tie them together." },
+  { name: "Saad Ishaq", role: "Full Stack Developer", bio: "Full-stack developer shipping end-to-end product features. Builds React frontends, APIs, and the integrations that tie them together.", linkedin: "https://www.linkedin.com/in/muhammad-saad-454431373/" },
 ];
 
 const VALUES = [
@@ -72,9 +80,17 @@ function AboutPage() {
                 <Link to="/careers" className="mt-4 inline-flex items-center gap-1 text-xs mono px-3 py-1.5 rounded-full bg-gradient-brand text-white">
                   We're Hiring <ArrowRight className="w-3 h-3" />
                 </Link>
-              ) : (
-                <a href="#" className="mt-4 inline-block text-muted-foreground hover:text-primary"><Linkedin className="w-4 h-4 mx-auto" /></a>
-              )}
+              ) : m.linkedin ? (
+                <a
+                  href={m.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${m.name} on LinkedIn`}
+                  className="mt-4 inline-block text-muted-foreground hover:text-primary"
+                >
+                  <Linkedin className="w-4 h-4 mx-auto" />
+                </a>
+              ) : null}
             </div>
           ))}
         </div>

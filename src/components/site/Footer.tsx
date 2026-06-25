@@ -30,12 +30,19 @@ export default function Footer() {
               We build intelligent software that scales with your ambition.
             </p>
             <div className="mt-6 flex gap-3">
-              {[Linkedin, Github, Twitter, Instagram].map((Icon, i) => (
+              {[
+                { Icon: Linkedin, href: "https://www.linkedin.com/company/vextoratech", label: "LinkedIn" },
+                { Icon: Github, href: "#", label: "GitHub" },
+                { Icon: Twitter, href: "#", label: "Twitter" },
+                { Icon: Instagram, href: "#", label: "Instagram" },
+              ].map(({ Icon, href, label }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="w-10 h-10 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
-                  aria-label="Social link"
+                  aria-label={label}
                 >
                   <Icon className="w-4 h-4" />
                 </a>

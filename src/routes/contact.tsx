@@ -168,8 +168,19 @@ function ContactPage() {
                 ))}
               </ul>
               <div className="flex gap-3 mt-5 pt-5 border-t border-border">
-                {[Linkedin, Github, Twitter].map((Icon, i) => (
-                  <a key={i} href="#" className="w-9 h-9 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors">
+                {[
+                  { Icon: Linkedin, href: "https://www.linkedin.com/company/vextoratech", label: "LinkedIn" },
+                  { Icon: Github, href: "#", label: "GitHub" },
+                  { Icon: Twitter, href: "#", label: "Twitter" },
+                ].map(({ Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    aria-label={label}
+                    className="w-9 h-9 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                  >
                     <Icon className="w-4 h-4" />
                   </a>
                 ))}

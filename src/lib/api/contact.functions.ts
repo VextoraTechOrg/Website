@@ -13,19 +13,30 @@ const contactSchema = z.object({
   heardAbout: z.string().optional().default(""),
 });
 
+function assertResendOk(
+  result: { data: unknown; error: { message: string } | null },
+  context: string,
+) {
+  if (result.error) {
+    throw new Error(`${context}: ${result.error.message}`);
+  }
+}
+
 export const sendContactEmail = createServerFn({ method: "POST" })
-  .inputValidator(contactSchema)
+  .validator(contactSchema)
   .handler(async ({ data }) => {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey || apiKey === "re_YOUR_API_KEY_HERE") {
-      throw new Error("RESEND_API_KEY is not configured. Add it to your .env file.");
+      throw new Error(
+        "Email is not configured on the server. Add RESEND_API_KEY to your environment variables.",
+      );
     }
 
     const resend = new Resend(apiKey);
     const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
 
     // ── 1. Notify VextoraTech ─────────────────────────────────────────────────
-    await resend.emails.send({
+    const notification = await resend.emails.send({
       from: `VextoraTech Contact Form <${from}>`,
       to: ["info@vextoratech.com"],
       replyTo: data.email,
@@ -79,9 +90,10 @@ export const sendContactEmail = createServerFn({ method: "POST" })
 </body>
 </html>`,
     });
+    assertResendOk(notification, "Failed to notify info@vextoratech.com");
 
     // ── 2. Auto-reply to the user ─────────────────────────────────────────────
-    await resend.emails.send({
+    const autoReply = await resend.emails.send({
       from: `VextoraTech <${from}>`,
       to: [data.email],
       replyTo: "info@vextoratech.com",
@@ -151,6 +163,7 @@ export const sendContactEmail = createServerFn({ method: "POST" })
 </body>
 </html>`,
     });
+    assertResendOk(autoReply, "Failed to send confirmation email");
 
     return { ok: true };
   });
