@@ -5,21 +5,17 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { nitro } from "nitro/vite";
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   plugins: [
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
-    tanstackStart({
-      // SSR entry used by Nitro on Vercel (src/server.ts)
-      server: { entry: "server" },
-    }),
+    tanstackStart(),
     viteReact(),
-    // Nitro only for production builds — in dev it serves an empty index.html shell.
-    ...(command === "build" ? [nitro()] : []),
+    nitro(),
   ],
   server: {
     port: 8080,
     host: "::",
     strictPort: true,
   },
-}));
+});
