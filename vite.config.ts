@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { nitro } from "nitro/vite";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
@@ -14,6 +14,12 @@ export default defineConfig({
       server: { entry: "server" },
     }),
     viteReact(),
-    nitro(),
+    // Nitro only for production builds — in dev it serves an empty index.html shell.
+    ...(command === "build" ? [nitro()] : []),
   ],
-});
+  server: {
+    port: 8080,
+    host: "::",
+    strictPort: true,
+  },
+}));
