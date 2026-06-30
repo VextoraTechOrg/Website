@@ -29,6 +29,7 @@ export const Route = createFileRoute("/projects_/$slug")({
       };
     }
     const url = `${SITE_URL}/projects/${project.slug}`;
+    const ogImage = project.image ? `${SITE_URL}${project.image}` : undefined;
     return {
       meta: [
         { title: `${project.name} — Case Study | VextoraTech` },
@@ -38,6 +39,12 @@ export const Route = createFileRoute("/projects_/$slug")({
         { property: "og:title", content: `${project.name} — VextoraTech Case Study` },
         { property: "og:description", content: project.summary },
         { property: "og:url", content: url },
+        ...(ogImage
+          ? [
+              { property: "og:image", content: ogImage },
+              { name: "twitter:image", content: ogImage },
+            ]
+          : []),
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: `${project.name} — VextoraTech` },
         { name: "twitter:description", content: project.summary },
@@ -166,19 +173,31 @@ function ProjectCasePage() {
         <div className="container-px">
           <div
             className="relative rounded-3xl overflow-hidden aspect-[21/9] max-w-5xl mx-auto border border-border"
-            style={{
-              background: `linear-gradient(135deg, ${project.color}40, ${project.color}10)`,
-            }}
+            style={
+              project.image
+                ? undefined
+                : { background: `linear-gradient(135deg, ${project.color}40, ${project.color}10)` }
+            }
           >
-            <div className="absolute inset-0 dot-grid opacity-30" />
-            <div className="absolute inset-0 grid place-items-center">
-              <div
-                className="w-24 h-24 rounded-3xl grid place-items-center text-4xl font-black text-white"
-                style={{ background: project.color }}
-              >
-                {project.name.charAt(0)}
-              </div>
-            </div>
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <>
+                <div className="absolute inset-0 dot-grid opacity-30" />
+                <div className="absolute inset-0 grid place-items-center">
+                  <div
+                    className="w-24 h-24 rounded-3xl grid place-items-center text-4xl font-black text-white"
+                    style={{ background: project.color }}
+                  >
+                    {project.name.charAt(0)}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 

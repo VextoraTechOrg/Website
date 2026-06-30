@@ -61,15 +61,21 @@ function ProjectsPage() {
               className="group bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:border-primary transition-all"
             >
               <div
-                className="aspect-[16/10] relative"
-                style={{ background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
+                className="aspect-[16/10] relative overflow-hidden"
+                style={p.image ? undefined : { background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
               >
-                <div className="absolute inset-0 dot-grid opacity-30" />
-                <div className="absolute inset-0 grid place-items-center">
-                  <div className="w-20 h-20 rounded-2xl grid place-items-center text-2xl font-black text-white" style={{ background: p.color }}>
-                    {p.name.charAt(0)}
-                  </div>
-                </div>
+                {p.image ? (
+                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 dot-grid opacity-30" />
+                    <div className="absolute inset-0 grid place-items-center">
+                      <div className="w-20 h-20 rounded-2xl grid place-items-center text-2xl font-black text-white" style={{ background: p.color }}>
+                        {p.name.charAt(0)}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
               <div className="p-6">
                 <div className="flex flex-wrap gap-1.5 mb-3">

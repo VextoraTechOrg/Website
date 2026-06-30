@@ -246,6 +246,7 @@ const PROJECTS = [
     tags: ["Next.js 13", "TypeScript", "Node.js", "Tailwind"],
     desc: "Inventory management dashboard with hardware scanner integration for product addition and retrieval, plus reporting modules for opening and closing stock levels.",
     color: "#06B6D4",
+    image: "/variety-people-multitasking-3d-cartoon-scene.jpg",
   },
   {
     name: "SWGNP",
@@ -253,6 +254,7 @@ const PROJECTS = [
     tags: ["Angular", "TypeScript", "Chart.js", "PrimeNG"],
     desc: "IoT-based web portal for remote sensing devices used by government stakeholders, with advanced search and dynamic data visualization features.",
     color: "#4F8EF7",
+    image: "/thanit2022february_53.jpg",
   },
   {
     name: "PYLI",
@@ -260,6 +262,7 @@ const PROJECTS = [
     tags: ["React.js 18", "TypeScript", "MUI", "Emotion"],
     desc: "Centralized platform for managing multiple business profiles with a customized UI tailored to client requirements.",
     color: "#7C3AED",
+    image: "/PYli.png",
   },
   {
     name: "Facial Recognition Attendance System",
@@ -267,6 +270,7 @@ const PROJECTS = [
     tags: ["Python", "OpenCV", "DeepFace", "FastAPI"],
     desc: "Automated employee attendance system using real-time facial recognition. Detects and identifies faces from live camera feeds, logs check-ins and check-outs, and generates attendance reports — eliminating manual tracking.",
     color: "#6366F1",
+    image: "/2462340.jpg",
   },
   {
     name: "AI Surveillance System",
@@ -274,6 +278,7 @@ const PROJECTS = [
     tags: ["Python", "YOLOv8", "OpenCV", "WebSocket"],
     desc: "Intelligent video surveillance platform with real-time object and anomaly detection across multiple camera feeds. Triggers instant alerts for restricted zone breaches, loitering, and suspicious activity.",
     color: "#EF4444",
+    image: "/surveillance-data-security-technology.jpg",
   },
 ];
 
@@ -300,14 +305,20 @@ function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
     <Link to="/projects" className="group block bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:border-primary transition-all">
       <div
         className="aspect-[16/10] relative overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
+        style={p.image ? undefined : { background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
       >
-        <div className="absolute inset-0 dot-grid opacity-30" />
-        <div className="absolute inset-0 grid place-items-center">
-          <div className="w-20 h-20 rounded-2xl grid place-items-center text-2xl font-black text-white" style={{ background: p.color }}>
-            {p.name.charAt(0)}
-          </div>
-        </div>
+        {p.image ? (
+          <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+        ) : (
+          <>
+            <div className="absolute inset-0 dot-grid opacity-30" />
+            <div className="absolute inset-0 grid place-items-center">
+              <div className="w-20 h-20 rounded-2xl grid place-items-center text-2xl font-black text-white" style={{ background: p.color }}>
+                {p.name.charAt(0)}
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <div className="p-6">
         <div className="flex flex-wrap gap-1.5 mb-3">

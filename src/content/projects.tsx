@@ -48,6 +48,8 @@ export interface ProjectCase {
   /** Services VextoraTech provided. */
   services: string[];
   color: string;
+  /** Optional cover image path under /public, e.g. "/photo.jpg". */
+  image?: string;
   /** One-paragraph framing of the project. */
   overview: string;
   /** The problems / constraints the client faced. */
@@ -85,6 +87,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "4 months",
     services: ["Web Application", "Frontend Engineering", "API Development"],
     color: "#06B6D4",
+    image: "/variety-people-multitasking-3d-cartoon-scene.jpg",
     overview:
       "QClose Inventory is a web-based stock control platform that replaces spreadsheets and manual counts with a fast, scanner-driven workflow. Staff add and retrieve products by scanning physical barcodes, while managers get accurate opening- and closing-stock reports at the end of every shift.",
     challenges: [
@@ -137,6 +140,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "6 months",
     services: ["Web Application", "Data Visualization", "Frontend Engineering"],
     color: "#4F8EF7",
+    image: "/thanit2022february_53.jpg",
     overview:
       "SWGNP is a monitoring portal that brings data from a fleet of remote sensing IoT devices into a single, government-grade web interface. Stakeholders search, filter, and visualize device readings through dynamic dashboards that turn raw telemetry into decisions.",
     challenges: [
@@ -189,6 +193,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "5 months",
     services: ["Web Application", "Custom UI/UX", "Frontend Engineering"],
     color: "#7C3AED",
+    image: "/PYli.png",
     overview:
       "PYLI centralizes the management of multiple business profiles into one cohesive platform. Rather than juggling separate tools, users administer every profile from a single, bespoke interface built precisely to the client's workflows.",
     challenges: [
@@ -240,6 +245,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "7 months",
     services: ["Web Application", "Frontend Leadership", "UI Engineering"],
     color: "#10B981",
+    image: "/futuristic-technology-concept.jpg",
     overview:
       "This Restaurant Management System unifies the operational core of a venue — menu, orders, bookings, and billing — into one platform. VextoraTech led the frontend development of a brand-new product version, modernizing the experience for staff and operators.",
     challenges: [
@@ -396,6 +402,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "3 months",
     services: ["AI / Computer Vision", "Backend Engineering", "ML Integration"],
     color: "#6366F1",
+    image: "/2462340.jpg",
     overview:
       "This system automates employee attendance using real-time facial recognition. It detects and identifies faces from live camera feeds, logs check-ins and check-outs automatically, and generates attendance reports — removing the friction and inaccuracy of manual tracking, cards, or fingerprint scanners.",
     challenges: [
@@ -448,6 +455,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "5 months",
     services: ["AI / Computer Vision", "Real-Time Systems", "Backend Engineering"],
     color: "#EF4444",
+    image: "/surveillance-data-security-technology.jpg",
     overview:
       "This intelligent video surveillance platform watches multiple camera feeds simultaneously and understands what it sees. Using real-time object and anomaly detection, it triggers instant alerts for restricted-zone breaches, loitering, and suspicious activity — turning passive cameras into an active security layer.",
     challenges: [
