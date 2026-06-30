@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  * The blog index, the /blog/$slug route, and the sitemap all read from here.
  */
 
-export const SITE_URL = "https://www.vextoratech.com";
+export const SITE_URL = "https://vextoratech.com";
 
 export type BlogCategory =
   | "AI & ML"

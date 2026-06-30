@@ -13,9 +13,27 @@ const links = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
+const quoteBtnClass =
+  "inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-lg animate-cta-attention hover:scale-[1.03] transition-transform shadow-[0_0_20px_rgba(79,142,247,0.35)]";
+
 export function Logo({ className = "" }: { className?: string }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <Link to="/" className={`inline-flex shrink-0 items-center ${className}`} aria-label="VextoraTech home">
+    <Link
+      to="/"
+      resetScroll
+      onClick={handleClick}
+      className={`inline-flex shrink-0 items-center ${className}`}
+      aria-label="VextoraTech home"
+    >
       <VextoraLogo className="h-9 w-auto md:h-10" />
     </Link>
   );
@@ -60,10 +78,7 @@ export default function Navbar() {
           })}
         </nav>
         <div className="hidden lg:block">
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-lg px-5 py-2.5 text-sm hover:scale-[1.03] transition-transform shadow-[0_0_20px_rgba(79,142,247,0.35)]"
-          >
+          <Link to="/contact" className={`${quoteBtnClass} px-5 py-2.5 text-sm`}>
             Get a Quote <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -84,10 +99,7 @@ export default function Navbar() {
                 {l.label}
               </Link>
             ))}
-            <Link
-              to="/contact"
-              className="mt-4 inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-lg px-6 py-3"
-            >
+            <Link to="/contact" className={`mt-4 ${quoteBtnClass} px-6 py-3`}>
               Get a Quote <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

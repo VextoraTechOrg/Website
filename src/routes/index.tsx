@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import SiteLayout, { Section } from "@/components/site/SiteLayout";
+import RotatingHeadline from "@/components/site/RotatingHeadline";
+import RotatingCodeWindow from "@/components/site/RotatingCodeWindow";
 import {
   ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug,
   Sparkles, Search, PenTool, Hammer, Rocket,
@@ -18,29 +20,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-
-export function WhatsAppButton() {
-  const tag = "a";
-  const El = tag as "a";
-  return (
-    <El
-      href="https://wa.me/923198562747"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 right-6 z-50"
-      style={{ position: "fixed", bottom: 24, right: 24, zIndex: 50 }}
-    >
-      <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#25D366", opacity: 0.3 }} className="animate-ping" />
-      <span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: 56, height: 56, borderRadius: "50%", background: "#25D366", boxShadow: "0 4px 24px rgba(37,211,102,0.5)" }}>
-        <svg viewBox="0 0 32 32" width={28} height={28} fill="white" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.648 4.827 1.782 6.86L2 30l7.347-1.755A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5a11.44 11.44 0 0 1-5.834-1.596l-.418-.248-4.36 1.042 1.074-4.25-.273-.437A11.46 11.46 0 0 1 4.5 16C4.5 9.649 9.649 4.5 16 4.5S27.5 9.649 27.5 16 22.351 27.5 16 27.5zm6.29-8.61c-.345-.172-2.04-1.006-2.356-1.12-.316-.115-.547-.172-.777.172-.23.344-.892 1.12-1.093 1.35-.2.23-.402.258-.747.086-.345-.172-1.456-.537-2.773-1.71-1.025-.913-1.717-2.04-1.918-2.385-.2-.344-.021-.53.151-.702.154-.154.345-.402.517-.603.172-.2.23-.344.345-.573.115-.23.057-.43-.029-.603-.086-.172-.777-1.873-1.065-2.564-.28-.672-.565-.58-.777-.591l-.662-.011c-.23 0-.603.086-.918.43s-1.207 1.178-1.207 2.873 1.236 3.332 1.408 3.562c.172.23 2.433 3.714 5.895 5.208.824.356 1.467.569 1.969.728.827.263 1.58.226 2.174.137.663-.1 2.04-.834 2.327-1.638.287-.804.287-1.493.2-1.638-.086-.144-.315-.23-.66-.402z" />
-        </svg>
-      </span>
-    </El>
-  );
-}
-
 function Home() {
   return (
     <SiteLayout>
@@ -51,7 +30,6 @@ function Home() {
       <FeaturedProjects />
       <Process />
       <Testimonials />
-      <WhatsAppButton />
       <CtaBanner />
     </SiteLayout>
   );
@@ -67,9 +45,7 @@ function Hero() {
       <div className="container-px relative grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center py-24">
         <div className="animate-fade-up">
           <span className="mono text-xs text-primary inline-block mb-5">⬡ AI-POWERED SOFTWARE DEVELOPMENT</span>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
-            We Build Software<br />That <span className="text-gradient">Thinks.</span>
-          </h1>
+          <RotatingHeadline />
           <p className="mt-6 text-lg text-muted-foreground max-w-xl">
             VextoraTech engineers intelligent, scalable digital products — from AI models and web platforms
             to mobile apps and cloud infrastructure. Built for startups and enterprises alike.
@@ -90,47 +66,13 @@ function Hero() {
           </div>
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-xs mono text-muted-foreground">
             <span>✦ FOUNDED 2026</span>
-            <span>✦ 6-PERSON TEAM</span>
             <span>✦ BASED IN LAHORE</span>
           </div>
         </div>
 
-        <CodeWindow />
+        <RotatingCodeWindow />
       </div>
     </section>
-  );
-}
-
-function CodeWindow() {
-  return (
-    <div className="relative animate-fade-up">
-      <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-3xl" aria-hidden />
-      <div className="relative bg-[#0A1220] border border-border rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(79,142,247,0.18)]">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-black/30">
-          <span className="w-3 h-3 rounded-full bg-red-500" />
-          <span className="w-3 h-3 rounded-full bg-yellow-500" />
-          <span className="w-3 h-3 rounded-full bg-green-500" />
-          <span className="ml-3 mono text-[11px] text-muted-foreground normal-case tracking-normal">vextoratech_ai.py</span>
-        </div>
-        <pre className="p-5 text-[13px] leading-relaxed font-mono text-foreground/90 overflow-x-auto">
-          <span className="text-secondary">from</span> <span className="text-primary">vextoratech</span> <span className="text-secondary">import</span> AIEngine{"\n"}
-          {"\n"}
-          <span className="text-muted-foreground"># Initialize smart assistant</span>{"\n"}
-          engine = <span className="text-primary">AIEngine</span>(model=<span className="text-[#10B981]">"vxt-pro-v2"</span>){"\n"}
-          {"\n"}
-          <span className="text-muted-foreground"># Deploy in 3 lines</span>{"\n"}
-          app = engine.<span className="text-primary">build</span>({"\n"}
-          {"    "}stack=[<span className="text-[#10B981]">"FastAPI"</span>, <span className="text-[#10B981]">"React"</span>, <span className="text-[#10B981]">"PostgreSQL"</span>],{"\n"}
-          {"    "}ai_features=[<span className="text-[#10B981]">"RAG"</span>, <span className="text-[#10B981]">"NLP"</span>, <span className="text-[#10B981]">"Vision"</span>],{"\n"}
-          {"    "}deploy_target=<span className="text-[#10B981]">"cloud"</span>{"\n"}
-          ){"\n"}
-          {"\n"}
-          app.<span className="text-primary">launch</span>(){"\n"}
-          <span className="text-muted-foreground"># ✓ Live at vextoratech.com/client-demo</span>
-          <span className="cursor-blink text-primary">▌</span>
-        </pre>
-      </div>
-    </div>
   );
 }
 
@@ -229,8 +171,7 @@ function Stats() {
   return (
     <section className="py-20 border-y border-border relative">
       <div className="absolute inset-0 dot-grid opacity-[0.04]" />
-      <div className="container-px relative grid grid-cols-2 md:grid-cols-4 gap-10">
-        <StatItem value={6} suffix="" label="TEAM MEMBERS" />
+      <div className="container-px relative grid grid-cols-2 md:grid-cols-3 gap-10">
         <StatItem value={3} suffix="" label="AI ENGINEERS" />
         <StatItem value={1} suffix="" label="PRODUCT LEAD" />
         <StatItem value={1} suffix="" label="FULL-STACK DEV" />

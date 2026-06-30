@@ -2,14 +2,23 @@ import type { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CursorGlow from "./CursorGlow";
+import ScrollRevealInit from "./ScrollRevealInit";
+import PageEnter from "./PageEnter";
+import WhatsAppButton from "./WhatsAppButton";
 
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <CursorGlow />
       <Navbar />
-      <main className="flex-1 pt-16 md:pt-20">{children}</main>
+      <main className="flex-1 pt-16 md:pt-20">
+        <PageEnter>
+          {children}
+        </PageEnter>
+      </main>
       <Footer />
+      <WhatsAppButton />
+      <ScrollRevealInit />
     </div>
   );
 }

@@ -89,6 +89,8 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
+    scrollbar-gutter: stable;
   }
   body {
     background-color: var(--color-background);
@@ -96,6 +98,7 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     line-height: 1.7;
+    overflow-x: clip;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-sans);
@@ -153,6 +156,18 @@
 @keyframes blink {
   50% { opacity: 0; }
 }
+@keyframes cta-attention {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(79, 142, 247, 0.35);
+  }
+  50% {
+    opacity: 0.88;
+    box-shadow:
+      0 0 28px rgba(79, 142, 247, 0.7),
+      0 0 44px rgba(124, 58, 237, 0.35);
+  }
+}
 
 @utility animate-fade-up {
   animation: fade-up .6s ease-out both;
@@ -162,6 +177,38 @@
 }
 @utility cursor-blink {
   animation: blink 1s steps(1) infinite;
+}
+@utility animate-cta-attention {
+  animation: cta-attention 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cta-attention {
+    animation: none;
+  }
+}
+
+/* Scroll-down reveal (site-wide via ScrollRevealInit) — applied to inner content, not sections */
+.scroll-reveal-pending,
+.scroll-reveal-visible {
+  transition:
+    opacity 0.7s ease-out var(--reveal-delay, 0ms),
+    transform 0.7s ease-out var(--reveal-delay, 0ms);
+}
+
+.scroll-reveal-pending {
+  opacity: 0;
+  transform: translate3d(0, -2rem, 0);
+}
+
+.scroll-reveal-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.page-enter-from,
+.page-enter-to {
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 /* ---------------------------------------------------------------------------
