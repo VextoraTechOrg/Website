@@ -621,6 +621,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "5 months",
     services: ["AI / Speech", "NLP Engineering", "Backend Engineering"],
     color: "#A855F7",
+    image: "/voice_hub.png",
     overview:
       "Voice Intelligence Hub is an end-to-end voice analytics platform. It transcribes call recordings, separates who said what (diarization), and analyzes the conversation to extract sentiment, key topics, and action items — giving contact centers and sales teams insight that used to be locked inside audio.",
     challenges: [
