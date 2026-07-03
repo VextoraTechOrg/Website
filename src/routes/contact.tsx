@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import SiteLayout, { PageHero } from "@/components/site/SiteLayout";
-import { ArrowRight, Mail, Phone, MapPin, Clock, MessageCircle, Check, Linkedin, Github, Twitter, Loader2 } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin, Clock, MessageCircle, Check, Linkedin, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { sendContactEmail } from "@/lib/api/contact.functions";
+import { COMPANY, PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -23,7 +24,7 @@ function ContactPage() {
 
   const [form, setForm] = useState({
     name: "", company: "", email: "", phone: "",
-    service: "", budget: "", message: "", heardAbout: "",
+    service: "", budget: "", message: "", heardAbout: "", website: "",
   });
 
   const set = (field: keyof typeof form) =>
@@ -69,7 +70,7 @@ function ContactPage() {
                 <Link to="/" className="inline-flex items-center gap-2 text-primary font-semibold">Back to Home <ArrowRight className="w-4 h-4" /></Link>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5 relative">
                 <div>
                   <h2 className="text-2xl font-bold">Start a Conversation</h2>
                   <p className="text-sm text-muted-foreground">No commitment. Just an honest conversation.</p>
@@ -108,9 +109,22 @@ function ContactPage() {
                   <textarea required rows={6} className="input" placeholder="Describe what you're building, what problem it solves, and any technical requirements or constraints..." value={form.message} onChange={set("message")} />
                 </Field>
                 <Field label="How did you hear about us?"><input className="input" value={form.heardAbout} onChange={set("heardAbout")} /></Field>
+                <input
+                  type="text"
+                  name="website"
+                  value={form.website}
+                  onChange={set("website")}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute opacity-0 pointer-events-none h-0 w-0 overflow-hidden"
+                />
                 <label className="flex items-center gap-2 text-sm text-muted-foreground">
                   <input type="checkbox" required className="accent-primary" />
-                  I agree to the Privacy Policy
+                  I agree to the{" "}
+                  <Link to="/privacy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>
                 </label>
                 {error && (
                   <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">{error}</p>
@@ -122,7 +136,7 @@ function ContactPage() {
                   {loading ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> Sending…</>
                   ) : (
-                    <>Send Message <ArrowRight className="w-4 h-4" /></>
+                    <>{PRIMARY_CTA} <ArrowRight className="w-4 h-4" /></>
                   )}
                 </button>
                 <p className="text-xs text-muted-foreground text-center">We respond within 24 hours on business days.</p>
@@ -134,7 +148,7 @@ function ContactPage() {
             <div className="bg-surface-2 border border-border rounded-2xl p-7 space-y-4">
               <h3 className="font-bold text-lg mb-2">Contact Details</h3>
               <Info icon={Mail} label="Email" value="info@vextoratech.com" />
-              <Info icon={Phone} label="Phone" value="+92 3198562747" />
+              <Info icon={Phone} label="Phone" value={COMPANY.phone} />
               <Info icon={MapPin} label="Location" value="Lahore, Pakistan" />
               <Info icon={Clock} label="Hours" value="Mon–Fri, 10am–8pm PKT" />
             </div>
@@ -168,22 +182,15 @@ function ContactPage() {
                 ))}
               </ul>
               <div className="flex gap-3 mt-5 pt-5 border-t border-border">
-                {[
-                  { Icon: Linkedin, href: "https://www.linkedin.com/company/vextoratech", label: "LinkedIn" },
-                  { Icon: Github, href: "#", label: "GitHub" },
-                  { Icon: Twitter, href: "#", label: "Twitter" },
-                ].map(({ Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    aria-label={label}
-                    className="w-9 h-9 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                ))}
+                <a
+                  href="https://www.linkedin.com/company/vextoratech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="w-9 h-9 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </a>
               </div>
             </div>
           </div>

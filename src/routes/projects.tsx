@@ -6,8 +6,10 @@ import {
   PROJECTS,
   PROJECT_CATEGORIES,
   SITE_URL,
+  workOriginLabel,
   type ProjectCat,
 } from "@/content/projects";
+import { PROJECTS_SUBHEAD } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -15,7 +17,7 @@ export const Route = createFileRoute("/projects")({
       { title: "Projects — VextoraTech" },
       { name: "description", content: "Case studies from VextoraTech — AI, web, mobile, and cloud products shipped for real teams." },
       { property: "og:title", content: "Projects — VextoraTech" },
-      { property: "og:description", content: "Real problems. Real solutions. Real results." },
+      { property: "og:description", content: PROJECTS_SUBHEAD },
       { property: "og:url", content: `${SITE_URL}/projects` },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/projects` }],
@@ -31,8 +33,8 @@ function ProjectsPage() {
     <SiteLayout>
       <PageHero
         eyebrow="CASE STUDIES"
-        title={<>Work We're <span className="text-gradient">Proud Of</span></>}
-        subtitle="Real problems. Real solutions. Real results."
+        title={<>Work our team has <span className="text-gradient">shipped</span></>}
+        subtitle={PROJECTS_SUBHEAD}
       />
 
       <div className="container-px">
@@ -64,6 +66,11 @@ function ProjectsPage() {
                 className="aspect-[16/10] relative overflow-hidden"
                 style={p.image ? undefined : { background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
               >
+                {p.workOrigin !== "vextoratech" && (
+                  <span className="absolute top-3 left-3 z-10 mono text-[10px] px-2 py-1 rounded-full bg-background/90 border border-border text-muted-foreground">
+                    {workOriginLabel(p.workOrigin)}
+                  </span>
+                )}
                 {p.image ? (
                   <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                 ) : (

@@ -10,12 +10,15 @@ import {
   Layers,
   Briefcase,
   Clock,
+  Tag,
 } from "lucide-react";
 import {
   SITE_URL,
   getProjectBySlug,
   getRelatedProjects,
+  workOriginLabel,
 } from "@/content/projects";
+import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/projects_/$slug")({
   head: ({ params }) => {
@@ -148,8 +151,15 @@ function ProjectCasePage() {
             </nav>
 
             <div className="max-w-3xl">
-              <span className="mono text-xs text-primary">{project.category}</span>
-              <h1 className="text-3xl md:text-5xl font-black tracking-tight mt-3 mb-5 leading-[1.1]">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="mono text-xs text-primary">{project.category}</span>
+                {project.workOrigin !== "vextoratech" && (
+                  <span className="mono text-[10px] px-2 py-1 rounded-full bg-surface-2 border border-border text-muted-foreground">
+                    {workOriginLabel(project.workOrigin)}
+                  </span>
+                )}
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black tracking-tight mt-1 mb-5 leading-[1.1]">
                 {project.name}
               </h1>
               <p className="text-lg text-muted-foreground mb-6">
@@ -265,10 +275,10 @@ function ProjectCasePage() {
                 </div>
               </section>
 
-              {/* Results */}
+              {/* Capabilities */}
               <section>
                 <h2 className="text-2xl md:text-3xl font-extrabold mb-5">
-                  Impact &amp; Results
+                  What It Does
                 </h2>
                 <div className="grid sm:grid-cols-3 gap-4">
                   {project.results.map((r) => (
@@ -290,8 +300,9 @@ function ProjectCasePage() {
             <aside className="lg:sticky lg:top-28 self-start space-y-6">
               <div className="bg-surface border border-border rounded-2xl p-6 space-y-5">
                 <h3 className="font-bold text-lg">Project Details</h3>
-                <SidebarItem icon={Briefcase} label="Industry" value={project.industry} />
-                <SidebarItem icon={Clock} label="Timeline" value={project.timeline} />
+                <SidebarItem icon={Briefcase} label="Domain" value={project.industry} />
+                <SidebarItem icon={Clock} label="Build duration" value={project.timeline} />
+                <SidebarItem icon={Tag} label="Work type" value={workOriginLabel(project.workOrigin)} />
                 <div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                     <Layers className="w-4 h-4 text-primary" /> Services
@@ -407,7 +418,7 @@ function ProjectCasePage() {
                 to="/contact"
                 className="mt-7 inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform"
               >
-                Start a Conversation <ArrowRight className="w-4 h-4" />
+                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

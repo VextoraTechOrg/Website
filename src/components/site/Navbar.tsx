@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { VextoraLogo } from "./VextoraLogo";
+import { PRIMARY_CTA } from "@/lib/site-copy";
 
 const links = [
   { to: "/", label: "Home" },
@@ -79,7 +80,7 @@ export default function Navbar() {
         </nav>
         <div className="hidden lg:block">
           <Link to="/contact" className={`${quoteBtnClass} px-5 py-2.5 text-sm`}>
-            Get a Quote <ArrowRight className="w-4 h-4" />
+            {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
         <button
@@ -100,7 +101,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link to="/contact" className={`mt-4 ${quoteBtnClass} px-6 py-3`}>
-              Get a Quote <ArrowRight className="w-4 h-4" />
+              {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { FADE_MS, slideMotionClasses, useRotatingSlide } from "@/components/site/useRotatingSlide";
 
-type TokenType = "keyword" | "module" | "class" | "func" | "string" | "comment" | "plain" | "number";
+type TokenType = "keyword" | "module" | "class" | "func" | "string" | "comment" | "plain" | "number" | "decorator";
 type Token = [TokenType, string];
 type CodeLine = Token[];
 type CodeFile = { filename: string; lines: CodeLine[] };
@@ -14,56 +14,52 @@ const COLORS: Record<TokenType, string> = {
   comment: "text-muted-foreground",
   plain: "",
   number: "text-[#10B981]",
+  decorator: "text-secondary",
 };
 
 const CODE_FILES: CodeFile[] = [
   {
-    filename: "vextoratech_ai.py",
+    filename: "transcribe.py",
     lines: [
-      [["keyword", "from"], ["plain", " "], ["module", "vextoratech"], ["plain", " "], ["keyword", "import"], ["plain", " "], ["class", "AIEngine"]],
+      [["keyword", "from"], ["plain", " "], ["module", "fastapi"], ["plain", " "], ["keyword", "import"], ["plain", " "], ["class", "FastAPI"], ["plain", ", "], ["class", "UploadFile"]],
+      [["keyword", "import"], ["plain", " "], ["module", "whisper"]],
       [],
-      [["comment", "# Initialize smart assistant"]],
-      [["plain", "engine = "], ["class", "AIEngine"], ["plain", "(model="], ["string", '"vxt-pro-v2"'], ["plain", ")"]],
+      [["plain", "app = "], ["class", "FastAPI"], ["plain", "()"]],
+      [["plain", "model = whisper."], ["func", "load_model"], ["plain", "("], ["string", '"base"'], ["plain", ")"]],
       [],
-      [["comment", "# Deploy in 3 lines"]],
-      [["plain", "app = engine."], ["func", "build"], ["plain", "("]],
-      [["plain", "    stack=["], ["string", '"FastAPI"'], ["plain", ", "], ["string", '"React"'], ["plain", ", "], ["string", '"PostgreSQL"'], ["plain", "],"]],
-      [["plain", "    ai_features=["], ["string", '"RAG"'], ["plain", ", "], ["string", '"NLP"'], ["plain", ", "], ["string", '"Vision"'], ["plain", "],"]],
-      [["plain", "    deploy_target="], ["string", '"cloud"']],
-      [["plain", ")"]],
-      [],
-      [["plain", "app."], ["func", "launch"], ["plain", "()"]],
-      [["comment", "# ✓ Live at vextoratech.com/client-demo"]],
+      [["decorator", "@app.post"], ["plain", "("], ["string", '"/transcribe"'], ["plain", ")"]],
+      [["keyword", "async"], ["plain", " "], ["keyword", "def"], ["plain", " "], ["func", "transcribe"], ["plain", "(file: "], ["class", "UploadFile"], ["plain", "):"]],
+      [["plain", "    audio = "], ["keyword", "await"], ["plain", " file."], ["func", "read"], ["plain", "()"]],
+      [["plain", "    result = model."], ["func", "transcribe"], ["plain", "(audio)"]],
+      [["plain", "    "], ["keyword", "return"], ["plain", " {"], ["string", '"text"'], ["plain", ": result["], ["string", '"text"'], ["plain", "]}"]],
     ],
   },
   {
-    filename: "vision_pipeline.py",
+    filename: "detect.py",
     lines: [
-      [["keyword", "from"], ["plain", " "], ["module", "vision"], ["plain", " "], ["keyword", "import"], ["plain", " "], ["class", "Detector"]],
+      [["keyword", "from"], ["plain", " "], ["module", "ultralytics"], ["plain", " "], ["keyword", "import"], ["plain", " "], ["class", "YOLO"]],
       [],
-      [["comment", "# ISL entry gate — dual camera ANPR + face match"]],
-      [["plain", "gate = "], ["class", "Detector"], ["plain", "("]],
-      [["plain", '    cameras=["entry", "plate"],']],
-      [["plain", '    pipeline=["OCR", "FaceMatch"],']],
-      [["plain", ")"]],
+      [["comment", "# Real-time object detection on a camera feed"]],
+      [["plain", "model = "], ["class", "YOLO"], ["plain", "("], ["string", '"yolov8n.pt"'], ["plain", ")"]],
+      [["plain", "results = model."], ["func", "predict"], ["plain", "(source=0, stream="], ["keyword", "True"], ["plain", ")"]],
       [],
-      [["plain", "gate."], ["func", "open_barrier"], ["plain", "()"]],
-      [["comment", "# ✓ Barrier armed — live stream active"]],
+      [["keyword", "for"], ["plain", " r "], ["keyword", "in"], ["plain", " results:"]],
+      [["plain", "    "], ["keyword", "for"], ["plain", " box "], ["keyword", "in"], ["plain", " r.boxes:"]],
+      [["plain", "        "], ["func", "print"], ["plain", "(box.cls, box.conf)"]],
     ],
   },
   {
     filename: "voice_hub.py",
     lines: [
-      [["keyword", "from"], ["plain", " "], ["module", "analytics"], ["plain", " "], ["keyword", "import"], ["plain", " "], ["class", "CallAnalyzer"]],
+      [["keyword", "import"], ["plain", " "], ["module", "whisper"]],
       [],
-      [["comment", "# Voice Intelligence Hub — call QA pipeline"]],
-      [["plain", "hub = "], ["class", "CallAnalyzer"], ["plain", "("]],
-      [["plain", '    metrics=["Sentiment", "Tone"],']],
-      [["plain", '    detect=["Compliance", "Intent"],']],
-      [["plain", ")"]],
+      [["comment", "# Transcribe + segment a call recording"]],
+      [["plain", "model = whisper."], ["func", "load_model"], ["plain", "("], ["string", '"base"'], ["plain", ")"]],
+      [["plain", "result = model."], ["func", "transcribe"], ["plain", "("], ["string", '"call.wav"'], ["plain", ")"]],
+      [["plain", "segments = result["], ["string", '"segments"'], ["plain", "]  "], ["comment", "# timestamped utterances"]],
       [],
-      [["plain", "hub."], ["func", "export"], ["plain", "()"]],
-      [["comment", "# ✓ Insights ready for review"]],
+      [["keyword", "for"], ["plain", " seg "], ["keyword", "in"], ["plain", " segments:"]],
+      [["plain", "    "], ["func", "print"], ["plain", "(seg["], ["string", '"start"'], ["plain", "], seg["], ["string", '"text"'], ["plain", "])"]],
     ],
   },
 ];

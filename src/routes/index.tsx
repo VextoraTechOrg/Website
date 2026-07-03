@@ -4,9 +4,10 @@ import RotatingHeadline from "@/components/site/RotatingHeadline";
 import RotatingCodeWindow from "@/components/site/RotatingCodeWindow";
 import {
   ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug,
-  Sparkles, Search, PenTool, Hammer, Rocket,
+  Search, PenTool, Hammer, Rocket, Eye, Mic, Layers,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { PRIMARY_CTA, SECONDARY_CTA, PROJECTS_HEADLINE } from "@/lib/site-copy";
+import { PROJECTS } from "@/content/projects";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,10 +27,10 @@ function Home() {
       <Hero />
       <LogosBar />
       <ServicesOverview />
-      <Stats />
+      <Domains />
       <FeaturedProjects />
       <Process />
-      <Testimonials />
+      <TrustLine />
       <CtaBanner />
     </SiteLayout>
   );
@@ -55,13 +56,13 @@ function Hero() {
               to="/contact"
               className="inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-xl px-6 py-3.5 shadow-[0_0_24px_rgba(79,142,247,0.4)] hover:scale-[1.03] transition-transform"
             >
-              Start Your Project <ArrowRight className="w-4 h-4" />
+              {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/projects"
               className="inline-flex items-center gap-2 border border-border rounded-xl px-6 py-3.5 font-semibold hover:border-primary transition-colors"
             >
-              See Our Work
+              {SECONDARY_CTA}
             </Link>
           </div>
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-xs mono text-muted-foreground">
@@ -127,123 +128,54 @@ function ServicesOverview() {
   );
 }
 
-function useCountUp(target: number, suffix = "", duration = 1500) {
-  const [value, setValue] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
+function Domains() {
+  const domains = [
+    { icon: Eye, label: "Computer Vision", detail: "ANPR, face recognition, surveillance" },
+    { icon: Mic, label: "Voice AI", detail: "Transcription, diarization, call analytics" },
+    { icon: Layers, label: "Full-Stack", detail: "Web platforms, APIs, cloud deployment" },
+  ];
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting && !started.current) {
-          started.current = true;
-          const start = performance.now();
-          const tick = (t: number) => {
-            const p = Math.min(1, (t - start) / duration);
-            const eased = 1 - Math.pow(1 - p, 3);
-            setValue(Math.round(target * eased));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      });
-    }, { threshold: 0.3 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target, duration]);
-
-  return { ref, display: `${value}${suffix}` };
-}
-
-function StatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const { ref, display } = useCountUp(value, suffix);
-  return (
-    <div ref={ref} className="text-center">
-      <div className="text-5xl md:text-6xl font-black text-gradient">{display}</div>
-      <div className="mt-2 mono text-xs text-muted-foreground">{label}</div>
-    </div>
-  );
-}
-
-function Stats() {
   return (
     <section className="py-20 border-y border-border relative">
       <div className="absolute inset-0 dot-grid opacity-[0.04]" />
-      <div className="container-px relative grid grid-cols-2 md:grid-cols-3 gap-10">
-        <StatItem value={3} suffix="" label="AI ENGINEERS" />
-        <StatItem value={1} suffix="" label="PRODUCT LEAD" />
-        <StatItem value={1} suffix="" label="FULL-STACK DEV" />
+      <div className="container-px relative grid md:grid-cols-3 gap-10">
+        {domains.map(({ icon: Icon, label, detail }) => (
+          <div key={label} className="text-center">
+            <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 grid place-items-center mb-4">
+              <Icon className="w-7 h-7 text-primary" />
+            </div>
+            <div className="text-xl font-bold mb-1">{label}</div>
+            <div className="mono text-xs text-muted-foreground">{detail}</div>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
-const PROJECTS = [
-  {
-    name: "QClose Inventory",
-    cats: ["Web Apps"],
-    tags: ["Next.js 13", "TypeScript", "Node.js", "Tailwind"],
-    desc: "Inventory management dashboard with hardware scanner integration for product addition and retrieval, plus reporting modules for opening and closing stock levels.",
-    color: "#06B6D4",
-    image: "/variety-people-multitasking-3d-cartoon-scene.jpg",
-  },
-  {
-    name: "SWGNP",
-    cats: ["Web Apps"],
-    tags: ["Angular", "TypeScript", "Chart.js", "PrimeNG"],
-    desc: "IoT-based web portal for remote sensing devices used by government stakeholders, with advanced search and dynamic data visualization features.",
-    color: "#4F8EF7",
-    image: "/thanit2022february_53.jpg",
-  },
-  {
-    name: "PYLI",
-    cats: ["Web Apps"],
-    tags: ["React.js 18", "TypeScript", "MUI", "Emotion"],
-    desc: "Centralized platform for managing multiple business profiles with a customized UI tailored to client requirements.",
-    color: "#7C3AED",
-    image: "/PYli.png",
-  },
-  {
-    name: "Facial Recognition Attendance System",
-    cats: ["AI / ML"],
-    tags: ["Python", "OpenCV", "DeepFace", "FastAPI"],
-    desc: "Automated employee attendance system using real-time facial recognition. Detects and identifies faces from live camera feeds, logs check-ins and check-outs, and generates attendance reports — eliminating manual tracking.",
-    color: "#6366F1",
-    image: "/2462340.jpg",
-  },
-  {
-    name: "AI Surveillance System",
-    cats: ["AI / ML"],
-    tags: ["Python", "YOLOv8", "OpenCV", "WebSocket"],
-    desc: "Intelligent video surveillance platform with real-time object and anomaly detection across multiple camera feeds. Triggers instant alerts for restricted zone breaches, loitering, and suspicious activity.",
-    color: "#EF4444",
-    image: "/surveillance-data-security-technology.jpg",
-  },
-];
+const FEATURED = PROJECTS.slice(0, 5);
 
 function FeaturedProjects() {
   return (
-    <Section eyebrow="WHAT WE BUILD" title="Example Products We Can Deliver">
+    <Section eyebrow="WHAT WE BUILD" title={PROJECTS_HEADLINE} subtitle="Real systems across vision, voice, and full-stack — explore the full portfolio.">
       <div className="grid md:grid-cols-2 gap-6 mb-6">
-        {PROJECTS.slice(0, 2).map((p) => <ProjectCard key={p.name} p={p} />)}
+        {FEATURED.slice(0, 2).map((p) => <ProjectCard key={p.slug} p={p} />)}
       </div>
       <div className="grid md:grid-cols-3 gap-6">
-        {PROJECTS.slice(2).map((p) => <ProjectCard key={p.name} p={p} />)}
+        {FEATURED.slice(2).map((p) => <ProjectCard key={p.slug} p={p} />)}
       </div>
       <div className="text-center mt-12">
         <Link to="/projects" className="inline-flex items-center gap-2 border border-primary text-primary rounded-xl px-6 py-3 font-semibold hover:bg-primary/10 transition-colors">
-          View All Projects <ArrowRight className="w-4 h-4" />
+          {SECONDARY_CTA} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </Section>
   );
 }
 
-function ProjectCard({ p }: { p: typeof PROJECTS[number] }) {
+function ProjectCard({ p }: { p: typeof FEATURED[number] }) {
   return (
-    <Link to="/projects" className="group block bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:border-primary transition-all">
+    <Link to="/projects/$slug" params={{ slug: p.slug }} className="group block bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:border-primary transition-all">
       <div
         className="aspect-[16/10] relative overflow-hidden"
         style={p.image ? undefined : { background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
@@ -303,20 +235,15 @@ function Process() {
   );
 }
 
-function Testimonials() {
+function TrustLine() {
   return (
-    <Section eyebrow="WHY WE STARTED" title="Honest From Day One">
-      <div className="max-w-3xl mx-auto bg-surface-2 border border-border rounded-2xl p-8 md:p-10 text-center">
-        <Sparkles className="w-8 h-8 text-primary mx-auto mb-4" />
-        <p className="text-lg text-foreground/90 leading-relaxed">
-          We didn't spin up another agency with fake case studies and inflated stats. VextoraTech is a new company —
-          incorporated in 2026 — built by engineers who'd rather tell you the truth on day one than oversell on day one.
-        </p>
-        <p className="mt-4 text-muted-foreground">
-          If you want a founding technical partner, not a vendor with a ten-year backstory we don't have, we're your team.
+    <section className="py-16">
+      <div className="container-px">
+        <p className="text-center text-lg text-muted-foreground max-w-2xl mx-auto">
+          Incorporated in 2026 — you work directly with the engineers building your product.
         </p>
       </div>
-    </Section>
+    </section>
   );
 }
 
@@ -335,10 +262,10 @@ function CtaBanner() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3 justify-center">
               <Link to="/contact" className="inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform">
-                Start the Conversation <ArrowRight className="w-4 h-4" />
+                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to="/services" className="inline-flex items-center gap-2 border-2 border-white text-white font-semibold rounded-xl px-6 py-3">
-                See Services
+              <Link to="/projects" className="inline-flex items-center gap-2 border-2 border-white text-white font-semibold rounded-xl px-6 py-3">
+                {SECONDARY_CTA}
               </Link>
             </div>
           </div>

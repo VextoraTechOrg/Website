@@ -17,6 +17,22 @@ export const PROJECT_CATEGORIES = [
 ] as const;
 export type ProjectCat = (typeof PROJECT_CATEGORIES)[number];
 
+/** How this work relates to VextoraTech — drives honest labeling site-wide. */
+export type ProjectWorkOrigin = "prior-team" | "prototype" | "internal" | "vextoratech";
+
+export function workOriginLabel(origin: ProjectWorkOrigin): string {
+  switch (origin) {
+    case "prior-team":
+      return "Prior team work";
+    case "prototype":
+      return "Prototype";
+    case "internal":
+      return "Internal build";
+    case "vextoratech":
+      return "VextoraTech delivery";
+  }
+}
+
 export interface ProjectFeature {
   title: string;
   detail: string;
@@ -45,6 +61,8 @@ export interface ProjectCase {
   keywords: string[];
   industry: string;
   timeline: string;
+  /** Honest origin label — avoids implying a VextoraTech client engagement when untrue. */
+  workOrigin: ProjectWorkOrigin;
   /** Services VextoraTech provided. */
   services: string[];
   color: string;
@@ -85,6 +103,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Retail & Warehousing",
     timeline: "4 months",
+    workOrigin: "prior-team",
     services: ["Web Application", "Frontend Engineering", "API Development"],
     color: "#06B6D4",
     image: "/variety-people-multitasking-3d-cartoon-scene.jpg",
@@ -138,6 +157,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Government / Public Sector",
     timeline: "6 months",
+    workOrigin: "prior-team",
     services: ["Web Application", "Data Visualization", "Frontend Engineering"],
     color: "#4F8EF7",
     image: "/thanit2022february_53.jpg",
@@ -191,6 +211,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Business Services / SaaS",
     timeline: "5 months",
+    workOrigin: "prior-team",
     services: ["Web Application", "Custom UI/UX", "Frontend Engineering"],
     color: "#7C3AED",
     image: "/PYli.png",
@@ -243,6 +264,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Hospitality / Food & Beverage",
     timeline: "7 months",
+    workOrigin: "prior-team",
     services: ["Web Application", "Frontend Leadership", "UI Engineering"],
     color: "#10B981",
     image: "/futuristic-technology-concept.jpg",
@@ -296,6 +318,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Logistics / Field Operations",
     timeline: "5 months",
+    workOrigin: "prototype",
     services: ["Web Application", "Real-Time Systems", "Dashboard Engineering"],
     color: "#6366F1",
     image: "/nexawatch.png",
@@ -350,6 +373,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Customer Support / SaaS",
     timeline: "4 months",
+    workOrigin: "prototype",
     services: ["AI / LLM Integration", "Web Application", "Dashboard Engineering"],
     color: "#0EA5E9",
     image: "/nexadesk-ai.png",
@@ -406,6 +430,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "HR / Workforce Management",
     timeline: "3 months",
+    workOrigin: "prior-team",
     services: ["AI / Computer Vision", "Backend Engineering", "ML Integration"],
     color: "#6366F1",
     image: "/2462340.jpg",
@@ -459,6 +484,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Security & Safety",
     timeline: "5 months",
+    workOrigin: "prior-team",
     services: ["AI / Computer Vision", "Real-Time Systems", "Backend Engineering"],
     color: "#EF4444",
     image: "/surveillance-data-security-technology.jpg",
@@ -513,6 +539,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Healthcare",
     timeline: "6 months",
+    workOrigin: "internal",
     services: ["AI / RAG", "LLM Engineering", "Private Deployment"],
     color: "#10B981",
     overview:
@@ -566,6 +593,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Healthcare / Digital Health",
     timeline: "5 months",
+    workOrigin: "prototype",
     services: ["AI / Healthcare", "Full-Stack Development", "System Integration"],
     color: "#14B8A6",
     overview:
@@ -619,6 +647,7 @@ export const PROJECTS: ProjectCase[] = [
     ],
     industry: "Sales / Contact Centers",
     timeline: "5 months",
+    workOrigin: "prior-team",
     services: ["AI / Speech", "NLP Engineering", "Backend Engineering"],
     color: "#A855F7",
     image: "/voice_hub.png",

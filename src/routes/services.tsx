@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import SiteLayout, { PageHero, Section } from "@/components/site/SiteLayout";
 import { ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug, Check } from "lucide-react";
+import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -18,14 +19,15 @@ const SERVICES = [
   {
     icon: Brain,
     name: "AI & Machine Learning",
-    image: "/ai-robot-analyzing-data-with-futuristic-interface.jpg",
-    body: "We design and ship production AI systems — not demos. From LLM-powered features to custom vision pipelines, we build for accuracy, latency, and cost.",
+    // TODO: replace with a real product screenshot (e.g. surveillance dashboard or RAG admin UI)
+    image: "/services-ai-machine-learning.jpg",
+    body: "We design and ship production AI systems — not demos. Computer vision, voice pipelines, and RAG are areas we build and deploy regularly.",
     bullets: [
-      "LLM fine-tuning and prompt engineering (GPT-4, Claude, Llama, Mistral)",
-      "Retrieval-Augmented Generation (RAG) with ChromaDB, Pinecone, Weaviate",
-      "Computer vision pipelines (object detection, OCR, image classification)",
-      "Predictive analytics and time-series forecasting",
-      "Local AI stacks (Ollama, ComfyUI, GGUF) — zero API cost architecture",
+      "Computer vision: object detection, OCR, ANPR, and face recognition pipelines",
+      "Voice AI: Whisper transcription, diarization, and call analytics",
+      "Retrieval-Augmented Generation (RAG) with vector search",
+      "Local inference stacks (Ollama, GGUF) for cost-controlled deployments",
+      "Model integration via OpenAI-compatible and open-weight APIs",
     ],
   },
   {
@@ -34,9 +36,9 @@ const SERVICES = [
     image: "/website-development-links-seo-webinar-cyberspace-concept.jpg",
     body: "Fast, type-safe, production-grade web apps. We follow patterns we'd defend in a code review — not what's trending on Twitter.",
     bullets: [
-      "React, Next.js, Vite — component-driven frontends",
-      "FastAPI, Node.js, Django — high-performance backends",
-      "PostgreSQL, MySQL, MongoDB — data architecture",
+      "React, Next.js, TanStack Start — component-driven frontends",
+      "FastAPI, Node.js — high-performance backends",
+      "PostgreSQL, MongoDB — data architecture",
       "REST & GraphQL APIs with full documentation",
       "Authentication: JWT, OAuth2, RBAC systems",
     ],
@@ -44,26 +46,27 @@ const SERVICES = [
   {
     icon: Smartphone,
     name: "Mobile App Development",
-    image: "/pexels-simonptr-33607948.jpg",
-    body: "Single codebase, native feel. Cross-platform apps shipped to App Store and Play Store with the polish your brand deserves.",
+    // TODO: replace with a real mobile app screenshot
+    image: "/services-mobile-development.jpg",
+    body: "Cross-platform apps with native-quality UX. We scope honestly — mobile is in our stack where the product calls for it.",
     bullets: [
       "React Native and Flutter cross-platform apps",
-      "iOS App Store + Google Play deployment",
+      "App Store and Play Store deployment support",
       "Offline-first architecture with sync",
       "Push notifications, biometrics, camera integrations",
-      "App performance profiling and optimization",
+      "Performance profiling and optimization",
     ],
   },
   {
     icon: Cloud,
     name: "Cloud & DevOps",
     image: "/cloud.png",
-    body: "Infrastructure that scales when you do and costs what it should. Real observability, real rollback, real SLOs.",
+    body: "Infrastructure that scales when you do and costs what it should. Real observability, rollback paths, and deployment automation.",
     bullets: [
       "AWS, GCP, Azure — architecture and cost optimization",
       "Docker and Kubernetes container orchestration",
-      "CI/CD pipelines (GitHub Actions, GitLab, Jenkins)",
-      "Infrastructure as Code (Terraform, Ansible)",
+      "CI/CD pipelines (GitHub Actions, GitLab)",
+      "Infrastructure as Code (Terraform)",
       "Monitoring: Grafana, Prometheus, Sentry",
     ],
   },
@@ -83,19 +86,35 @@ const SERVICES = [
   {
     icon: Plug,
     name: "API Development & Integrations",
-    image: "/pexels-kevin-ku-92347-577585.jpg",
-    body: "APIs that other engineers actually enjoy using. Documented, versioned, rate-limited, and built to last.",
+    // TODO: replace with a real API dashboard or integration diagram screenshot
+    image: "/services-api-integrations.jpg",
+    body: "APIs that other engineers actually enjoy using. Documented, versioned, and built to last.",
     bullets: [
       "RESTful API design following OpenAPI 3.0 spec",
       "GraphQL schemas and resolvers",
       "Webhook systems and event-driven architecture",
-      "Third-party integrations: Stripe, Twilio, SendGrid, HubSpot",
+      "Third-party integrations: Stripe, Twilio, SendGrid",
       "API gateway and rate limiting setup",
     ],
   },
 ];
 
-const TECH = ["React", "Next.js", "Node.js", "FastAPI", "Python", "PostgreSQL", "Redis", "Docker", "AWS", "GCP", "Figma", "React Native", "Flutter", "TensorFlow", "PyTorch", "Ollama"];
+const ENGAGEMENT_MODELS = [
+  {
+    name: "Fixed-scope build",
+    desc: "A defined MVP or feature set with agreed deliverables, timeline, and acceptance criteria. Best when requirements are clear.",
+  },
+  {
+    name: "Ongoing product partnership",
+    desc: "A retained engineering team embedded in your roadmap — sprints, demos, and continuous delivery. Best for products in active growth.",
+  },
+  {
+    name: "Discovery / PoC",
+    desc: "A short, focused engagement to validate feasibility — architecture review, prototype, or technical spike. Best before committing to a full build.",
+  },
+];
+
+const TECH = ["React", "Next.js", "FastAPI", "Python", "PostgreSQL", "Docker", "AWS", "Whisper", "YOLO", "OpenCV", "Figma", "TanStack", "Ollama", "PyTorch"];
 
 function ServicesPage() {
   return (
@@ -122,33 +141,35 @@ function ServicesPage() {
                 ))}
               </ul>
               <Link to="/contact" className="inline-flex items-center gap-2 text-primary font-semibold">
-                Talk to us about {s.name} <ArrowRight className="w-4 h-4" />
+                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
             <div className="relative">
               <div className="absolute -inset-4 bg-primary/15 blur-3xl rounded-3xl" aria-hidden />
               <div className="relative bg-surface border border-border rounded-2xl overflow-hidden aspect-[4/3]">
-                {s.image ? (
-                  <img
-                    src={s.image}
-                    alt={s.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="p-10 grid place-items-center h-full">
-                    <div className="w-24 h-24 rounded-3xl bg-gradient-brand grid place-items-center">
-                      <s.icon className="w-12 h-12 text-white" />
-                    </div>
-                  </div>
-                )}
+                <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
         ))}
       </div>
 
+      <Section eyebrow="HOW WE WORK" title="Engagement Models">
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10 -mt-8">
+          Pick the shape that fits your stage. We scope honestly — no dollar figures here, just what each model includes.
+        </p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {ENGAGEMENT_MODELS.map((m) => (
+            <div key={m.name} className="bg-surface border border-border rounded-2xl p-8">
+              <h3 className="text-xl font-bold mb-3">{m.name}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       <Section eyebrow="STACK" title="Technologies We Work With">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {TECH.map((t) => (
             <div key={t} className="bg-surface border border-border rounded-xl px-4 py-5 text-center text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary transition-colors">
               {t}

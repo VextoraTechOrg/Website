@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, Phone, MapPin, Linkedin, Github, Twitter, Instagram, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, ArrowRight } from "lucide-react";
 import { Logo } from "./Navbar";
+import { COMPANY } from "@/lib/site-copy";
 
 const services = [
   ["AI & Machine Learning", "/services"],
@@ -30,23 +31,16 @@ export default function Footer() {
               We build intelligent software that scales with your ambition.
             </p>
             <div className="mt-6 flex gap-3">
-              {[
-                { Icon: Linkedin, href: "https://www.linkedin.com/company/vextoratech", label: "LinkedIn" },
-                { Icon: Github, href: "#", label: "GitHub" },
-                { Icon: Twitter, href: "#", label: "Twitter" },
-                { Icon: Instagram, href: "#", label: "Instagram" },
-              ].map(({ Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="w-10 h-10 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
-                  aria-label={label}
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
+              {/* TODO: add Twitter/X, GitHub, or Instagram URLs when profiles are live */}
+              <a
+                href="https://www.linkedin.com/company/vextoratech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
@@ -79,8 +73,8 @@ export default function Footer() {
           <div>
             <h4 className="mono text-xs font-semibold text-primary mb-4">Get In Touch</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> info@vextoratech.com</li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +92 3198562747</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> {COMPANY.email}</li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> {COMPANY.phone}</li>
               <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Lahore, Pakistan</li>
             </ul>
             <form className="mt-5 flex gap-2" onSubmit={(e) => e.preventDefault()}>
@@ -96,9 +90,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-6 border-t border-border flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
+        <div className="mt-8 pt-6 border-t border-border flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
           <span>© 2026 VextoraTech. All rights reserved.</span>
-          <span>Privacy Policy · Terms of Service</span>
+          <span className="flex flex-wrap gap-x-3 gap-y-1">
+            <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+            <span aria-hidden>·</span>
+            <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+          </span>
         </div>
       </div>
     </footer>

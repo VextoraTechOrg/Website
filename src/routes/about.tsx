@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import SiteLayout, { PageHero, Section } from "@/components/site/SiteLayout";
 import { ArrowRight, Linkedin } from "lucide-react";
+import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -23,12 +24,39 @@ type TeamMember = {
 };
 
 const TEAM: TeamMember[] = [
-  { name: "Farjad kareem", role: "CEO", bio: "Full-stack AI Engineer. Obsessed with developer experience and scalable product design.", linkedin: "https://www.linkedin.com/in/farjad-kareem-3a73aa2b6/" },
-  { name: "Umar Azhar", role: "Product Manager", bio: "Product manager who turns founder vision into clear roadmaps. Aligns user needs, business goals, and engineering delivery from discovery to launch." },
-  { name: "Irfan Ahmad", role: "Sr. AI Engineer", bio: "Senior AI engineer with a decade of experience across ML systems, LLMs, and production deployments. Leads architecture and sets the technical bar for our AI practice.", linkedin: "https://www.linkedin.com/in/irfan-ahmed-4ba99911b/" },
-  { name: "Mateen Abid", role: "AI Engineer", bio: "AI engineer with one year in LLMs and local inference. Learning fast and shipping real integrations on client projects." },
-  { name: "Taimoor Amir", role: "AI Engineer", bio: "AI engineer focused on model APIs and backend integration. A year into AI, already deploying RAG and inference pipelines." },
-  { name: "Saad Ishaq", role: "Full Stack Developer", bio: "Full-stack developer shipping end-to-end product features. Builds React frontends, APIs, and the integrations that tie them together.", linkedin: "https://www.linkedin.com/in/muhammad-saad-454431373/" },
+  {
+    name: "Farjad Kareem",
+    role: "CEO",
+    bio: "Leads product architecture and full-stack delivery — from FastAPI backends and React frontends to AI feature integration in production.",
+    linkedin: "https://www.linkedin.com/in/farjad-kareem-3a73aa2b6/",
+  },
+  {
+    name: "Umar Azhar",
+    role: "Product Manager",
+    bio: "Owns discovery through launch: scopes MVPs, writes clear requirements, and keeps engineering aligned with business outcomes.",
+  },
+  {
+    name: "Irfan Ahmad",
+    role: "Sr. AI Engineer",
+    bio: "Ten years across ML systems, LLMs, and production deployments. Sets the technical bar for our AI practice and owns model architecture end to end.",
+    linkedin: "https://www.linkedin.com/in/irfan-ahmed-4ba99911b/",
+  },
+  {
+    name: "Mateen Abid",
+    role: "AI Engineer",
+    bio: "Builds and deploys RAG pipelines, local LLM inference, and model integrations on client projects — from prototype to production.",
+  },
+  {
+    name: "Taimoor Amir",
+    role: "AI Engineer",
+    bio: "Owns backend AI services: Whisper transcription, NLP pipelines, and the FastAPI layers that expose them to products.",
+  },
+  {
+    name: "Saad Ishaq",
+    role: "Full Stack Developer",
+    bio: "Ships end-to-end product features — React and TanStack frontends, REST APIs, database design, and deployment.",
+    linkedin: "https://www.linkedin.com/in/muhammad-saad-454431373/",
+  },
 ];
 
 const VALUES = [
@@ -59,9 +87,20 @@ function AboutPage() {
             infrastructure that makes <span className="text-gradient">ambitious ideas inevitable.</span>"
           </blockquote>
           <div className="space-y-4 text-muted-foreground">
-            <p>VextoraTech is brand new Startup. We incorporated in 2026,no legacy agency, no rebrand, no borrowed history. We're a small team in Lahore building this company in public from day one.</p>
-            <p>Our people have shipped AI features, web products, and full-stack systems before, just not under this name yet. We're looking for founding partners who want direct access to the engineers doing the work, not a sales layer in between.</p>
-            <p>If you're building something you care about and want an honest technical partner from the start, we'd love to talk.</p>
+            <p>
+              VextoraTech is a brand-new startup. We incorporated in 2026 — no legacy agency,
+              no rebrand, no borrowed history. We are a small team in Lahore building this
+              company in public from day one.
+            </p>
+            <p>
+              Our people have shipped AI features, web products, and full-stack systems before —
+              just not under this name yet. We work with founding partners who want direct access
+              to the engineers doing the work, not a sales layer in between.
+            </p>
+            <p>
+              We lead with what we can demonstrate: computer vision, voice AI, RAG systems, and
+              production-grade web platforms. No inflated backstory — just honest engineering.
+            </p>
           </div>
         </div>
       </Section>
@@ -133,7 +172,7 @@ function AboutPage() {
             <div className="relative">
               <h2 className="text-3xl md:text-4xl font-extrabold text-white">Let's Build Your Next Chapter Together</h2>
               <Link to="/contact" className="mt-6 inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform">
-                Start a Conversation <ArrowRight className="w-4 h-4" />
+                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

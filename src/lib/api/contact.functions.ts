@@ -11,6 +11,8 @@ const contactSchema = z.object({
   budget: z.string().optional().default(""),
   message: z.string().min(1),
   heardAbout: z.string().optional().default(""),
+  /** Honeypot — must stay empty; bots fill this field. */
+  website: z.string().optional().default(""),
 });
 
 function assertResendOk(
@@ -25,6 +27,10 @@ function assertResendOk(
 export const sendContactEmail = createServerFn({ method: "POST" })
   .validator(contactSchema)
   .handler(async ({ data }) => {
+    if (data.website) {
+      return { ok: true };
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey || apiKey === "re_YOUR_API_KEY_HERE") {
       throw new Error(

@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import SiteLayout from "@/components/site/SiteLayout";
 import { ArrowLeft, ArrowRight, Clock, Calendar, ChevronRight } from "lucide-react";
 import { SITE_URL, getPostBySlug, getRelatedPosts } from "@/content/blog-posts";
+import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/blog/$slug")({
       };
     }
     const url = `${SITE_URL}/blog/${post.slug}`;
+    const ogImage = `${SITE_URL}/logo.png`;
     return {
       meta: [
         { title: `${post.title} — VextoraTech` },
@@ -29,9 +31,11 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: post.title },
         { property: "og:description", content: post.description },
         { property: "og:url", content: url },
+        { property: "og:image", content: ogImage },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: post.title },
         { name: "twitter:description", content: post.description },
+        { name: "twitter:image", content: ogImage },
       ],
       links: [{ rel: "canonical", href: url }],
     };
@@ -78,6 +82,7 @@ function BlogPostPage() {
     datePublished: post.datePublished,
     dateModified: post.dateModified,
     author: { "@type": "Person", name: post.author },
+    image: `${SITE_URL}/logo.png`,
     publisher: {
       "@type": "Organization",
       name: "VextoraTech",
@@ -243,6 +248,21 @@ function BlogPostPage() {
         </section>
       )}
 
+      {/* Internal links */}
+      <section className="container-px pb-4">
+        <div className="max-w-3xl mx-auto flex flex-wrap justify-center gap-6 text-sm">
+          <Link to="/services" className="text-primary font-medium hover:underline">
+            Our services
+          </Link>
+          <Link to="/projects" className="text-primary font-medium hover:underline">
+            Case studies
+          </Link>
+          <Link to="/projects/voice-intelligence-hub" className="text-primary font-medium hover:underline">
+            Voice Intelligence Hub
+          </Link>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20">
         <div className="container-px">
@@ -260,7 +280,7 @@ function BlogPostPage() {
                 to="/contact"
                 className="mt-7 inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform"
               >
-                Start a Conversation <ArrowRight className="w-4 h-4" />
+                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

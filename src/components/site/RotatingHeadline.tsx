@@ -17,7 +17,7 @@ export default function RotatingHeadline() {
       <span className="invisible block select-none" aria-hidden>
         We Engineer Systems That
         <br />
-        Perform.
+        <span className="text-gradient">Perform.</span>
       </span>
       <span
         aria-live="polite"
