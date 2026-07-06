@@ -35,7 +35,7 @@ export function Logo({ className = "" }: { className?: string }) {
       className={`inline-flex shrink-0 items-center ${className}`}
       aria-label="VextoraTech home"
     >
-      <VextoraLogo className="h-9 w-auto md:h-10" />
+      <VextoraLogo className="h-10 w-auto md:h-11" />
     </Link>
   );
 }
