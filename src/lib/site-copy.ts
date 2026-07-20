@@ -9,6 +9,6 @@ export const PROJECTS_SUBHEAD =
 
 /** Company contact details used in footer and contact page. */
 export const COMPANY = {
-  phone: "+92 319 8562747",
+  phone: "+92 371 2331344",
   email: "info@vextoratech.com",
 } as const;
