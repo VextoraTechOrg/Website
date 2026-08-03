@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import SiteLayout, { Section, CtaBand } from "@/components/site/SiteLayout";
 import { Reveal, RevealItem, RevealOl, RevealLi, RevealStagger } from "@/components/site/Reveal";
+import RotatingHeroLines, { HERO_LINES } from "@/components/site/RotatingHeroLines";
+import RotatingHeroFeature from "@/components/site/RotatingHeroFeature";
+import { useHeroCycle } from "@/components/site/useHeroCycle";
 import {
   ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug,
   Search, PenTool, Hammer, Rocket, Eye, Mic, Layers,
@@ -13,6 +16,9 @@ import {
   staggerContainerVariants,
   staggerItemVariants,
 } from "@/lib/motion";
+
+const HERO_PROJECTS = PROJECTS.filter((p) => p.image);
+const HERO_CYCLE_LEN = Math.max(HERO_LINES.length, HERO_PROJECTS.length);
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,8 +54,9 @@ function Home() {
 }
 
 function Hero() {
-  const featured = PROJECTS.find((p) => p.image) ?? PROJECTS[0];
-  const reduced = useReducedMotion();
+  const { index, reduced } = useHeroCycle(HERO_CYCLE_LEN);
+  const lineIndex = index % HERO_LINES.length;
+  const projectIndex = index % Math.max(HERO_PROJECTS.length, 1);
 
   return (
     <section className="relative overflow-hidden min-h-[88vh] flex items-center border-b border-border">
@@ -66,9 +73,7 @@ function Hero() {
             className="font-display text-4xl md:text-5xl lg:text-[3.25rem] tracking-tight leading-[1.1] max-w-xl"
           >
             <span className="text-primary">VextoraTech</span>
-            <span className="block mt-3 text-foreground">
-              Software engineered for precision — AI, web, and cloud.
-            </span>
+            <RotatingHeroLines index={lineIndex} />
           </motion.h1>
           <motion.p
             variants={staggerItemVariants(reduced)}
@@ -100,34 +105,11 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={reduced ? { duration: 0 } : { ...fadeTransition, delay: 0.15 }}
         >
-          <Link
-            to="/projects/$slug"
-            params={{ slug: featured.slug }}
-            className="group relative block border border-border bg-surface overflow-hidden aspect-[16/10] lg:aspect-[4/3]"
-          >
-            {featured.image ? (
-              <motion.img
-                src={featured.image}
-                alt={featured.name}
-                className="w-full h-full object-cover opacity-90"
-                whileHover={reduced ? undefined : { scale: 1.02, opacity: 1 }}
-                transition={{ duration: 0.35 }}
-              />
-            ) : (
-              <div className="w-full h-full bg-surface-2 flex items-end p-8">
-                <span className="font-display text-2xl">{featured.name}</span>
-              </div>
-            )}
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent p-6 pt-16">
-              <span className="label-quiet text-[10px]">Featured work</span>
-              <div className="font-display text-xl mt-1 group-hover:text-primary transition-colors">
-                {featured.name}
-              </div>
-              <span className="inline-flex items-center gap-1 text-sm text-muted-foreground mt-2">
-                View case study <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </div>
-          </Link>
+          <RotatingHeroFeature
+            projects={HERO_PROJECTS.length ? HERO_PROJECTS : PROJECTS}
+            index={projectIndex}
+            reduced={reduced}
+          />
         </motion.div>
       </div>
     </section>
