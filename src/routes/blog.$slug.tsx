@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import SiteLayout from "@/components/site/SiteLayout";
-import { ArrowLeft, ArrowRight, Clock, Calendar, ChevronRight } from "lucide-react";
+import SiteLayout, { CtaBand } from "@/components/site/SiteLayout";
+import { ArrowLeft, Clock, Calendar, ChevronRight } from "lucide-react";
 import { SITE_URL, getPostBySlug, getRelatedPosts } from "@/content/blog-posts";
 import { PRIMARY_CTA } from "@/lib/site-copy";
 
@@ -53,15 +53,12 @@ function BlogPostPage() {
   if (!post) {
     return (
       <SiteLayout>
-        <div className="container-px py-32 text-center">
-          <h1 className="text-3xl font-extrabold mb-4">Article not found</h1>
+        <div className="container-px py-32">
+          <h1 className="font-display text-3xl mb-4">Article not found</h1>
           <p className="text-muted-foreground mb-8">
             This post may have moved or no longer exists.
           </p>
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-2 text-primary font-semibold"
-          >
+          <Link to="/blog" className="inline-flex items-center gap-2 text-primary font-medium">
             <ArrowLeft className="w-4 h-4" /> Back to the blog
           </Link>
         </div>
@@ -104,7 +101,6 @@ function BlogPostPage() {
 
   return (
     <SiteLayout>
-      {/* Structured data for rich results */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -115,51 +111,29 @@ function BlogPostPage() {
       />
 
       <article>
-        {/* Header */}
-        <header className="relative overflow-hidden">
-          <div className="absolute inset-0 dot-grid opacity-[0.06]" aria-hidden />
-          <div
-            className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full blur-[120px] opacity-30"
-            style={{ background: post.color }}
-            aria-hidden
-          />
+        <header className="border-b border-border">
           <div className="container-px relative pt-12 pb-10 md:pt-16">
             <nav
               aria-label="Breadcrumb"
               className="flex items-center gap-2 text-xs text-muted-foreground mb-8"
             >
-              <Link to="/" className="hover:text-foreground">
-                Home
-              </Link>
+              <Link to="/" className="hover:text-foreground">Home</Link>
               <ChevronRight className="w-3 h-3" />
-              <Link to="/blog" className="hover:text-foreground">
-                Blog
-              </Link>
+              <Link to="/blog" className="hover:text-foreground">Blog</Link>
               <ChevronRight className="w-3 h-3" />
-              <span className="text-foreground truncate max-w-[60vw]">
-                {post.title}
-              </span>
+              <span className="text-foreground truncate max-w-[60vw]">{post.title}</span>
             </nav>
 
             <div className="max-w-3xl">
-              <span className="mono text-xs text-primary">{post.category}</span>
-              <h1 className="text-3xl md:text-5xl font-black tracking-tight mt-3 mb-5 leading-[1.1]">
+              <span className="label-quiet">{post.category}</span>
+              <h1 className="font-display text-3xl md:text-5xl tracking-tight mt-3 mb-5 leading-[1.1]">
                 {post.title}
               </h1>
-              <p className="text-lg text-muted-foreground mb-6">
-                {post.description}
-              </p>
+              <p className="text-lg text-muted-foreground mb-6">{post.description}</p>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <span className="w-9 h-9 rounded-full bg-gradient-brand grid place-items-center text-white font-bold">
-                    {post.author.charAt(0)}
-                  </span>
-                  <span>
-                    <span className="text-foreground font-medium">
-                      {post.author}
-                    </span>
-                    <span className="block text-xs">{post.authorRole}</span>
-                  </span>
+                <div>
+                  <span className="text-foreground font-medium">{post.author}</span>
+                  <span className="block text-xs">{post.authorRole}</span>
                 </div>
                 <span className="inline-flex items-center gap-1.5">
                   <Calendar className="w-4 h-4" />
@@ -173,36 +147,11 @@ function BlogPostPage() {
           </div>
         </header>
 
-        {/* Hero banner */}
-        <div className="container-px">
-          <div
-            className="relative rounded-3xl overflow-hidden aspect-[21/9] max-w-4xl mx-auto border border-border"
-            style={{
-              background: `linear-gradient(135deg, ${post.color}40, ${post.color}10)`,
-            }}
-          >
-            <div className="absolute inset-0 dot-grid opacity-30" />
-            <div className="absolute inset-0 grid place-items-center">
-              <div
-                className="w-24 h-24 rounded-3xl grid place-items-center text-4xl font-black text-white"
-                style={{ background: post.color }}
-              >
-                {post.title.charAt(0)}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Body */}
         <div className="container-px py-14 md:py-20">
-          <div className="article max-w-3xl mx-auto">{post.Content()}</div>
+          <div className="article max-w-3xl">{post.Content()}</div>
 
-          {/* Share / back */}
-          <div className="max-w-3xl mx-auto mt-14 pt-8 border-t border-border flex flex-wrap items-center justify-between gap-4">
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-2 text-primary font-semibold"
-            >
+          <div className="max-w-3xl mt-14 pt-8 border-t border-border flex flex-wrap items-center justify-between gap-4">
+            <Link to="/blog" className="inline-flex items-center gap-2 text-primary font-medium">
               <ArrowLeft className="w-4 h-4" /> All articles
             </Link>
             <span className="text-sm text-muted-foreground">
@@ -212,35 +161,22 @@ function BlogPostPage() {
         </div>
       </article>
 
-      {/* Related posts */}
       {related.length > 0 && (
         <section className="container-px pb-8">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl font-extrabold mb-8">Keep reading</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+          <div className="max-w-3xl">
+            <h2 className="font-display text-2xl mb-8">Keep reading</h2>
+            <div className="border-t border-border">
               {related.map((p) => (
                 <Link
                   key={p.slug}
                   to="/blog/$slug"
                   params={{ slug: p.slug }}
-                  className="group bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1 hover:border-primary transition-all"
+                  className="group grid md:grid-cols-[7rem_1fr] gap-4 py-6 border-b border-border hover:bg-surface/40 -mx-2 px-2 transition-colors"
                 >
-                  <div
-                    className="aspect-[16/9] relative"
-                    style={{
-                      background: `linear-gradient(135deg, ${p.color}40, ${p.color}10)`,
-                    }}
-                  >
-                    <div className="absolute inset-0 dot-grid opacity-30" />
-                  </div>
-                  <div className="p-5">
-                    <span className="mono text-[10px] text-primary">
-                      {p.category}
-                    </span>
-                    <h3 className="text-base font-bold mt-2 leading-snug">
-                      {p.title}
-                    </h3>
-                  </div>
+                  <span className="text-xs text-primary">{p.category}</span>
+                  <h3 className="font-display text-base group-hover:text-primary transition-colors leading-snug">
+                    {p.title}
+                  </h3>
                 </Link>
               ))}
             </div>
@@ -248,44 +184,18 @@ function BlogPostPage() {
         </section>
       )}
 
-      {/* Internal links */}
       <section className="container-px pb-4">
-        <div className="max-w-3xl mx-auto flex flex-wrap justify-center gap-6 text-sm">
-          <Link to="/services" className="text-primary font-medium hover:underline">
-            Our services
-          </Link>
-          <Link to="/projects" className="text-primary font-medium hover:underline">
-            Case studies
-          </Link>
-          <Link to="/projects/voice-intelligence-hub" className="text-primary font-medium hover:underline">
-            Voice Intelligence Hub
-          </Link>
+        <div className="max-w-3xl flex flex-wrap gap-6 text-sm">
+          <Link to="/services" className="text-primary font-medium hover:underline">Our services</Link>
+          <Link to="/projects" className="text-primary font-medium hover:underline">Case studies</Link>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20">
-        <div className="container-px">
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-brand p-12 md:p-16 text-center">
-            <div className="absolute inset-0 dot-grid opacity-10" />
-            <div className="relative">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white">
-                Have a project that needs this kind of engineering?
-              </h2>
-              <p className="text-white/80 mt-3 max-w-xl mx-auto">
-                We turn ideas into production software — AI, web, mobile, and
-                cloud.
-              </p>
-              <Link
-                to="/contact"
-                className="mt-7 inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform"
-              >
-                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaBand
+        title="Have a project that needs this kind of engineering?"
+        body="We turn ideas into production software — AI, web, mobile, and cloud."
+        primaryLabel={PRIMARY_CTA}
+      />
     </SiteLayout>
   );
 }

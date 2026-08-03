@@ -15,7 +15,7 @@ const links = [
 ] as const;
 
 const quoteBtnClass =
-  "inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-lg animate-cta-attention hover:scale-[1.03] transition-transform shadow-[0_0_20px_rgba(79,142,247,0.35)]";
+  "inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium rounded text-sm transition-opacity hover:opacity-90";
 
 export function Logo({ className = "" }: { className?: string }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -56,8 +56,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "backdrop-blur-xl bg-background/80 border-b border-border" : "bg-transparent"
+      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-200 ${
+        scrolled ? "bg-background/95 border-b border-border backdrop-blur-sm" : "bg-transparent"
       }`}
     >
       <div className="container-px flex items-center justify-between h-16 md:h-20">
@@ -79,7 +79,7 @@ export default function Navbar() {
           })}
         </nav>
         <div className="hidden lg:block">
-          <Link to="/contact" className={`${quoteBtnClass} px-5 py-2.5 text-sm`}>
+          <Link to="/contact" className={`${quoteBtnClass} px-5 py-2.5`}>
             {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -93,14 +93,18 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden fixed inset-0 top-16 bg-background/98 backdrop-blur-xl">
-          <div className="flex flex-col items-center justify-center gap-6 pt-12">
+        <div className="lg:hidden fixed inset-0 top-16 bg-background border-t border-border">
+          <div className="flex flex-col gap-1 px-6 pt-8">
             {links.map((l) => (
-              <Link key={l.to} to={l.to} className="text-2xl font-semibold text-foreground">
+              <Link
+                key={l.to}
+                to={l.to}
+                className="font-display text-xl py-3 border-b border-border text-foreground"
+              >
                 {l.label}
               </Link>
             ))}
-            <Link to="/contact" className={`mt-4 ${quoteBtnClass} px-6 py-3`}>
+            <Link to="/contact" className={`mt-8 self-start ${quoteBtnClass} px-6 py-3`}>
               {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

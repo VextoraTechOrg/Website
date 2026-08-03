@@ -106,7 +106,7 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["Web Application", "Frontend Engineering", "API Development"],
     color: "#06B6D4",
-    image: "/variety-people-multitasking-3d-cartoon-scene.jpg",
+    image: "/website-development-links-seo-webinar-cyberspace-concept.jpg",
     overview:
       "QClose Inventory is a web-based stock control platform that replaces spreadsheets and manual counts with a fast, scanner-driven workflow. Staff add and retrieve products by scanning physical barcodes, while managers get accurate opening- and closing-stock reports at the end of every shift.",
     challenges: [
@@ -159,7 +159,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "6 months",
     workOrigin: "prior-team",
     services: ["Web Application", "Data Visualization", "Frontend Engineering"],
-    color: "#4F8EF7",
+    color: "#5B9FD4",
     image: "/thanit2022february_53.jpg",
     overview:
       "SWGNP is a monitoring portal that brings data from a fleet of remote sensing IoT devices into a single, government-grade web interface. Stakeholders search, filter, and visualize device readings through dynamic dashboards that turn raw telemetry into decisions.",
@@ -213,7 +213,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "5 months",
     workOrigin: "prior-team",
     services: ["Web Application", "Custom UI/UX", "Frontend Engineering"],
-    color: "#7C3AED",
+    color: "#5B9FD4",
     image: "/PYli.png",
     overview:
       "PYLI centralizes the management of multiple business profiles into one cohesive platform. Rather than juggling separate tools, users administer every profile from a single, bespoke interface built precisely to the client's workflows.",
@@ -267,7 +267,7 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["Web Application", "Frontend Leadership", "UI Engineering"],
     color: "#10B981",
-    image: "/futuristic-technology-concept.jpg",
+    image: "/UI_UX.png",
     overview:
       "This Restaurant Management System unifies the operational core of a venue — menu, orders, bookings, and billing — into one platform. VextoraTech led the frontend development of a brand-new product version, modernizing the experience for staff and operators.",
     challenges: [
@@ -320,7 +320,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "5 months",
     workOrigin: "prototype",
     services: ["Web Application", "Real-Time Systems", "Dashboard Engineering"],
-    color: "#6366F1",
+    color: "#4A8FC4",
     image: "/nexawatch.png",
     overview:
       "NexaWatch is a real-time field visibility platform built for teams on the move. Managers track live GPS positions, monitor geofence events, review route history, and oversee client visits from a single secure admin dashboard — turning scattered field activity into actionable visibility.",
@@ -432,7 +432,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "3 months",
     workOrigin: "prior-team",
     services: ["AI / Computer Vision", "Backend Engineering", "ML Integration"],
-    color: "#6366F1",
+    color: "#4A8FC4",
     image: "/2462340.jpg",
     overview:
       "This system automates employee attendance using real-time facial recognition. It detects and identifies faces from live camera feeds, logs check-ins and check-outs automatically, and generates attendance reports — removing the friction and inaccuracy of manual tracking, cards, or fingerprint scanners.",
@@ -542,6 +542,7 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "internal",
     services: ["AI / RAG", "LLM Engineering", "Private Deployment"],
     color: "#10B981",
+    image: "/services-ai-machine-learning.jpg",
     overview:
       "This assistant turns a corpus of medical literature and clinical guidelines into a conversational knowledge base. Healthcare professionals retrieve drug information, diagnostic criteria, and treatment protocols by simply asking — with a local-first stack that keeps sensitive data in-house.",
     challenges: [
@@ -596,6 +597,7 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prototype",
     services: ["AI / Healthcare", "Full-Stack Development", "System Integration"],
     color: "#14B8A6",
+    image: "/services-api-integrations.jpg",
     overview:
       "MedAssist AI is a patient-facing chatbot that triages symptoms, answers health questions, and guides users toward the right care pathway. When a human is needed, it integrates with appointment systems for a seamless handoff — bridging self-service and professional care.",
     challenges: [
@@ -649,7 +651,7 @@ export const PROJECTS: ProjectCase[] = [
     timeline: "5 months",
     workOrigin: "prior-team",
     services: ["AI / Speech", "NLP Engineering", "Backend Engineering"],
-    color: "#A855F7",
+    color: "#6BA3C4",
     image: "/voice_hub.png",
     overview:
       "Voice Intelligence Hub is an end-to-end voice analytics platform. It transcribes call recordings, separates who said what (diarization), and analyzes the conversation to extract sentiment, key topics, and action items — giving contact centers and sales teams insight that used to be locked inside audio.",

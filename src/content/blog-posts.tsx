@@ -70,7 +70,7 @@ export const BLOG_POSTS: BlogPost[] = [
     datePublished: "2026-06-05",
     dateModified: "2026-06-05",
     readTime: "8 min read",
-    color: "#4F8EF7",
+    color: "#5B9FD4",
     Content: () => (
       <>
         <p>
@@ -253,7 +253,7 @@ print(resp["message"]["content"])`}</code>
     datePublished: "2026-05-22",
     dateModified: "2026-05-22",
     readTime: "6 min read",
-    color: "#7C3AED",
+    color: "#5B9FD4",
     Content: () => (
       <>
         <p>
@@ -743,7 +743,7 @@ volumes:
     datePublished: "2026-04-03",
     dateModified: "2026-04-03",
     readTime: "6 min read",
-    color: "#EC4899",
+    color: "#5B9FD4",
     Content: () => (
       <>
         <p>

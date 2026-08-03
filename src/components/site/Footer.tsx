@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, Phone, MapPin, Linkedin, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
 import { Logo } from "./Navbar";
 import { COMPANY } from "@/lib/site-copy";
 
@@ -22,8 +22,8 @@ const company = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#030810] border-t border-border mt-32">
-      <div className="container-px py-20">
+    <footer className="bg-surface border-t border-border mt-24">
+      <div className="container-px py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <Logo />
@@ -31,12 +31,11 @@ export default function Footer() {
               We build intelligent software that scales with your ambition.
             </p>
             <div className="mt-6 flex gap-3">
-              {/* TODO: add Twitter/X, GitHub, or Instagram URLs when profiles are live */}
               <a
                 href="https://www.linkedin.com/company/vextoratech"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                className="w-9 h-9 grid place-items-center rounded border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
@@ -45,7 +44,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="mono text-xs font-semibold text-primary mb-4">Services</h4>
+            <h4 className="label-quiet mb-4">Services</h4>
             <ul className="space-y-3">
               {services.map(([label, to]) => (
                 <li key={label}>
@@ -58,7 +57,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="mono text-xs font-semibold text-primary mb-4">Company</h4>
+            <h4 className="label-quiet mb-4">Company</h4>
             <ul className="space-y-3">
               {company.map(([label, to]) => (
                 <li key={label}>
@@ -71,26 +70,16 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="mono text-xs font-semibold text-primary mb-4">Get In Touch</h4>
+            <h4 className="label-quiet mb-4">Get In Touch</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> {COMPANY.email}</li>
               <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> {COMPANY.phone}</li>
               <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Lahore, Pakistan</li>
             </ul>
-            <form className="mt-5 flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex-1 bg-surface border border-border rounded-lg px-3 py-2 text-sm focus:border-primary outline-none"
-              />
-              <button className="bg-gradient-brand text-white rounded-lg px-3 grid place-items-center" aria-label="Subscribe">
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-border flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
+        <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
           <span>© 2026 VextoraTech. All rights reserved.</span>
           <span className="flex flex-wrap gap-x-3 gap-y-1">
             <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>

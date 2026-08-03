@@ -1,15 +1,30 @@
 import type { ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "motion/react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import CursorGlow from "./CursorGlow";
-import ScrollRevealInit from "./ScrollRevealInit";
 import PageEnter from "./PageEnter";
 import WhatsAppButton from "./WhatsAppButton";
+import { ArrowRight } from "lucide-react";
+import { ruleDrawVariants, viewOnceRule } from "@/lib/motion";
+
+function AccentRule({ className = "" }: { className?: string }) {
+  const reduced = useReducedMotion();
+  return (
+    <motion.div
+      className={`h-px bg-primary origin-left ${className}`}
+      variants={ruleDrawVariants(reduced)}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewOnceRule}
+      aria-hidden
+    />
+  );
+}
 
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <CursorGlow />
       <Navbar />
       <main className="flex-1 pt-16 md:pt-20">
         <PageEnter>
@@ -18,7 +33,6 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <WhatsAppButton />
-      <ScrollRevealInit />
     </div>
   );
 }
@@ -35,16 +49,16 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 dot-grid opacity-[0.06]" aria-hidden />
-      <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[120px]" aria-hidden />
-      <div className="container-px relative py-24 md:py-32 text-center">
-        <span className="mono text-xs text-primary inline-block mb-5">⬡ {eyebrow}</span>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight max-w-4xl mx-auto">
+    <section className="relative overflow-hidden border-b border-border">
+      <div className="absolute inset-0 line-texture opacity-40" aria-hidden />
+      <div className="container-px relative py-20 md:py-28">
+        <span className="label-quiet inline-block mb-3">{eyebrow}</span>
+        <AccentRule className="w-12 mb-5" />
+        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl tracking-tight max-w-3xl">
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">{subtitle}</p>
+          <p className="mt-5 text-lg text-muted-foreground max-w-2xl">{subtitle}</p>
         )}
         {children && <div className="mt-8">{children}</div>}
       </div>
@@ -69,13 +83,65 @@ export function Section({
     <section className={`py-20 md:py-28 ${className}`}>
       <div className="container-px">
         {(eyebrow || title) && (
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            {eyebrow && <span className="mono text-xs text-primary inline-block mb-3">{eyebrow}</span>}
-            {title && <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">{title}</h2>}
+          <div className="max-w-2xl mb-14">
+            {eyebrow && <span className="label-quiet inline-block mb-3">{eyebrow}</span>}
+            {eyebrow && <AccentRule className="w-12 mb-4" />}
+            {title && (
+              <h2 className="font-display text-3xl md:text-4xl tracking-tight">{title}</h2>
+            )}
             {subtitle && <p className="mt-4 text-muted-foreground">{subtitle}</p>}
           </div>
         )}
         {children}
+      </div>
+    </section>
+  );
+}
+
+/** Shared industrial CTA band — surface + accent rule, no glow gradient slab. */
+export function CtaBand({
+  title,
+  body,
+  primaryTo = "/contact",
+  primaryLabel,
+  secondaryTo,
+  secondaryLabel,
+}: {
+  title: ReactNode;
+  body?: string;
+  primaryTo?: "/contact" | "/projects" | "/";
+  primaryLabel: string;
+  secondaryTo?: "/contact" | "/projects" | "/";
+  secondaryLabel?: string;
+}) {
+  return (
+    <section className="py-20 md:py-24">
+      <div className="container-px">
+        <div className="border border-border bg-surface px-8 py-12 md:px-14 md:py-16 relative overflow-hidden">
+          <AccentRule className="absolute top-0 left-0 right-0 w-full" />
+          <h2 className="font-display text-3xl md:text-4xl tracking-tight max-w-2xl">
+            {title}
+          </h2>
+          {body && (
+            <p className="mt-4 text-muted-foreground max-w-xl">{body}</p>
+          )}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              to={primaryTo}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium rounded px-5 py-3 text-sm hover:opacity-90 transition-opacity"
+            >
+              {primaryLabel} <ArrowRight className="w-4 h-4" />
+            </Link>
+            {secondaryTo && secondaryLabel && (
+              <Link
+                to={secondaryTo}
+                className="inline-flex items-center gap-2 border border-border rounded px-5 py-3 text-sm font-medium hover:border-primary transition-colors"
+              >
+                {secondaryLabel}
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

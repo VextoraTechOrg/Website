@@ -1,35 +1,32 @@
 import { useRouterState } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { easeOutExpo } from "@/lib/motion";
 
-/** Scroll-down enter when navigating between pages. Skips animation on first load. */
+/** Fade/rise on route change. Skips animation on first load. */
 export default function PageEnter({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [visible, setVisible] = useState(true);
   const isFirst = useRef(true);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (isFirst.current) {
-      isFirst.current = false;
-      return;
-    }
+    isFirst.current = false;
+  }, []);
 
-    setVisible(false);
-    const frame = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setVisible(true));
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [pathname]);
+  const skip = reduced || isFirst.current;
 
   return (
-    <div
-      className={
-        visible
-          ? "page-enter-to opacity-100 translate-y-0"
-          : "page-enter-from opacity-0 -translate-y-8"
+    <motion.div
+      key={pathname}
+      initial={skip ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+        skip
+          ? { duration: 0 }
+          : { duration: 0.4, ease: easeOutExpo }
       }
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

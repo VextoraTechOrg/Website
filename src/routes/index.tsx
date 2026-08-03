@@ -1,13 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import SiteLayout, { Section } from "@/components/site/SiteLayout";
-import RotatingHeadline from "@/components/site/RotatingHeadline";
-import RotatingCodeWindow from "@/components/site/RotatingCodeWindow";
+import { motion, useReducedMotion } from "motion/react";
+import SiteLayout, { Section, CtaBand } from "@/components/site/SiteLayout";
+import { Reveal, RevealItem, RevealOl, RevealLi, RevealStagger } from "@/components/site/Reveal";
 import {
   ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug,
   Search, PenTool, Hammer, Rocket, Eye, Mic, Layers,
 } from "lucide-react";
 import { PRIMARY_CTA, SECONDARY_CTA, PROJECTS_HEADLINE } from "@/lib/site-copy";
 import { PROJECTS } from "@/content/projects";
+import {
+  fadeTransition,
+  staggerContainerVariants,
+  staggerItemVariants,
+} from "@/lib/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,47 +36,99 @@ function Home() {
       <FeaturedProjects />
       <Process />
       <TrustLine />
-      <CtaBanner />
+      <CtaBand
+        title="Ready to build something remarkable?"
+        body="Let's talk about your project. No commitment, no sales pitch — just an honest conversation about what's possible."
+        primaryLabel={PRIMARY_CTA}
+        secondaryTo="/projects"
+        secondaryLabel={SECONDARY_CTA}
+      />
     </SiteLayout>
   );
 }
 
 function Hero() {
-  return (
-    <section className="relative overflow-hidden min-h-[92vh] flex items-center">
-      <div className="absolute inset-0 dot-grid opacity-[0.06]" aria-hidden />
-      <div className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px]" aria-hidden />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-secondary/10 blur-[120px]" aria-hidden />
+  const featured = PROJECTS.find((p) => p.image) ?? PROJECTS[0];
+  const reduced = useReducedMotion();
 
-      <div className="container-px relative grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center py-24">
-        <div className="animate-fade-up">
-          <span className="mono text-xs text-primary inline-block mb-5">⬡ AI-POWERED SOFTWARE DEVELOPMENT</span>
-          <RotatingHeadline />
-          <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-            VextoraTech engineers intelligent, scalable digital products — from AI models and web platforms
-            to mobile apps and cloud infrastructure. Built for startups and enterprises alike.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
+  return (
+    <section className="relative overflow-hidden min-h-[88vh] flex items-center border-b border-border">
+      <div className="absolute inset-0 line-texture opacity-30" aria-hidden />
+
+      <div className="container-px relative grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center py-20 md:py-28">
+        <motion.div
+          variants={staggerContainerVariants(reduced)}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.h1
+            variants={staggerItemVariants(reduced)}
+            className="font-display text-4xl md:text-5xl lg:text-[3.25rem] tracking-tight leading-[1.1] max-w-xl"
+          >
+            <span className="text-primary">VextoraTech</span>
+            <span className="block mt-3 text-foreground">
+              Software engineered for precision — AI, web, and cloud.
+            </span>
+          </motion.h1>
+          <motion.p
+            variants={staggerItemVariants(reduced)}
+            className="mt-6 text-lg text-muted-foreground max-w-md"
+          >
+            Intelligent products from models to infrastructure. Built in Lahore for startups and enterprises.
+          </motion.p>
+          <motion.div
+            variants={staggerItemVariants(reduced)}
+            className="mt-8 flex flex-wrap gap-3"
+          >
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-xl px-6 py-3.5 shadow-[0_0_24px_rgba(79,142,247,0.4)] hover:scale-[1.03] transition-transform"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium rounded px-6 py-3 text-sm hover:opacity-90 transition-opacity"
             >
               {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/projects"
-              className="inline-flex items-center gap-2 border border-border rounded-xl px-6 py-3.5 font-semibold hover:border-primary transition-colors"
+              className="inline-flex items-center gap-2 border border-border rounded px-6 py-3 text-sm font-medium hover:border-primary transition-colors"
             >
               {SECONDARY_CTA}
             </Link>
-          </div>
-          <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-xs mono text-muted-foreground">
-            <span>✦ FOUNDED 2026</span>
-            <span>✦ BASED IN LAHORE</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <RotatingCodeWindow />
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={reduced ? { duration: 0 } : { ...fadeTransition, delay: 0.15 }}
+        >
+          <Link
+            to="/projects/$slug"
+            params={{ slug: featured.slug }}
+            className="group relative block border border-border bg-surface overflow-hidden aspect-[16/10] lg:aspect-[4/3]"
+          >
+            {featured.image ? (
+              <motion.img
+                src={featured.image}
+                alt={featured.name}
+                className="w-full h-full object-cover opacity-90"
+                whileHover={reduced ? undefined : { scale: 1.02, opacity: 1 }}
+                transition={{ duration: 0.35 }}
+              />
+            ) : (
+              <div className="w-full h-full bg-surface-2 flex items-end p-8">
+                <span className="font-display text-2xl">{featured.name}</span>
+              </div>
+            )}
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent p-6 pt-16">
+              <span className="label-quiet text-[10px]">Featured work</span>
+              <div className="font-display text-xl mt-1 group-hover:text-primary transition-colors">
+                {featured.name}
+              </div>
+              <span className="inline-flex items-center gap-1 text-sm text-muted-foreground mt-2">
+                View case study <ArrowRight className="w-3.5 h-3.5" />
+              </span>
+            </div>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
@@ -81,18 +138,18 @@ const LOGOS = ["React", "FastAPI", "Python", "PostgreSQL", "LLMs", "Docker", "Ta
 
 function LogosBar() {
   return (
-    <section className="py-20 bg-surface">
-      <div className="container-px text-center mb-10">
-        <span className="mono text-xs text-muted-foreground">TECH WE BUILD WITH</span>
-      </div>
-      <div className="overflow-hidden">
-        <div className="flex gap-16 animate-marquee whitespace-nowrap w-max">
-          {[...LOGOS, ...LOGOS, ...LOGOS].map((name, i) => (
-            <span key={i} className="text-2xl font-semibold text-muted-foreground/50 hover:text-foreground transition-colors">
-              {name}
-            </span>
-          ))}
-        </div>
+    <section className="py-14 border-b border-border">
+      <div className="container-px">
+        <Reveal>
+          <span className="label-quiet">Tech we build with</span>
+          <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+            {LOGOS.map((name) => (
+              <span key={name} className="font-display text-lg text-muted-foreground/70">
+                {name}
+              </span>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -109,21 +166,32 @@ const SERVICES = [
 
 function ServicesOverview() {
   return (
-    <Section eyebrow="WHAT WE DO" title="End-to-End Digital Solutions" subtitle="From idea to deployment — we cover the full stack.">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {SERVICES.map(({ icon: Icon, name, desc }) => (
-          <div key={name} className="group bg-surface border border-border rounded-2xl p-8 hover:-translate-y-1 hover:border-primary hover:shadow-[0_0_40px_rgba(79,142,247,0.18)] transition-all">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-brand grid place-items-center mb-5">
-              <Icon className="w-7 h-7 text-white" />
+    <Section eyebrow="What we do" title="End-to-end digital solutions" subtitle="From idea to deployment — we cover the full stack.">
+      <RevealStagger className="border-t border-border">
+        {SERVICES.map(({ icon: Icon, name, desc }, i) => (
+          <RevealItem
+            key={name}
+            className="grid md:grid-cols-[3rem_1fr_auto] gap-4 md:gap-8 items-start py-8 border-b border-border"
+          >
+            <span className="font-display text-sm text-primary tabular-nums pt-1">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Icon className="w-5 h-5 text-primary shrink-0" />
+                <h3 className="font-display text-xl">{name}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-xl">{desc}</p>
             </div>
-            <h3 className="text-xl font-bold mb-2">{name}</h3>
-            <p className="text-sm text-muted-foreground">{desc}</p>
-            <Link to="/services" className="mt-4 inline-flex items-center gap-1 text-sm text-primary font-medium">
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-1 text-sm text-primary font-medium pt-1"
+            >
               Learn more <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </div>
+          </RevealItem>
         ))}
-      </div>
+      </RevealStagger>
     </Section>
   );
 }
@@ -136,19 +204,16 @@ function Domains() {
   ];
 
   return (
-    <section className="py-20 border-y border-border relative">
-      <div className="absolute inset-0 dot-grid opacity-[0.04]" />
-      <div className="container-px relative grid md:grid-cols-3 gap-10">
+    <section className="py-16 border-y border-border">
+      <RevealStagger className="container-px grid md:grid-cols-3 gap-10 md:gap-0 md:divide-x divide-border">
         {domains.map(({ icon: Icon, label, detail }) => (
-          <div key={label} className="text-center">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 grid place-items-center mb-4">
-              <Icon className="w-7 h-7 text-primary" />
-            </div>
-            <div className="text-xl font-bold mb-1">{label}</div>
-            <div className="mono text-xs text-muted-foreground">{detail}</div>
-          </div>
+          <RevealItem key={label} className="md:px-10 first:md:pl-0 last:md:pr-0">
+            <Icon className="w-6 h-6 text-primary mb-4" />
+            <div className="font-display text-xl mb-1">{label}</div>
+            <div className="text-sm text-muted-foreground">{detail}</div>
+          </RevealItem>
         ))}
-      </div>
+      </RevealStagger>
     </section>
   );
 }
@@ -157,15 +222,26 @@ const FEATURED = PROJECTS.slice(0, 5);
 
 function FeaturedProjects() {
   return (
-    <Section eyebrow="WHAT WE BUILD" title={PROJECTS_HEADLINE} subtitle="Real systems across vision, voice, and full-stack — explore the full portfolio.">
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
-        {FEATURED.slice(0, 2).map((p) => <ProjectCard key={p.slug} p={p} />)}
-      </div>
-      <div className="grid md:grid-cols-3 gap-6">
-        {FEATURED.slice(2).map((p) => <ProjectCard key={p.slug} p={p} />)}
-      </div>
-      <div className="text-center mt-12">
-        <Link to="/projects" className="inline-flex items-center gap-2 border border-primary text-primary rounded-xl px-6 py-3 font-semibold hover:bg-primary/10 transition-colors">
+    <Section eyebrow="What we build" title={PROJECTS_HEADLINE} subtitle="Real systems across vision, voice, and full-stack — explore the full portfolio.">
+      <RevealStagger className="grid md:grid-cols-2 gap-px bg-border mb-px">
+        {FEATURED.slice(0, 2).map((p) => (
+          <RevealItem key={p.slug}>
+            <ProjectCard p={p} />
+          </RevealItem>
+        ))}
+      </RevealStagger>
+      <RevealStagger className="grid md:grid-cols-3 gap-px bg-border">
+        {FEATURED.slice(2).map((p) => (
+          <RevealItem key={p.slug}>
+            <ProjectCard p={p} />
+          </RevealItem>
+        ))}
+      </RevealStagger>
+      <div className="mt-12">
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-2 border border-border rounded px-5 py-2.5 text-sm font-medium hover:border-primary transition-colors"
+        >
           {SECONDARY_CTA} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -174,35 +250,41 @@ function FeaturedProjects() {
 }
 
 function ProjectCard({ p }: { p: typeof FEATURED[number] }) {
+  const reduced = useReducedMotion();
   return (
-    <Link to="/projects/$slug" params={{ slug: p.slug }} className="group block bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:border-primary transition-all">
-      <div
-        className="aspect-[16/10] relative overflow-hidden"
-        style={p.image ? undefined : { background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
-      >
+    <Link
+      to="/projects/$slug"
+      params={{ slug: p.slug }}
+      className="group block bg-background hover:bg-surface transition-colors"
+    >
+      <div className="aspect-[16/10] relative overflow-hidden bg-surface-2">
         {p.image ? (
-          <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+          <motion.img
+            src={p.image}
+            alt={p.name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            whileHover={reduced ? undefined : { scale: 1.02 }}
+            transition={{ duration: 0.35 }}
+          />
         ) : (
-          <>
-            <div className="absolute inset-0 dot-grid opacity-30" />
-            <div className="absolute inset-0 grid place-items-center">
-              <div className="w-20 h-20 rounded-2xl grid place-items-center text-2xl font-black text-white" style={{ background: p.color }}>
-                {p.name.charAt(0)}
-              </div>
-            </div>
-          </>
+          <div className="absolute inset-0 flex items-end p-6 line-texture">
+            <span className="font-display text-3xl text-muted-foreground/40">{p.name.charAt(0)}</span>
+          </div>
         )}
       </div>
-      <div className="p-6">
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {p.tags.map((t) => (
-            <span key={t} className="mono text-[10px] px-2 py-1 rounded-full bg-surface-2 text-muted-foreground border border-border">{t}</span>
+      <div className="p-6 border-t border-border">
+        <div className="flex flex-wrap gap-2 mb-3">
+          {p.tags.slice(0, 3).map((t) => (
+            <span key={t} className="text-[11px] text-muted-foreground border-b border-border pb-0.5">
+              {t}
+            </span>
           ))}
         </div>
-        <h3 className="text-xl font-bold mb-1.5">{p.name}</h3>
+        <h3 className="font-display text-xl mb-1.5 group-hover:text-primary transition-colors">{p.name}</h3>
         <p className="text-sm text-muted-foreground mb-3">{p.desc}</p>
         <span className="inline-flex items-center gap-1 text-sm text-primary font-medium">
-          View Case Study <ArrowRight className="w-3.5 h-3.5" />
+          View case study <ArrowRight className="w-3.5 h-3.5" />
         </span>
       </div>
     </Link>
@@ -218,58 +300,39 @@ const STEPS = [
 
 function Process() {
   return (
-    <Section eyebrow="OUR PROCESS" title="How We Turn Your Idea Into a Live Product">
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+    <Section eyebrow="Our process" title="How we turn your idea into a live product">
+      <RevealOl className="border-t border-border">
         {STEPS.map((s, i) => (
-          <div key={s.name} className="bg-surface border border-border rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <span className="mono text-3xl font-black text-gradient">0{i + 1}</span>
-              <s.icon className="w-6 h-6 text-primary" />
+          <RevealLi
+            key={s.name}
+            className="grid md:grid-cols-[4rem_1fr] gap-4 md:gap-8 py-8 border-b border-border"
+          >
+            <span className="font-display text-2xl text-primary tabular-nums">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <s.icon className="w-5 h-5 text-muted-foreground" />
+                <h3 className="font-display text-xl">{s.name}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-2xl">{s.desc}</p>
             </div>
-            <h3 className="text-xl font-bold mb-2">{s.name}</h3>
-            <p className="text-sm text-muted-foreground">{s.desc}</p>
-          </div>
+          </RevealLi>
         ))}
-      </div>
+      </RevealOl>
     </Section>
   );
 }
 
 function TrustLine() {
   return (
-    <section className="py-16">
+    <section className="py-14">
       <div className="container-px">
-        <p className="text-center text-lg text-muted-foreground max-w-2xl mx-auto">
-          Incorporated in 2026 — you work directly with the engineers building your product.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function CtaBanner() {
-  return (
-    <section className="py-24">
-      <div className="container-px">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-brand p-12 md:p-20 text-center">
-          <div className="absolute inset-0 dot-grid opacity-10" />
-          <div className="relative">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
-              Ready to Build Something Remarkable?
-            </h2>
-            <p className="mt-5 text-white/90 max-w-xl mx-auto">
-              Let's talk about your project. No commitment, no sales pitch — just an honest conversation about what's possible.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3 justify-center">
-              <Link to="/contact" className="inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform">
-                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link to="/projects" className="inline-flex items-center gap-2 border-2 border-white text-white font-semibold rounded-xl px-6 py-3">
-                {SECONDARY_CTA}
-              </Link>
-            </div>
-          </div>
-        </div>
+        <Reveal>
+          <p className="text-muted-foreground max-w-2xl border-l-2 border-primary pl-6">
+            Incorporated in 2026 — you work directly with the engineers building your product.
+          </p>
+        </Reveal>
       </div>
     </section>
   );

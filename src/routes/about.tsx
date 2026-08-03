@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import SiteLayout, { PageHero, Section } from "@/components/site/SiteLayout";
-import { ArrowRight, Linkedin } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import SiteLayout, { PageHero, Section, CtaBand } from "@/components/site/SiteLayout";
+import { RevealItem, RevealStagger } from "@/components/site/Reveal";
+import { Linkedin } from "lucide-react";
 import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/about")({
@@ -75,14 +76,14 @@ function AboutPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="OUR STORY"
-        title={<>Built by Engineers, <br /><span className="text-gradient">for Founders</span></>}
+        eyebrow="Our story"
+        title={<>Built by engineers, <br /><span className="text-gradient">for founders</span></>}
         subtitle="Great ideas die in execution. VextoraTech exists to make sure yours doesn't."
       />
 
       <Section>
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <blockquote className="text-2xl md:text-3xl font-bold leading-snug">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <blockquote className="font-display text-2xl md:text-3xl leading-snug border-l-2 border-primary pl-6">
             "Technology should accelerate your vision, not complicate it. We build the
             infrastructure that makes <span className="text-gradient">ambitious ideas inevitable.</span>"
           </blockquote>
@@ -105,79 +106,57 @@ function AboutPage() {
         </div>
       </Section>
 
-      <Section eyebrow="THE PEOPLE" title="Meet the Team">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <Section eyebrow="The people" title="Meet the team">
+        <RevealStagger className="border-t border-border">
           {TEAM.map((m) => (
-            <div key={m.name} className="bg-surface border border-border rounded-2xl p-6 text-center">
-              <div className="mx-auto w-24 h-24 rounded-full bg-gradient-brand grid place-items-center text-3xl font-black text-white mb-4">
-                {m.name.charAt(0)}
-              </div>
-              <h3 className="text-lg font-bold">{m.name}</h3>
-              <div className="mono text-xs text-primary mb-3">{m.role}</div>
+            <RevealItem
+              key={m.name}
+              className="grid md:grid-cols-[12rem_8rem_1fr_auto] gap-4 md:gap-6 items-start py-8 border-b border-border"
+            >
+              <h3 className="font-display text-lg">{m.name}</h3>
+              <div className="text-sm text-primary">{m.role}</div>
               <p className="text-sm text-muted-foreground">{m.bio}</p>
-              {m.hiring ? (
-                <Link to="/careers" className="mt-4 inline-flex items-center gap-1 text-xs mono px-3 py-1.5 rounded-full bg-gradient-brand text-white">
-                  We're Hiring <ArrowRight className="w-3 h-3" />
-                </Link>
-              ) : m.linkedin ? (
+              {m.linkedin ? (
                 <a
                   href={m.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${m.name} on LinkedIn`}
-                  className="mt-4 inline-block text-muted-foreground hover:text-primary"
+                  className="text-muted-foreground hover:text-primary"
                 >
-                  <Linkedin className="w-4 h-4 mx-auto" />
+                  <Linkedin className="w-4 h-4" />
                 </a>
-              ) : null}
-            </div>
+              ) : (
+                <span />
+              )}
+            </RevealItem>
           ))}
-        </div>
+        </RevealStagger>
       </Section>
 
-      <Section eyebrow="OUR VALUES" title="What We Stand For">
-        <div className="grid md:grid-cols-2 gap-6">
+      <Section eyebrow="Our values" title="What we stand for">
+        <RevealStagger className="border-t border-border">
           {VALUES.map((v) => (
-            <div key={v.name} className="bg-surface border border-border rounded-2xl p-8">
-              <h3 className="text-xl font-bold mb-2 text-gradient">{v.name}</h3>
+            <RevealItem key={v.name} className="grid md:grid-cols-[14rem_1fr] gap-4 py-8 border-b border-border">
+              <h3 className="font-display text-lg text-gradient">{v.name}</h3>
               <p className="text-muted-foreground">{v.body}</p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealStagger>
       </Section>
 
-      <Section eyebrow="DAY ONE" title="Where We're Starting">
-        <div className="relative max-w-3xl mx-auto">
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border" />
-          <div className="space-y-10">
-            {TIMELINE.map(([year, event], i) => (
-              <div key={`${year}-${i}`} className={`relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-10 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
-                <div className={`md:text-right ${i % 2 ? "md:text-left" : ""}`}>
-                  <div className="mono text-2xl font-black text-gradient">{year}</div>
-                </div>
-                <div className="bg-surface border border-border rounded-xl p-5 mt-2 md:mt-0">
-                  <p className="text-sm text-muted-foreground">{event}</p>
-                </div>
-                <div className="absolute left-2.5 md:left-1/2 top-2 w-3 h-3 rounded-full bg-gradient-brand -translate-x-1/2 ring-4 ring-background" />
-              </div>
-            ))}
-          </div>
-        </div>
+      <Section eyebrow="Day one" title="Where we're starting">
+        <RevealStagger className="border-t border-border max-w-3xl">
+          {TIMELINE.map(([year, event]) => (
+            <RevealItem key={year} className="grid md:grid-cols-[6rem_1fr] gap-4 py-8 border-b border-border">
+              <div className="font-display text-xl text-primary">{year}</div>
+              <p className="text-sm text-muted-foreground">{event}</p>
+            </RevealItem>
+          ))}
+        </RevealStagger>
       </Section>
 
-      <section className="py-20">
-        <div className="container-px">
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-brand p-12 md:p-16 text-center">
-            <div className="absolute inset-0 dot-grid opacity-10" />
-            <div className="relative">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white">Let's Build Your Next Chapter Together</h2>
-              <Link to="/contact" className="mt-6 inline-flex items-center gap-2 bg-white text-[#1a1a2e] font-semibold rounded-xl px-6 py-3 hover:scale-[1.03] transition-transform">
-                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaBand title="Let's build your next chapter together" primaryLabel={PRIMARY_CTA} />
     </SiteLayout>
   );
 }

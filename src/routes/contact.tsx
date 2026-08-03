@@ -52,28 +52,28 @@ function ContactPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="GET IN TOUCH"
-        title={<>Let's Talk About <span className="text-gradient">Your Project</span></>}
+        eyebrow="Get in touch"
+        title={<>Let's talk about <span className="text-gradient">your project</span></>}
         subtitle="Tell us what you're building. We'll respond within 24 hours with an honest assessment and a path forward."
       />
 
       <section className="pb-20">
-        <div className="container-px grid lg:grid-cols-[1.2fr_1fr] gap-8">
-          <div className="bg-surface border border-border rounded-3xl p-8 md:p-10">
+        <div className="container-px grid lg:grid-cols-[1.2fr_1fr] gap-10">
+          <div className="border border-border bg-surface p-8 md:p-10">
             {sent ? (
-              <div className="text-center py-16">
-                <div className="w-20 h-20 mx-auto rounded-full bg-gradient-brand grid place-items-center mb-6">
-                  <Check className="w-10 h-10 text-white" />
+              <div className="py-12">
+                <div className="w-12 h-12 border border-primary grid place-items-center mb-6">
+                  <Check className="w-6 h-6 text-primary" />
                 </div>
-                <h2 className="text-3xl font-extrabold text-gradient mb-3">Message Sent!</h2>
+                <h2 className="font-display text-3xl text-gradient mb-3">Message sent</h2>
                 <p className="text-muted-foreground mb-6">We'll be in touch within 24 hours. Check your inbox for a confirmation.</p>
-                <Link to="/" className="inline-flex items-center gap-2 text-primary font-semibold">Back to Home <ArrowRight className="w-4 h-4" /></Link>
+                <Link to="/" className="inline-flex items-center gap-2 text-primary font-medium">Back to home <ArrowRight className="w-4 h-4" /></Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5 relative">
                 <div>
-                  <h2 className="text-2xl font-bold">Start a Conversation</h2>
-                  <p className="text-sm text-muted-foreground">No commitment. Just an honest conversation.</p>
+                  <h2 className="font-display text-2xl">Start a conversation</h2>
+                  <p className="text-sm text-muted-foreground mt-1">No commitment. Just an honest conversation.</p>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Field label="Full Name*"><input required className="input" value={form.name} onChange={set("name")} /></Field>
@@ -127,11 +127,11 @@ function ContactPage() {
                   </Link>
                 </label>
                 {error && (
-                  <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">{error}</p>
+                  <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded px-4 py-3">{error}</p>
                 )}
                 <button
                   disabled={loading}
-                  className="w-full bg-gradient-brand text-white font-semibold rounded-xl py-4 inline-flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(79,142,247,0.4)] hover:scale-[1.01] transition-transform disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  className="w-full bg-primary text-primary-foreground font-medium rounded py-3.5 inline-flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> Sending…</>
@@ -144,33 +144,33 @@ function ContactPage() {
             )}
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-surface-2 border border-border rounded-2xl p-7 space-y-4">
-              <h3 className="font-bold text-lg mb-2">Contact Details</h3>
+          <div className="space-y-0 border border-border divide-y divide-border">
+            <div className="p-7 space-y-4 bg-surface">
+              <h3 className="font-display text-lg mb-2">Contact details</h3>
               <Info icon={Mail} label="Email" value="info@vextoratech.com" />
               <Info icon={Phone} label="Phone" value={COMPANY.phone} />
               <Info icon={MapPin} label="Location" value="Lahore, Pakistan" />
               <Info icon={Clock} label="Hours" value="Mon–Fri, 10am–8pm PKT" />
             </div>
 
-            <div className="bg-surface border border-border rounded-2xl p-7">
+            <div className="p-7 bg-background">
               <div className="flex items-start gap-3 mb-4">
-                <Clock className="w-6 h-6 text-primary shrink-0 mt-1" />
+                <Clock className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <p className="text-sm text-muted-foreground">We respond to every inquiry within 24 hours. For urgent projects, use WhatsApp.</p>
               </div>
               <a
                 href="https://wa.me/923198562747?text=Hi%20there,%20I%20would%20like%20to%20know%20more%20about%20your%20services."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-semibold rounded-lg py-3"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-medium rounded py-3 text-sm hover:opacity-90 transition-opacity"
               >
                 <MessageCircle className="w-4 h-4" />
-                WhatsApp Us
+                WhatsApp us
               </a>
             </div>
 
-            <div className="bg-surface border border-border rounded-2xl p-7">
-              <h3 className="font-bold text-lg mb-4">Why Work With Us?</h3>
+            <div className="p-7 bg-surface">
+              <h3 className="font-display text-lg mb-4">Why work with us?</h3>
               <ul className="space-y-3 text-sm">
                 {[
                   "Fixed-price or time-and-materials — your choice",
@@ -187,7 +187,7 @@ function ContactPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="w-9 h-9 grid place-items-center rounded-full border border-border text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                  className="w-9 h-9 grid place-items-center rounded border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors"
                 >
                   <Linkedin className="w-4 h-4" />
                 </a>
@@ -196,21 +196,6 @@ function ContactPage() {
           </div>
         </div>
       </section>
-
-      <style>{`
-        .input {
-          width: 100%;
-          background: var(--surface-2);
-          border: 1px solid var(--border);
-          border-radius: 0.75rem;
-          padding: 0.75rem 1rem;
-          color: var(--foreground);
-          font: inherit;
-          outline: none;
-          transition: border-color .2s;
-        }
-        .input:focus { border-color: var(--primary); }
-      `}</style>
     </SiteLayout>
   );
 }
@@ -227,7 +212,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function Info({ icon: Icon, label, value }: { icon: typeof Mail; label: string; value: string }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="w-9 h-9 rounded-lg bg-primary/10 grid place-items-center shrink-0">
+      <div className="w-8 h-8 border border-border grid place-items-center shrink-0">
         <Icon className="w-4 h-4 text-primary" />
       </div>
       <div>

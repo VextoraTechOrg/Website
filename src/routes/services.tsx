@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import SiteLayout, { PageHero, Section } from "@/components/site/SiteLayout";
+import SiteLayout, { PageHero, Section, CtaBand } from "@/components/site/SiteLayout";
 import { ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug, Check } from "lucide-react";
 import { PRIMARY_CTA } from "@/lib/site-copy";
 
@@ -19,7 +19,6 @@ const SERVICES = [
   {
     icon: Brain,
     name: "AI & Machine Learning",
-    // TODO: replace with a real product screenshot (e.g. surveillance dashboard or RAG admin UI)
     image: "/services-ai-machine-learning.jpg",
     body: "We design and ship production AI systems — not demos. Computer vision, voice pipelines, and RAG are areas we build and deploy regularly.",
     bullets: [
@@ -46,7 +45,6 @@ const SERVICES = [
   {
     icon: Smartphone,
     name: "Mobile App Development",
-    // TODO: replace with a real mobile app screenshot
     image: "/services-mobile-development.jpg",
     body: "Cross-platform apps with native-quality UX. We scope honestly — mobile is in our stack where the product calls for it.",
     bullets: [
@@ -86,7 +84,6 @@ const SERVICES = [
   {
     icon: Plug,
     name: "API Development & Integrations",
-    // TODO: replace with a real API dashboard or integration diagram screenshot
     image: "/services-api-integrations.jpg",
     body: "APIs that other engineers actually enjoy using. Documented, versioned, and built to last.",
     bullets: [
@@ -120,17 +117,24 @@ function ServicesPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="SERVICES"
-        title={<>Everything You Need to <span className="text-gradient">Ship Great Software</span></>}
+        eyebrow="Services"
+        title={<>Everything you need to <span className="text-gradient">ship great software</span></>}
         subtitle="We cover the full product lifecycle — from strategy and design to development, AI integration, and cloud deployment."
       />
 
       <div className="container-px">
         {SERVICES.map((s, i) => (
-          <div key={s.name} className={`grid lg:grid-cols-2 gap-12 items-center py-20 ${i % 2 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+          <div
+            key={s.name}
+            className={`grid lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16 md:py-20 border-b border-border ${
+              i % 2 ? "lg:[&>*:first-child]:order-2" : ""
+            }`}
+          >
             <div>
-              <span className="mono text-xs text-primary">0{i + 1} — SERVICE</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold mt-3 mb-4">{s.name}</h2>
+              <span className="label-quiet">
+                {String(i + 1).padStart(2, "0")} — Service
+              </span>
+              <h2 className="font-display text-3xl md:text-4xl mt-3 mb-4">{s.name}</h2>
               <p className="text-muted-foreground mb-6">{s.body}</p>
               <ul className="space-y-3 mb-7">
                 {s.bullets.map((b) => (
@@ -140,43 +144,45 @@ function ServicesPage() {
                   </li>
                 ))}
               </ul>
-              <Link to="/contact" className="inline-flex items-center gap-2 text-primary font-semibold">
+              <Link to="/contact" className="inline-flex items-center gap-2 text-primary font-medium">
                 {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="relative">
-              <div className="absolute -inset-4 bg-primary/15 blur-3xl rounded-3xl" aria-hidden />
-              <div className="relative bg-surface border border-border rounded-2xl overflow-hidden aspect-[4/3]">
-                <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
-              </div>
+            <div className="border border-border overflow-hidden aspect-[4/3] bg-surface">
+              <img src={s.image} alt={s.name} className="w-full h-full object-cover" loading="lazy" />
             </div>
           </div>
         ))}
       </div>
 
-      <Section eyebrow="HOW WE WORK" title="Engagement Models">
-        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-10 -mt-8">
+      <Section eyebrow="How we work" title="Engagement models">
+        <p className="text-muted-foreground max-w-2xl mb-10 -mt-8">
           Pick the shape that fits your stage. We scope honestly — no dollar figures here, just what each model includes.
         </p>
-        <div className="grid md:grid-cols-3 gap-6">
+        <dl className="border-t border-border">
           {ENGAGEMENT_MODELS.map((m) => (
-            <div key={m.name} className="bg-surface border border-border rounded-2xl p-8">
-              <h3 className="text-xl font-bold mb-3">{m.name}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
+            <div key={m.name} className="grid md:grid-cols-[14rem_1fr] gap-4 py-8 border-b border-border">
+              <dt className="font-display text-lg">{m.name}</dt>
+              <dd className="text-sm text-muted-foreground leading-relaxed">{m.desc}</dd>
             </div>
+          ))}
+        </dl>
+      </Section>
+
+      <Section eyebrow="Stack" title="Technologies we work with">
+        <div className="flex flex-wrap gap-x-6 gap-y-3">
+          {TECH.map((t) => (
+            <span
+              key={t}
+              className="text-sm text-muted-foreground border-b border-border pb-1 hover:text-foreground hover:border-primary transition-colors"
+            >
+              {t}
+            </span>
           ))}
         </div>
       </Section>
 
-      <Section eyebrow="STACK" title="Technologies We Work With">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
-          {TECH.map((t) => (
-            <div key={t} className="bg-surface border border-border rounded-xl px-4 py-5 text-center text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary transition-colors">
-              {t}
-            </div>
-          ))}
-        </div>
-      </Section>
+      <CtaBand title="Have a project in mind?" primaryLabel={PRIMARY_CTA} />
     </SiteLayout>
   );
 }

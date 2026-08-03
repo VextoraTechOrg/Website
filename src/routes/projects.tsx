@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "motion/react";
 import SiteLayout, { PageHero } from "@/components/site/SiteLayout";
+import { RevealItem, RevealStagger } from "@/components/site/Reveal";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import {
@@ -28,25 +30,26 @@ export const Route = createFileRoute("/projects")({
 function ProjectsPage() {
   const [active, setActive] = useState<ProjectCat>("All");
   const filtered = active === "All" ? PROJECTS : PROJECTS.filter((p) => p.cats.includes(active));
+  const reduced = useReducedMotion();
 
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="CASE STUDIES"
+        eyebrow="Case studies"
         title={<>Work our team has <span className="text-gradient">shipped</span></>}
         subtitle={PROJECTS_SUBHEAD}
       />
 
-      <div className="container-px">
-        <div className="flex flex-wrap gap-2 justify-center mb-12">
+      <div className="container-px pb-20">
+        <div className="flex flex-wrap gap-1 border-b border-border mb-10">
           {PROJECT_CATEGORIES.map((c) => (
             <button
               key={c}
               onClick={() => setActive(c)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
                 active === c
-                  ? "bg-gradient-brand text-white"
-                  : "border border-border text-muted-foreground hover:text-foreground hover:border-primary"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               {c}
@@ -54,54 +57,56 @@ function ProjectsPage() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
+        <RevealStagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {filtered.map((p) => (
-            <Link
-              key={p.slug}
-              to="/projects/$slug"
-              params={{ slug: p.slug }}
-              className="group bg-surface border border-border rounded-2xl overflow-hidden hover:-translate-y-1.5 hover:border-primary transition-all"
-            >
-              <div
-                className="aspect-[16/10] relative overflow-hidden"
-                style={p.image ? undefined : { background: `linear-gradient(135deg, ${p.color}33, ${p.color}11)` }}
+            <RevealItem key={p.slug}>
+              <Link
+                to="/projects/$slug"
+                params={{ slug: p.slug }}
+                className="group bg-background hover:bg-surface transition-colors block h-full"
               >
-                {p.workOrigin !== "vextoratech" && (
-                  <span className="absolute top-3 left-3 z-10 mono text-[10px] px-2 py-1 rounded-full bg-background/90 border border-border text-muted-foreground">
-                    {workOriginLabel(p.workOrigin)}
-                  </span>
-                )}
-                {p.image ? (
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                ) : (
-                  <>
-                    <div className="absolute inset-0 dot-grid opacity-30" />
-                    <div className="absolute inset-0 grid place-items-center">
-                      <div className="w-20 h-20 rounded-2xl grid place-items-center text-2xl font-black text-white" style={{ background: p.color }}>
-                        {p.name.charAt(0)}
-                      </div>
+                <div className="aspect-[16/10] relative overflow-hidden bg-surface-2">
+                  {p.workOrigin !== "vextoratech" && (
+                    <span className="absolute top-3 left-3 z-10 text-[10px] px-2 py-1 bg-background/90 border border-border text-muted-foreground">
+                      {workOriginLabel(p.workOrigin)}
+                    </span>
+                  )}
+                  {p.image ? (
+                    <motion.img
+                      src={p.image}
+                      alt={p.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      whileHover={reduced ? undefined : { scale: 1.02 }}
+                      transition={{ duration: 0.35 }}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-end p-6 line-texture">
+                      <span className="font-display text-4xl text-muted-foreground/30">{p.name.charAt(0)}</span>
                     </div>
-                  </>
-                )}
-              </div>
-              <div className="p-6">
-                <div className="flex flex-wrap gap-1.5 mb-3">
-                  {p.tags.slice(0, 4).map((t) => (
-                    <span key={t} className="mono text-[10px] px-2 py-1 rounded-full bg-surface-2 text-muted-foreground border border-border">{t}</span>
-                  ))}
+                  )}
                 </div>
-                <h3 className="text-xl font-bold mb-1.5">{p.name}</h3>
-                <p className="text-sm text-muted-foreground mb-3">{p.desc}</p>
-                <span className="inline-flex items-center gap-1 text-sm text-primary font-medium">
-                  View Case Study <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </div>
-            </Link>
+                <div className="p-6 border-t border-border">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {p.tags.slice(0, 4).map((t) => (
+                      <span key={t} className="text-[11px] text-muted-foreground border-b border-border pb-0.5">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="font-display text-xl mb-1.5 group-hover:text-primary transition-colors">{p.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{p.desc}</p>
+                  <span className="inline-flex items-center gap-1 text-sm text-primary font-medium">
+                    View case study <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </Link>
+            </RevealItem>
           ))}
-        </div>
+        </RevealStagger>
 
         {filtered.length === 0 && (
-          <p className="text-center text-muted-foreground pb-20">No projects in this category yet.</p>
+          <p className="text-muted-foreground py-20">No projects in this category yet.</p>
         )}
       </div>
     </SiteLayout>

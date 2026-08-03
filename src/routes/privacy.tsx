@@ -22,14 +22,14 @@ function PrivacyPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="LEGAL"
+        eyebrow="Legal"
         title="Privacy Policy"
         subtitle="How we handle your data when you contact us or use this site."
       />
       <Section>
-        <div className="max-w-3xl mx-auto space-y-6 text-muted-foreground leading-relaxed">
+        <div className="max-w-3xl space-y-6 text-muted-foreground leading-relaxed border-l-2 border-primary pl-6">
           <p className="text-foreground font-medium">
-            Content pending — legal review in progress.
+            Coming soon — legal review in progress.
           </p>
           <p>
             This page will describe what information we collect through our contact form and
@@ -43,7 +43,7 @@ function PrivacyPage() {
             </a>
             .
           </p>
-          <Link to="/contact" className="inline-flex text-primary font-semibold hover:underline">
+          <Link to="/contact" className="inline-flex text-primary font-medium hover:underline">
             Contact us
           </Link>
         </div>

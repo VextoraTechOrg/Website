@@ -22,14 +22,14 @@ function TermsPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="LEGAL"
+        eyebrow="Legal"
         title="Terms of Service"
         subtitle="Rules for using this website and engaging our services."
       />
       <Section>
-        <div className="max-w-3xl mx-auto space-y-6 text-muted-foreground leading-relaxed">
+        <div className="max-w-3xl space-y-6 text-muted-foreground leading-relaxed border-l-2 border-primary pl-6">
           <p className="text-foreground font-medium">
-            Content pending — legal review in progress.
+            Coming soon — legal review in progress.
           </p>
           <p>
             This page will set out the terms under which you may use vextoratech.com, submit
@@ -42,7 +42,7 @@ function TermsPage() {
             </a>
             .
           </p>
-          <Link to="/contact" className="inline-flex text-primary font-semibold hover:underline">
+          <Link to="/contact" className="inline-flex text-primary font-medium hover:underline">
             Contact us
           </Link>
         </div>

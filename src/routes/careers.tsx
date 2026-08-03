@@ -60,41 +60,42 @@ function CareersPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="JOIN US"
-        title={<>Build the Future <span className="text-gradient">With Us</span></>}
+        eyebrow="Join us"
+        title={<>Build the future <span className="text-gradient">with us</span></>}
         subtitle="We're a small team that punches above our weight. If you love deep technical problems and want to work on real AI products — you'll fit right in."
       />
 
       <Section>
-        <div className="grid md:grid-cols-3 gap-6 mb-20">
+        <div className="grid md:grid-cols-3 gap-10 md:gap-0 md:divide-x divide-border mb-16">
           {VALUES.map((v) => (
-            <div key={v.title} className="bg-surface border border-border rounded-2xl p-7">
-              <div className="w-12 h-12 rounded-xl bg-gradient-brand grid place-items-center mb-4">
-                <v.icon className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">{v.title}</h3>
+            <div key={v.title} className="md:px-8 first:md:pl-0 last:md:pr-0">
+              <v.icon className="w-6 h-6 text-primary mb-4" />
+              <h3 className="font-display text-lg mb-2">{v.title}</h3>
               <p className="text-sm text-muted-foreground">{v.body}</p>
             </div>
           ))}
         </div>
 
-        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-10">Open Roles</h2>
-        <div className="space-y-5 max-w-4xl mx-auto">
+        <h2 className="font-display text-3xl md:text-4xl mb-8">Open roles</h2>
+        <div className="border-t border-border max-w-4xl">
           {ROLES.map((r) => (
-            <div key={r.title} className="bg-surface border border-border rounded-2xl p-7 hover:border-primary transition-colors">
+            <div key={r.title} className="py-8 border-b border-border">
               <div className="grid md:grid-cols-[1fr_auto] gap-6 items-start">
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <h3 className="text-xl font-bold">{r.title}</h3>
-                    <span className="mono text-[10px] px-2 py-1 rounded-full bg-surface-2 text-primary border border-border">{r.dept}</span>
+                  <div className="flex flex-wrap items-baseline gap-3 mb-2">
+                    <h3 className="font-display text-xl">{r.title}</h3>
+                    <span className="text-xs text-primary">{r.dept}</span>
                   </div>
                   <div className="text-sm text-muted-foreground mb-4">{r.location} · {r.type}</div>
                   <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
                     {r.bullets.map((b) => <li key={b}>{b}</li>)}
                   </ul>
                 </div>
-                <a href="mailto:hello@vextoratech.com" className="shrink-0 inline-flex items-center gap-2 bg-gradient-brand text-white font-semibold rounded-xl px-5 py-3 shadow-[0_0_20px_rgba(79,142,247,0.35)]">
-                  Apply Now <ArrowRight className="w-4 h-4" />
+                <a
+                  href="mailto:hello@vextoratech.com"
+                  className="shrink-0 inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium rounded px-5 py-2.5 text-sm hover:opacity-90 transition-opacity"
+                >
+                  Apply now <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
             </div>
