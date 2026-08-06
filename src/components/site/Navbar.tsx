@@ -52,64 +52,104 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock page scroll while the mobile menu is open
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  const solidHeader = scrolled || open;
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-200 ${
-        scrolled ? "bg-background/95 border-b border-border backdrop-blur-sm" : "bg-transparent"
-      }`}
-    >
-      <div className="container-px flex items-center justify-between h-16 md:h-20">
-        <Logo />
-        <nav className="hidden lg:flex items-center gap-8">
-          {links.map((l) => {
-            const active = pathname === l.to;
-            return (
-              <Link
-                key={l.to}
-                to={l.to}
-                className={`text-sm font-medium transition-colors hover:text-foreground ${
-                  active ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="hidden lg:block">
-          <Link to="/contact" className={`${quoteBtnClass} px-5 py-2.5`}>
-            {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-        <button
-          className="lg:hidden p-2 text-foreground"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="lg:hidden fixed inset-0 top-16 bg-background border-t border-border">
-          <div className="flex flex-col gap-1 px-6 pt-8">
-            {links.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                className="font-display text-xl py-3 border-b border-border text-foreground"
-              >
-                {l.label}
-              </Link>
-            ))}
-            <Link to="/contact" className={`mt-8 self-start ${quoteBtnClass} px-6 py-3`}>
+    <>
+      <header
+        className={`fixed top-0 inset-x-0 z-[60] transition-colors duration-200 ${
+          solidHeader ? "bg-background border-b border-border" : "bg-transparent"
+        }`}
+      >
+        <div className="container-px flex items-center justify-between h-16 md:h-20">
+          <Logo />
+          <nav className="hidden lg:flex items-center gap-8">
+            {links.map((l) => {
+              const active = pathname === l.to;
+              return (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  className={`text-sm font-medium transition-colors hover:text-foreground ${
+                    active ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {l.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <div className="hidden lg:block">
+            <Link to="/contact" className={`${quoteBtnClass} px-5 py-2.5`}>
               {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+          <button
+            type="button"
+            className="lg:hidden p-2 text-foreground"
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+          >
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </header>
+
+      {/* Overlay is a sibling of header (not a child) so it is never trapped
+          by header filters / stacking and covers the full viewport on mobile. */}
+      {open && (
+        <div
+          id="mobile-nav"
+          className="lg:hidden fixed inset-0 z-[55] bg-background"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+        >
+          <div className="h-16 shrink-0" aria-hidden />
+          <nav className="h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-border bg-background px-6 pt-6 pb-10">
+            <div className="flex flex-col gap-1">
+              {links.map((l) => {
+                const active = pathname === l.to;
+                return (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    onClick={() => setOpen(false)}
+                    className={`font-display text-xl py-3 border-b border-border ${
+                      active ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
+              <Link
+                to="/contact"
+                onClick={() => setOpen(false)}
+                className={`mt-8 self-start ${quoteBtnClass} px-6 py-3`}
+              >
+                {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </nav>
         </div>
       )}
-    </header>
+    </>
   );
 }
