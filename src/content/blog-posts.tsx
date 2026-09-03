@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { blogCoverPath } from "@/lib/media";
 
 /**
  * Single source of truth for the VextoraTech engineering blog.
@@ -33,6 +34,8 @@ export interface BlogPost {
   dateModified: string;
   readTime: string;
   color: string;
+  /** Social / card cover under /public/og/blog/{slug}.png */
+  coverImage?: string;
   Content: () => ReactNode;
 }
 
@@ -1052,6 +1055,10 @@ def make_token(sub: str, minutes: int, secret: str) -> str:
     ),
   },
 ];
+
+export function getPostCoverImage(post: BlogPost): string {
+  return post.coverImage ?? blogCoverPath(post.slug);
+}
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((p) => p.slug === slug);

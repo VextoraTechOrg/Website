@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
 import SiteLayout, { PageHero } from "@/components/site/SiteLayout";
-import { RevealItem, RevealStagger } from "@/components/site/Reveal";
+import OptimizedImage from "@/components/site/OptimizedImage";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import {
@@ -30,7 +29,6 @@ export const Route = createFileRoute("/projects")({
 function ProjectsPage() {
   const [active, setActive] = useState<ProjectCat>("All");
   const filtered = active === "All" ? PROJECTS : PROJECTS.filter((p) => p.cats.includes(active));
-  const reduced = useReducedMotion();
 
   return (
     <SiteLayout>
@@ -57,53 +55,51 @@ function ProjectsPage() {
           ))}
         </div>
 
-        <RevealStagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {filtered.map((p) => (
-            <RevealItem key={p.slug}>
-              <Link
-                to="/projects/$slug"
-                params={{ slug: p.slug }}
-                className="group bg-background hover:bg-surface transition-colors block h-full"
-              >
-                <div className="aspect-[16/10] relative overflow-hidden bg-surface-2">
-                  {p.workOrigin !== "vextoratech" && (
-                    <span className="absolute top-3 left-3 z-10 text-[10px] px-2 py-1 bg-background/90 border border-border text-muted-foreground">
-                      {workOriginLabel(p.workOrigin)}
-                    </span>
-                  )}
-                  {p.image ? (
-                    <motion.img
-                      src={p.image}
-                      alt={p.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      whileHover={reduced ? undefined : { scale: 1.02 }}
-                      transition={{ duration: 0.35 }}
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-end p-6 line-texture">
-                      <span className="font-display text-4xl text-muted-foreground/30">{p.name.charAt(0)}</span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-6 border-t border-border">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {p.tags.slice(0, 4).map((t) => (
-                      <span key={t} className="text-[11px] text-muted-foreground border-b border-border pb-0.5">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="font-display text-xl mb-1.5 group-hover:text-primary transition-colors">{p.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-3">{p.desc}</p>
-                  <span className="inline-flex items-center gap-1 text-sm text-primary font-medium">
-                    View case study <ArrowRight className="w-3.5 h-3.5" />
+            <Link
+              key={p.slug}
+              to="/projects/$slug"
+              params={{ slug: p.slug }}
+              className="group bg-background hover:bg-surface transition-colors block h-full"
+            >
+              <div className="aspect-[16/10] relative overflow-hidden bg-surface-2">
+                {p.workOrigin !== "vextoratech" && (
+                  <span className="absolute top-3 left-3 z-10 text-[10px] px-2 py-1 bg-background/90 border border-border text-muted-foreground">
+                    {workOriginLabel(p.workOrigin)}
                   </span>
+                )}
+                {p.image ? (
+                  <OptimizedImage
+                    src={p.image}
+                    alt={p.name}
+                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                    width={800}
+                    height={500}
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-end p-6 bg-surface-2">
+                    <span className="font-display text-4xl text-muted-foreground/30">{p.name.charAt(0)}</span>
+                  </div>
+                )}
+              </div>
+              <div className="p-6 border-t border-border">
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {p.tags.slice(0, 4).map((t) => (
+                    <span key={t} className="tag-quiet border-b border-border/80 pb-0.5">
+                      {t}
+                    </span>
+                  ))}
                 </div>
-              </Link>
-            </RevealItem>
+                <h3 className="font-display text-xl mb-1.5 group-hover:text-primary transition-colors">{p.name}</h3>
+                <p className="text-sm text-muted-foreground mb-3">{p.desc}</p>
+                <span className="inline-flex items-center gap-1 text-sm text-primary font-medium">
+                  View case study <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </Link>
           ))}
-        </RevealStagger>
+        </div>
 
         {filtered.length === 0 && (
           <p className="text-muted-foreground py-20">No projects in this category yet.</p>

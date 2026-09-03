@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import SiteLayout, { PageHero, Section, CtaBand } from "@/components/site/SiteLayout";
 import { ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug, Check } from "lucide-react";
 import { PRIMARY_CTA } from "@/lib/site-copy";
+import OptimizedImage from "@/components/site/OptimizedImage";
+import { SERVICE_IMAGES } from "@/lib/media";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -19,7 +21,7 @@ const SERVICES = [
   {
     icon: Brain,
     name: "AI & Machine Learning",
-    image: "/services-ai-machine-learning.jpg",
+    image: SERVICE_IMAGES.aiMl,
     body: "We design and ship production AI systems — not demos. Computer vision, voice pipelines, and RAG are areas we build and deploy regularly.",
     bullets: [
       "Computer vision: object detection, OCR, ANPR, and face recognition pipelines",
@@ -32,7 +34,7 @@ const SERVICES = [
   {
     icon: Code2,
     name: "Web Development",
-    image: "/website-development-links-seo-webinar-cyberspace-concept.jpg",
+    image: SERVICE_IMAGES.web,
     body: "Fast, type-safe, production-grade web apps. We follow patterns we'd defend in a code review — not what's trending on Twitter.",
     bullets: [
       "React, Next.js, TanStack Start — component-driven frontends",
@@ -45,7 +47,7 @@ const SERVICES = [
   {
     icon: Smartphone,
     name: "Mobile App Development",
-    image: "/services-mobile-development.jpg",
+    image: SERVICE_IMAGES.mobile,
     body: "Cross-platform apps with native-quality UX. We scope honestly — mobile is in our stack where the product calls for it.",
     bullets: [
       "React Native and Flutter cross-platform apps",
@@ -58,7 +60,7 @@ const SERVICES = [
   {
     icon: Cloud,
     name: "Cloud & DevOps",
-    image: "/cloud.png",
+    image: SERVICE_IMAGES.cloud,
     body: "Infrastructure that scales when you do and costs what it should. Real observability, rollback paths, and deployment automation.",
     bullets: [
       "AWS, GCP, Azure — architecture and cost optimization",
@@ -71,7 +73,7 @@ const SERVICES = [
   {
     icon: Palette,
     name: "UI/UX Design",
-    image: "/UI_UX.png",
+    image: SERVICE_IMAGES.uiUx,
     body: "Design grounded in research and shipped as a system. Interfaces that move users — and that engineers can build without rework.",
     bullets: [
       "User research, personas, and journey mapping",
@@ -84,7 +86,7 @@ const SERVICES = [
   {
     icon: Plug,
     name: "API Development & Integrations",
-    image: "/services-api-integrations.jpg",
+    image: SERVICE_IMAGES.api,
     body: "APIs that other engineers actually enjoy using. Documented, versioned, and built to last.",
     bullets: [
       "RESTful API design following OpenAPI 3.0 spec",
@@ -149,7 +151,13 @@ function ServicesPage() {
               </Link>
             </div>
             <div className="border border-border overflow-hidden aspect-[4/3] bg-surface">
-              <img src={s.image} alt={s.name} className="w-full h-full object-cover" loading="lazy" />
+              <OptimizedImage
+                src={s.image}
+                alt={s.name}
+                className="w-full h-full object-cover"
+                width={1200}
+                height={900}
+              />
             </div>
           </div>
         ))}

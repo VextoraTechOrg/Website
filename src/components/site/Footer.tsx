@@ -22,8 +22,8 @@ const company = [
 
 export default function Footer() {
   return (
-    <footer className="bg-surface border-t border-border mt-24">
-      <div className="container-px py-16 md:py-20">
+    <footer className="bg-surface border-t border-border mt-12">
+      <div className="container-px py-12 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <Logo />

@@ -1,0 +1,38 @@
+{
+  "name": "VextoraTech Company RAG Chatbot",
+  "description": "Gemini + pgvector FastAPI backend for the VextoraTech company assistant (Vex).",
+  "repository": "https://github.com/vextoratech/vextoratech-frontend",
+  "keywords": ["python", "fastapi", "gemini", "rag", "pgvector"],
+  "addons": ["heroku-postgresql:essential-0"],
+  "env": {
+    "GEMINI_API_KEY": {
+      "description": "Google AI Studio / Gemini API key",
+      "required": true
+    },
+    "GEMINI_CHAT_MODEL": {
+      "description": "Chat model id",
+      "value": "gemini-3.6-flash"
+    },
+    "GEMINI_EMBED_MODEL": {
+      "description": "Embedding model id",
+      "value": "gemini-embedding-2"
+    },
+    "EMBED_DIM": {
+      "value": "1536"
+    },
+    "CORS_ALLOW_ORIGINS": {
+      "value": "https://vextoratech.com,https://www.vextoratech.com"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-1x"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

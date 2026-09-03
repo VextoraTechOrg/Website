@@ -45,6 +45,41 @@ export interface ProjectResult {
   label: string;
 }
 
+export type ProjectImageKind = "real" | "placeholder";
+
+export interface ProjectVideo {
+  webm?: string;
+  mp4?: string;
+}
+
+/**
+ * Literal project asset paths — only referenced from PROJECTS entries below.
+ * All surfaces (home, index, detail, OG) read `project.image` from PROJECTS.
+ */
+const PROJECT_ASSETS = {
+  nexawatch: "/nexawatch.png",
+  nexadesk: "/nexadesk-ai.png",
+  voiceHub: "/voice_hub.png",
+  pyli: "/PYli.png",
+  surveillance: "/surveillance-data-security-technology.png",
+} as const;
+
+function projectPlaceholder(slug: string): string {
+  return `/projects/placeholders/${slug}.webp`;
+}
+
+/** Slug featured in the home hero — must have a real screenshot. */
+export const HERO_PROJECT_SLUG = "nexawatch";
+
+/** Real-screenshot projects cycled in the home hero (synced with HERO_ROTATION in site-copy). */
+export const HERO_CAROUSEL_SLUGS = [
+  "nexawatch",
+  "nexadesk-ai",
+  "voice-intelligence-hub",
+  "pyli-business-profiles",
+  "ai-surveillance-system",
+] as const;
+
 export interface ProjectCase {
   slug: string;
   name: string;
@@ -66,8 +101,17 @@ export interface ProjectCase {
   /** Services VextoraTech provided. */
   services: string[];
   color: string;
-  /** Optional cover image path under /public, e.g. "/photo.jpg". */
-  image?: string;
+  /** Cover image path under /public — single source of truth for all surfaces. */
+  image: string;
+  /** Whether `image` is a real product screenshot or a branded placeholder. */
+  imageKind: ProjectImageKind;
+  /**
+   * Optional screen recording for the case-study demo slot.
+   * TODO: real screen recording — set webm/mp4 when a genuine capture is available.
+   */
+  video?: ProjectVideo;
+  /** Show the product demo section on the detail page (static image until `video` is set). */
+  demoSlot?: boolean;
   /** One-paragraph framing of the project. */
   overview: string;
   /** The problems / constraints the client faced. */
@@ -106,7 +150,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["Web Application", "Frontend Engineering", "API Development"],
     color: "#06B6D4",
-    image: "/website-development-links-seo-webinar-cyberspace-concept.jpg",
+    image: projectPlaceholder("qclose-inventory"),
+    imageKind: "placeholder",
     overview:
       "QClose Inventory is a web-based stock control platform that replaces spreadsheets and manual counts with a fast, scanner-driven workflow. Staff add and retrieve products by scanning physical barcodes, while managers get accurate opening- and closing-stock reports at the end of every shift.",
     challenges: [
@@ -160,7 +205,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["Web Application", "Data Visualization", "Frontend Engineering"],
     color: "#5B9FD4",
-    image: "/thanit2022february_53.jpg",
+    image: projectPlaceholder("swgnp-iot-portal"),
+    imageKind: "placeholder",
     overview:
       "SWGNP is a monitoring portal that brings data from a fleet of remote sensing IoT devices into a single, government-grade web interface. Stakeholders search, filter, and visualize device readings through dynamic dashboards that turn raw telemetry into decisions.",
     challenges: [
@@ -214,7 +260,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["Web Application", "Custom UI/UX", "Frontend Engineering"],
     color: "#5B9FD4",
-    image: "/PYli.png",
+    image: PROJECT_ASSETS.pyli,
+    imageKind: "real",
     overview:
       "PYLI centralizes the management of multiple business profiles into one cohesive platform. Rather than juggling separate tools, users administer every profile from a single, bespoke interface built precisely to the client's workflows.",
     challenges: [
@@ -267,7 +314,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["Web Application", "Frontend Leadership", "UI Engineering"],
     color: "#10B981",
-    image: "/UI_UX.png",
+    image: projectPlaceholder("restaurant-management-system"),
+    imageKind: "placeholder",
     overview:
       "This Restaurant Management System unifies the operational core of a venue — menu, orders, bookings, and billing — into one platform. VextoraTech led the frontend development of a brand-new product version, modernizing the experience for staff and operators.",
     challenges: [
@@ -321,7 +369,10 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prototype",
     services: ["Web Application", "Real-Time Systems", "Dashboard Engineering"],
     color: "#4A8FC4",
-    image: "/nexawatch.png",
+    image: PROJECT_ASSETS.nexawatch,
+    imageKind: "real",
+    // TODO: real screen recording — set `video.webm` / `video.mp4` when captured
+    demoSlot: true,
     overview:
       "NexaWatch is a real-time field visibility platform built for teams on the move. Managers track live GPS positions, monitor geofence events, review route history, and oversee client visits from a single secure admin dashboard — turning scattered field activity into actionable visibility.",
     challenges: [
@@ -376,7 +427,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prototype",
     services: ["AI / LLM Integration", "Web Application", "Dashboard Engineering"],
     color: "#0EA5E9",
-    image: "/nexadesk-ai.png",
+    image: PROJECT_ASSETS.nexadesk,
+    imageKind: "real",
     overview:
       "NexaDesk AI is a secure AI-powered helpdesk built for modern support teams. It analyzes incoming tickets for intent, sentiment, and urgency, suggests context-aware replies, auto-detects priority, and surfaces knowledge-base articles — all from a dashboard that tracks open tickets, SLA compliance, and resolution trends.",
     challenges: [
@@ -433,7 +485,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["AI / Computer Vision", "Backend Engineering", "ML Integration"],
     color: "#4A8FC4",
-    image: "/2462340.jpg",
+    image: projectPlaceholder("facial-recognition-attendance"),
+    imageKind: "placeholder",
     overview:
       "This system automates employee attendance using real-time facial recognition. It detects and identifies faces from live camera feeds, logs check-ins and check-outs automatically, and generates attendance reports — removing the friction and inaccuracy of manual tracking, cards, or fingerprint scanners.",
     challenges: [
@@ -487,7 +540,10 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["AI / Computer Vision", "Real-Time Systems", "Backend Engineering"],
     color: "#EF4444",
-    image: "/surveillance-data-security-technology.jpg",
+    image: PROJECT_ASSETS.surveillance,
+    imageKind: "real",
+    // TODO: real screen recording — set `video.webm` / `video.mp4` when captured
+    demoSlot: true,
     overview:
       "This intelligent video surveillance platform watches multiple camera feeds simultaneously and understands what it sees. Using real-time object and anomaly detection, it triggers instant alerts for restricted-zone breaches, loitering, and suspicious activity — turning passive cameras into an active security layer.",
     challenges: [
@@ -542,7 +598,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "internal",
     services: ["AI / RAG", "LLM Engineering", "Private Deployment"],
     color: "#10B981",
-    image: "/services-ai-machine-learning.jpg",
+    image: projectPlaceholder("medical-knowledge-assistant"),
+    imageKind: "placeholder",
     overview:
       "This assistant turns a corpus of medical literature and clinical guidelines into a conversational knowledge base. Healthcare professionals retrieve drug information, diagnostic criteria, and treatment protocols by simply asking — with a local-first stack that keeps sensitive data in-house.",
     challenges: [
@@ -597,7 +654,8 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prototype",
     services: ["AI / Healthcare", "Full-Stack Development", "System Integration"],
     color: "#14B8A6",
-    image: "/services-api-integrations.jpg",
+    image: projectPlaceholder("medassist-ai"),
+    imageKind: "placeholder",
     overview:
       "MedAssist AI is a patient-facing chatbot that triages symptoms, answers health questions, and guides users toward the right care pathway. When a human is needed, it integrates with appointment systems for a seamless handoff — bridging self-service and professional care.",
     challenges: [
@@ -652,7 +710,10 @@ export const PROJECTS: ProjectCase[] = [
     workOrigin: "prior-team",
     services: ["AI / Speech", "NLP Engineering", "Backend Engineering"],
     color: "#6BA3C4",
-    image: "/voice_hub.png",
+    image: PROJECT_ASSETS.voiceHub,
+    imageKind: "real",
+    // TODO: real screen recording — set `video.webm` / `video.mp4` when captured
+    demoSlot: true,
     overview:
       "Voice Intelligence Hub is an end-to-end voice analytics platform. It transcribes call recordings, separates who said what (diarization), and analyzes the conversation to extract sentiment, key topics, and action items — giving contact centers and sales teams insight that used to be locked inside audio.",
     challenges: [
@@ -688,6 +749,16 @@ export const PROJECTS: ProjectCase[] = [
 
 export function getProjectBySlug(slug: string): ProjectCase | undefined {
   return PROJECTS.find((p) => p.slug === slug);
+}
+
+export function getHeroProject(): ProjectCase {
+  return getProjectBySlug(HERO_PROJECT_SLUG) ?? PROJECTS[4];
+}
+
+export function getHeroCarouselProjects(): ProjectCase[] {
+  return HERO_CAROUSEL_SLUGS.map((slug) => getProjectBySlug(slug)).filter(
+    (p): p is ProjectCase => p !== undefined,
+  );
 }
 
 export function getRelatedProjects(slug: string, limit = 3): ProjectCase[] {

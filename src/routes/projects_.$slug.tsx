@@ -18,6 +18,8 @@ import {
   workOriginLabel,
 } from "@/content/projects";
 import { PRIMARY_CTA } from "@/lib/site-copy";
+import CaseStudyVideo from "@/components/site/CaseStudyVideo";
+import OptimizedImage from "@/components/site/OptimizedImage";
 
 export const Route = createFileRoute("/projects_/$slug")({
   head: ({ params }) => {
@@ -160,18 +162,29 @@ function ProjectCasePage() {
           </div>
         </header>
 
-        <div className="container-px mt-10">
-          <div className="relative overflow-hidden aspect-[21/9] max-w-5xl border border-border bg-surface-2">
-            {project.image ? (
-              <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
-            ) : (
-              <div className="absolute inset-0 flex items-end p-8 line-texture">
-                <span className="font-display text-5xl text-muted-foreground/25">
-                  {project.name.charAt(0)}
-                </span>
-              </div>
-            )}
+        <div className="container-px mt-10 space-y-8 max-w-5xl">
+          <div className="relative overflow-hidden aspect-[21/9] border border-border bg-surface-2">
+            <OptimizedImage
+              src={project.image}
+              alt={project.name}
+              className="w-full h-full object-cover"
+              width={1600}
+              height={686}
+              priority
+            />
           </div>
+
+          {project.demoSlot ? (
+            <div>
+              <h2 className="font-display text-xl mb-4">Product demo</h2>
+              <CaseStudyVideo
+                title={project.name}
+                poster={project.image}
+                webm={project.video?.webm}
+                mp4={project.video?.mp4}
+              />
+            </div>
+          ) : null}
         </div>
 
         <div className="container-px py-14 md:py-20">

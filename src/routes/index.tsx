@@ -1,24 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
 import SiteLayout, { Section, CtaBand } from "@/components/site/SiteLayout";
-import { Reveal, RevealItem, RevealOl, RevealLi, RevealStagger } from "@/components/site/Reveal";
-import RotatingHeroLines, { HERO_LINES } from "@/components/site/RotatingHeroLines";
-import RotatingHeroFeature from "@/components/site/RotatingHeroFeature";
-import { useHeroCycle } from "@/components/site/useHeroCycle";
+import Hero from "@/components/site/Hero";
+import TechLogoStrip from "@/components/site/TechLogoStrip";
+import OptimizedImage from "@/components/site/OptimizedImage";
+import DomainsScroll from "@/components/site/scroll/DomainsScroll";
+import FeaturedWorkScroll from "@/components/site/scroll/FeaturedWorkScroll";
+import ProcessReveal from "@/components/site/scroll/ProcessReveal";
 import {
   ArrowRight, Brain, Code2, Smartphone, Cloud, Palette, Plug,
   Search, PenTool, Hammer, Rocket, Eye, Mic, Layers,
 } from "lucide-react";
 import { PRIMARY_CTA, SECONDARY_CTA, PROJECTS_HEADLINE } from "@/lib/site-copy";
-import { PROJECTS } from "@/content/projects";
-import {
-  fadeTransition,
-  staggerContainerVariants,
-  staggerItemVariants,
-} from "@/lib/motion";
-
-const HERO_PROJECTS = PROJECTS.filter((p) => p.image);
-const HERO_CYCLE_LEN = Math.max(HERO_LINES.length, HERO_PROJECTS.length);
+import { PROJECTS, SITE_URL } from "@/content/projects";
+import { OG_DEFAULT } from "@/lib/media";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,6 +21,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "We build intelligent, scalable digital products — AI, web, mobile, and cloud infrastructure for startups and enterprises." },
       { property: "og:title", content: "VextoraTech — We Build Software That Thinks" },
       { property: "og:description", content: "AI-powered software development for ambitious teams." },
+      { property: "og:image", content: `${SITE_URL}${OG_DEFAULT}` },
     ],
   }),
   component: Home,
@@ -36,13 +31,13 @@ function Home() {
   return (
     <SiteLayout>
       <Hero />
-      <LogosBar />
+      <TechLogoStrip />
       <ServicesOverview />
       <Domains />
       <FeaturedProjects />
       <Process />
-      <TrustLine />
       <CtaBand
+        note="Incorporated in 2026 — you work directly with the engineers building your product."
         title="Ready to build something remarkable?"
         body="Let's talk about your project. No commitment, no sales pitch — just an honest conversation about what's possible."
         primaryLabel={PRIMARY_CTA}
@@ -50,90 +45,6 @@ function Home() {
         secondaryLabel={SECONDARY_CTA}
       />
     </SiteLayout>
-  );
-}
-
-function Hero() {
-  const { index, reduced } = useHeroCycle(HERO_CYCLE_LEN);
-  const lineIndex = index % HERO_LINES.length;
-  const projectIndex = index % Math.max(HERO_PROJECTS.length, 1);
-
-  return (
-    <section className="relative overflow-hidden min-h-[88vh] flex items-center border-b border-border">
-      <div className="absolute inset-0 line-texture opacity-30" aria-hidden />
-
-      <div className="container-px relative grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center py-20 md:py-28">
-        <motion.div
-          variants={staggerContainerVariants(reduced)}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.h1
-            variants={staggerItemVariants(reduced)}
-            className="font-display text-4xl md:text-5xl lg:text-[3.25rem] tracking-tight leading-[1.1] max-w-xl"
-          >
-            <span className="text-primary">VextoraTech</span>
-            <RotatingHeroLines index={lineIndex} />
-          </motion.h1>
-          <motion.p
-            variants={staggerItemVariants(reduced)}
-            className="mt-6 text-lg text-muted-foreground max-w-md"
-          >
-            Intelligent products from models to infrastructure. Built in Lahore for startups and enterprises.
-          </motion.p>
-          <motion.div
-            variants={staggerItemVariants(reduced)}
-            className="mt-8 flex flex-wrap gap-3"
-          >
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-medium rounded px-6 py-3 text-sm hover:opacity-90 transition-opacity"
-            >
-              {PRIMARY_CTA} <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/projects"
-              className="inline-flex items-center gap-2 border border-border rounded px-6 py-3 text-sm font-medium hover:border-primary transition-colors"
-            >
-              {SECONDARY_CTA}
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          initial={reduced ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={reduced ? { duration: 0 } : { ...fadeTransition, delay: 0.15 }}
-        >
-          <RotatingHeroFeature
-            projects={HERO_PROJECTS.length ? HERO_PROJECTS : PROJECTS}
-            index={projectIndex}
-            reduced={reduced}
-          />
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-const LOGOS = ["React", "FastAPI", "Python", "PostgreSQL", "LLMs", "Docker", "TanStack", "Tailwind"];
-
-function LogosBar() {
-  return (
-    <section className="py-14 border-b border-border">
-      <div className="container-px">
-        <Reveal>
-          <span className="label-quiet">Tech we build with</span>
-          <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
-            {LOGOS.map((name) => (
-              <span key={name} className="font-display text-lg text-muted-foreground/70">
-                {name}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-      </div>
-    </section>
   );
 }
 
@@ -146,127 +57,142 @@ const SERVICES = [
   { icon: Plug, name: "API Development & Integrations", desc: "RESTful and GraphQL APIs, third-party integrations, webhook systems, and microservice architecture." },
 ];
 
+/** 2-column card grid — denser than the default eyebrow/list pattern. */
 function ServicesOverview() {
   return (
     <Section eyebrow="What we do" title="End-to-end digital solutions" subtitle="From idea to deployment — we cover the full stack.">
-      <RevealStagger className="border-t border-border">
-        {SERVICES.map(({ icon: Icon, name, desc }, i) => (
-          <RevealItem
-            key={name}
-            className="grid md:grid-cols-[3rem_1fr_auto] gap-4 md:gap-8 items-start py-8 border-b border-border"
-          >
-            <span className="font-display text-sm text-primary tabular-nums pt-1">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <Icon className="w-5 h-5 text-primary shrink-0" />
-                <h3 className="font-display text-xl">{name}</h3>
-              </div>
-              <p className="text-sm text-muted-foreground max-w-xl">{desc}</p>
-            </div>
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-1 text-sm text-primary font-medium pt-1"
-            >
-              Learn more <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </RevealItem>
+      <div className="grid sm:grid-cols-2 gap-px bg-border border border-border">
+        {SERVICES.map(({ icon: Icon, name, desc }) => (
+          <div key={name} className="bg-background p-5 md:p-6 hover:bg-surface/60 transition-colors">
+            <Icon className="w-5 h-5 text-primary mb-3" />
+            <h3 className="font-display text-lg mb-1.5">{name}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+          </div>
         ))}
-      </RevealStagger>
-    </Section>
-  );
-}
-
-function Domains() {
-  const domains = [
-    { icon: Eye, label: "Computer Vision", detail: "ANPR, face recognition, surveillance" },
-    { icon: Mic, label: "Voice AI", detail: "Transcription, diarization, call analytics" },
-    { icon: Layers, label: "Full-Stack", detail: "Web platforms, APIs, cloud deployment" },
-  ];
-
-  return (
-    <section className="py-16 border-y border-border">
-      <RevealStagger className="container-px grid md:grid-cols-3 gap-10 md:gap-0 md:divide-x divide-border">
-        {domains.map(({ icon: Icon, label, detail }) => (
-          <RevealItem key={label} className="md:px-10 first:md:pl-0 last:md:pr-0">
-            <Icon className="w-6 h-6 text-primary mb-4" />
-            <div className="font-display text-xl mb-1">{label}</div>
-            <div className="text-sm text-muted-foreground">{detail}</div>
-          </RevealItem>
-        ))}
-      </RevealStagger>
-    </section>
-  );
-}
-
-const FEATURED = PROJECTS.slice(0, 5);
-
-function FeaturedProjects() {
-  return (
-    <Section eyebrow="What we build" title={PROJECTS_HEADLINE} subtitle="Real systems across vision, voice, and full-stack — explore the full portfolio.">
-      <RevealStagger className="grid md:grid-cols-2 gap-px bg-border mb-px">
-        {FEATURED.slice(0, 2).map((p) => (
-          <RevealItem key={p.slug}>
-            <ProjectCard p={p} />
-          </RevealItem>
-        ))}
-      </RevealStagger>
-      <RevealStagger className="grid md:grid-cols-3 gap-px bg-border">
-        {FEATURED.slice(2).map((p) => (
-          <RevealItem key={p.slug}>
-            <ProjectCard p={p} />
-          </RevealItem>
-        ))}
-      </RevealStagger>
-      <div className="mt-12">
-        <Link
-          to="/projects"
-          className="inline-flex items-center gap-2 border border-border rounded px-5 py-2.5 text-sm font-medium hover:border-primary transition-colors"
-        >
-          {SECONDARY_CTA} <ArrowRight className="w-4 h-4" />
+      </div>
+      <div className="mt-5">
+        <Link to="/services" className="inline-flex items-center gap-1.5 text-sm text-primary font-medium">
+          All services <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </Section>
   );
 }
 
-function ProjectCard({ p }: { p: typeof FEATURED[number] }) {
-  const reduced = useReducedMotion();
+const DOMAINS = [
+  { icon: Eye, label: "Computer Vision", detail: "ANPR, face recognition, surveillance" },
+  { icon: Mic, label: "Voice AI", detail: "Transcription, diarization, call analytics" },
+  { icon: Layers, label: "Full-Stack", detail: "Web platforms, APIs, cloud deployment" },
+];
+
+/** Full-width surface band — breaks the repeating section rhythm. */
+function Domains() {
+  return (
+    <DomainsScroll>
+      <div className="container-px grid md:grid-cols-3 gap-6 md:gap-8">
+        {DOMAINS.map(({ icon: Icon, label, detail }) => (
+          <div key={label} data-domain-item className="flex gap-4 items-start">
+            <div className="w-10 h-10 shrink-0 border border-border bg-background grid place-items-center">
+              <Icon className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <div className="font-display text-lg mb-0.5">{label}</div>
+              <div className="text-sm text-muted-foreground">{detail}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </DomainsScroll>
+  );
+}
+
+const FEATURED = PROJECTS.slice(0, 5);
+const FEATURED_LEAD = FEATURED[0];
+const FEATURED_REST = FEATURED.slice(1);
+
+/** Asymmetric layout — lead project large, others compact beside/below. */
+function FeaturedProjects() {
+  return (
+    <FeaturedWorkScroll>
+      <div className="container-px">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div className="max-w-2xl">
+            <span className="label-quiet inline-block mb-2">What we build</span>
+            <h2 className="font-display text-3xl md:text-4xl tracking-tight">{PROJECTS_HEADLINE}</h2>
+            <p className="mt-2 text-muted-foreground text-sm md:text-base">
+              Real systems across vision, voice, and full-stack — explore the full portfolio.
+            </p>
+          </div>
+          <Link
+            to="/projects"
+            className="inline-flex items-center gap-2 border border-border rounded px-4 py-2 text-sm font-medium hover:border-primary transition-colors shrink-0"
+          >
+            {SECONDARY_CTA} <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid lg:grid-cols-[1.35fr_1fr] gap-px bg-border border border-border">
+          <div className="bg-background" data-featured-lead>
+            <ProjectCard p={FEATURED_LEAD} large />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-px bg-border">
+            {FEATURED_REST.slice(0, 2).map((p) => (
+              <div key={p.slug} data-featured-card className="bg-background">
+                <ProjectCard p={p} compact />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-3 gap-px bg-border border border-border border-t-0">
+          {FEATURED_REST.slice(2).map((p) => (
+            <div key={p.slug} data-featured-card className="bg-background">
+              <ProjectCard p={p} compact />
+            </div>
+          ))}
+        </div>
+      </div>
+    </FeaturedWorkScroll>
+  );
+}
+
+function ProjectCard({
+  p,
+  large = false,
+  compact = false,
+}: {
+  p: typeof FEATURED[number];
+  large?: boolean;
+  compact?: boolean;
+}) {
   return (
     <Link
       to="/projects/$slug"
       params={{ slug: p.slug }}
-      className="group block bg-background hover:bg-surface transition-colors"
+      className="group block bg-background hover:bg-surface transition-colors h-full"
     >
-      <div className="aspect-[16/10] relative overflow-hidden bg-surface-2">
-        {p.image ? (
-          <motion.img
-            src={p.image}
-            alt={p.name}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            whileHover={reduced ? undefined : { scale: 1.02 }}
-            transition={{ duration: 0.35 }}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-end p-6 line-texture">
-            <span className="font-display text-3xl text-muted-foreground/40">{p.name.charAt(0)}</span>
-          </div>
-        )}
+      <div className={`relative overflow-hidden bg-surface-2 ${large ? "aspect-[16/10]" : compact ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+        <OptimizedImage
+          src={p.image}
+          alt={p.name}
+          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+          width={800}
+          height={500}
+        />
       </div>
-      <div className="p-6 border-t border-border">
-        <div className="flex flex-wrap gap-2 mb-3">
-          {p.tags.slice(0, 3).map((t) => (
-            <span key={t} className="text-[11px] text-muted-foreground border-b border-border pb-0.5">
+      <div className={`border-t border-border ${compact ? "p-4" : "p-5"}`}>
+        <div className="flex flex-wrap gap-2 mb-2">
+          {p.tags.slice(0, compact ? 2 : 3).map((t) => (
+            <span key={t} className="tag-quiet border-b border-border pb-0.5">
               {t}
             </span>
           ))}
         </div>
-        <h3 className="font-display text-xl mb-1.5 group-hover:text-primary transition-colors">{p.name}</h3>
-        <p className="text-sm text-muted-foreground mb-3">{p.desc}</p>
-        <span className="inline-flex items-center gap-1 text-sm text-primary font-medium">
-          View case study <ArrowRight className="w-3.5 h-3.5" />
+        <h3 className={`font-display group-hover:text-primary transition-colors ${compact ? "text-base mb-1" : "text-xl mb-1.5"}`}>
+          {p.name}
+        </h3>
+        {!compact && <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{p.desc}</p>}
+        <span className="inline-flex items-center gap-1 text-xs text-primary font-medium">
+          View case study <ArrowRight className="w-3 h-3" />
         </span>
       </div>
     </Link>
@@ -274,48 +200,35 @@ function ProjectCard({ p }: { p: typeof FEATURED[number] }) {
 }
 
 const STEPS = [
-  { icon: Search, name: "Discovery", desc: "We deep-dive into your goals, user needs, and technical constraints. Define scope, stack, timeline, and success metrics together." },
-  { icon: PenTool, name: "Design", desc: "Wireframes → high-fidelity Figma prototypes. User flows tested before a single line of code is written." },
-  { icon: Hammer, name: "Build", desc: "Agile sprints, weekly demos. Full-stack development with code reviews, automated tests, and real deployment from sprint one." },
-  { icon: Rocket, name: "Launch & Scale", desc: "Production deployment, performance monitoring, and ongoing support. We don't disappear after go-live." },
+  { icon: Search, name: "Discovery", desc: "Goals, constraints, scope, and success metrics." },
+  { icon: PenTool, name: "Design", desc: "Wireframes and Figma prototypes before code." },
+  { icon: Hammer, name: "Build", desc: "Agile sprints with weekly demos and real deploys." },
+  { icon: Rocket, name: "Launch", desc: "Production rollout, monitoring, and support." },
 ];
 
+/** Horizontal step cards — different density from services list. */
 function Process() {
   return (
-    <Section eyebrow="Our process" title="How we turn your idea into a live product">
-      <RevealOl className="border-t border-border">
-        {STEPS.map((s, i) => (
-          <RevealLi
-            key={s.name}
-            className="grid md:grid-cols-[4rem_1fr] gap-4 md:gap-8 py-8 border-b border-border"
-          >
-            <span className="font-display text-2xl text-primary tabular-nums">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <s.icon className="w-5 h-5 text-muted-foreground" />
-                <h3 className="font-display text-xl">{s.name}</h3>
-              </div>
-              <p className="text-sm text-muted-foreground max-w-2xl">{s.desc}</p>
+    <Section eyebrow="Our process" title="How we turn your idea into a live product" className="!pb-0">
+      <ProcessReveal>
+        <div
+          data-process-line
+          className="h-px w-full bg-primary mb-6 origin-left"
+          aria-hidden
+        />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
+          {STEPS.map((s, i) => (
+            <div key={s.name} data-process-step className="bg-background p-5 md:p-6">
+              <span className="font-display text-sm text-primary tabular-nums">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <s.icon className="w-5 h-5 text-muted-foreground mt-3 mb-2" />
+              <h3 className="font-display text-lg mb-1">{s.name}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </div>
-          </RevealLi>
-        ))}
-      </RevealOl>
+          ))}
+        </div>
+      </ProcessReveal>
     </Section>
-  );
-}
-
-function TrustLine() {
-  return (
-    <section className="py-14">
-      <div className="container-px">
-        <Reveal>
-          <p className="text-muted-foreground max-w-2xl border-l-2 border-primary pl-6">
-            Incorporated in 2026 — you work directly with the engineers building your product.
-          </p>
-        </Reveal>
-      </div>
-    </section>
   );
 }

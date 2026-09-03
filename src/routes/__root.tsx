@@ -7,14 +7,13 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { OG_DEFAULT } from "../lib/media";
+import ScrollProvider from "../components/site/ScrollProvider";
 
-
-
-
+const SITE_URL = "https://vextoratech.com";
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -42,9 +41,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -89,6 +85,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "VextoraTech — We Build Software That Thinks" },
       { property: "og:description", content: "AI-powered software development — web, mobile, cloud, and ML for ambitious teams." },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: `${SITE_URL}${OG_DEFAULT}` },
+      { name: "twitter:image", content: `${SITE_URL}${OG_DEFAULT}` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@VextoraTech" },
     ],
@@ -128,8 +126,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ScrollProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </ScrollProvider>
     </QueryClientProvider>
   );
 }

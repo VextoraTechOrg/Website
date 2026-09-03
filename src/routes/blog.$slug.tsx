@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import SiteLayout, { CtaBand } from "@/components/site/SiteLayout";
 import { ArrowLeft, Clock, Calendar, ChevronRight } from "lucide-react";
-import { SITE_URL, getPostBySlug, getRelatedPosts } from "@/content/blog-posts";
+import { SITE_URL, getPostBySlug, getRelatedPosts, getPostCoverImage } from "@/content/blog-posts";
 import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/blog/$slug")({
       };
     }
     const url = `${SITE_URL}/blog/${post.slug}`;
-    const ogImage = `${SITE_URL}/logo.png`;
+    const ogImage = `${SITE_URL}${getPostCoverImage(post)}`;
     return {
       meta: [
         { title: `${post.title} — VextoraTech` },
@@ -67,6 +67,7 @@ function BlogPostPage() {
   }
 
   const url = `${SITE_URL}/blog/${post.slug}`;
+  const coverImage = `${SITE_URL}${getPostCoverImage(post)}`;
   const related = getRelatedPosts(post.slug);
 
   const articleJsonLd = {
@@ -79,7 +80,7 @@ function BlogPostPage() {
     datePublished: post.datePublished,
     dateModified: post.dateModified,
     author: { "@type": "Person", name: post.author },
-    image: `${SITE_URL}/logo.png`,
+    image: coverImage,
     publisher: {
       "@type": "Organization",
       name: "VextoraTech",

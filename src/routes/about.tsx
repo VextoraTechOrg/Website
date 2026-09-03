@@ -1,14 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import SiteLayout, { PageHero, Section, CtaBand } from "@/components/site/SiteLayout";
-import { RevealItem, RevealStagger } from "@/components/site/Reveal";
-import { Linkedin } from "lucide-react";
+import { Brain, Eye, Layers, Mic } from "lucide-react";
 import { PRIMARY_CTA } from "@/lib/site-copy";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — VextoraTech" },
-      { name: "description", content: "Built by engineers, for founders. The story, team, values, and journey behind VextoraTech." },
+      { name: "description", content: "Built by engineers, for founders. The story, expertise, values, and journey behind VextoraTech." },
       { property: "og:title", content: "About — VextoraTech" },
       { property: "og:description", content: "We exist to close the gap between great ideas and trusted technical execution." },
     ],
@@ -16,47 +15,26 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
-type TeamMember = {
-  name: string;
-  role: string;
-  bio: string;
-  linkedin?: string;
-  hiring?: boolean;
-};
-
-const TEAM: TeamMember[] = [
+const EXPERTISE = [
   {
-    name: "Farjad Kareem",
-    role: "CEO",
-    bio: "Leads product architecture and full-stack delivery — from FastAPI backends and React frontends to AI feature integration in production.",
-    linkedin: "https://www.linkedin.com/in/farjad-kareem-3a73aa2b6/",
+    icon: Eye,
+    name: "Computer Vision",
+    body: "Object detection, OCR, ANPR, face recognition, and multi-camera surveillance — pipelines built for real-world accuracy and latency, not lab demos.",
   },
   {
-    name: "Umar Azhar",
-    role: "Product Manager",
-    bio: "Owns discovery through launch: scopes MVPs, writes clear requirements, and keeps engineering aligned with business outcomes.",
+    icon: Mic,
+    name: "Voice AI",
+    body: "Whisper transcription, speaker diarization, and call analytics that turn raw audio into searchable, actionable insight for operations and support teams.",
   },
   {
-    name: "Irfan Ahmad",
-    role: "Sr. AI Engineer",
-    bio: "Ten years across ML systems, LLMs, and production deployments. Sets the technical bar for our AI practice and owns model architecture end to end.",
-    linkedin: "https://www.linkedin.com/in/irfan-ahmed-4ba99911b/",
+    icon: Brain,
+    name: "RAG & LLM Systems",
+    body: "Grounded assistants with vector search, citations, and guardrails — so answers stay factual, auditable, and safe to ship in production.",
   },
   {
-    name: "Mateen Abid",
-    role: "AI Engineer",
-    bio: "Builds and deploys RAG pipelines, local LLM inference, and model integrations on client projects — from prototype to production.",
-  },
-  {
-    name: "Taimoor Amir",
-    role: "AI Engineer",
-    bio: "Owns backend AI services: Whisper transcription, NLP pipelines, and the FastAPI layers that expose them to products.",
-  },
-  {
-    name: "Saad Ishaq",
-    role: "Full Stack Developer",
-    bio: "Ships end-to-end product features — React and TanStack frontends, REST APIs, database design, and deployment.",
-    linkedin: "https://www.linkedin.com/in/muhammad-saad-454431373/",
+    icon: Layers,
+    name: "Full-Stack Products",
+    body: "React and FastAPI platforms, APIs, auth, and cloud deployment — the complete stack from prototype through launch and scale.",
   },
 ];
 
@@ -106,54 +84,45 @@ function AboutPage() {
         </div>
       </Section>
 
-      <Section eyebrow="The people" title="Meet the team">
-        <RevealStagger className="border-t border-border">
-          {TEAM.map((m) => (
-            <RevealItem
-              key={m.name}
-              className="grid md:grid-cols-[12rem_8rem_1fr_auto] gap-4 md:gap-6 items-start py-8 border-b border-border"
+      <Section
+        eyebrow="What we build"
+        title="Where we go deep"
+        subtitle="Production systems across vision, voice, AI, and full-stack — the areas we lead with and can demonstrate."
+      >
+        <div className="border-t border-border">
+          {EXPERTISE.map(({ icon: Icon, name, body }) => (
+            <div
+              key={name}
+              className="grid md:grid-cols-[3rem_14rem_1fr] gap-4 md:gap-8 items-start py-8 border-b border-border"
             >
-              <h3 className="font-display text-lg">{m.name}</h3>
-              <div className="text-sm text-primary">{m.role}</div>
-              <p className="text-sm text-muted-foreground">{m.bio}</p>
-              {m.linkedin ? (
-                <a
-                  href={m.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${m.name} on LinkedIn`}
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              ) : (
-                <span />
-              )}
-            </RevealItem>
+              <Icon className="w-6 h-6 text-primary mt-1" />
+              <h3 className="font-display text-lg">{name}</h3>
+              <p className="text-sm text-muted-foreground">{body}</p>
+            </div>
           ))}
-        </RevealStagger>
+        </div>
       </Section>
 
       <Section eyebrow="Our values" title="What we stand for">
-        <RevealStagger className="border-t border-border">
+        <div className="border-t border-border">
           {VALUES.map((v) => (
-            <RevealItem key={v.name} className="grid md:grid-cols-[14rem_1fr] gap-4 py-8 border-b border-border">
+            <div key={v.name} className="grid md:grid-cols-[14rem_1fr] gap-4 py-8 border-b border-border">
               <h3 className="font-display text-lg text-gradient">{v.name}</h3>
               <p className="text-muted-foreground">{v.body}</p>
-            </RevealItem>
+            </div>
           ))}
-        </RevealStagger>
+        </div>
       </Section>
 
       <Section eyebrow="Day one" title="Where we're starting">
-        <RevealStagger className="border-t border-border max-w-3xl">
+        <div className="border-t border-border max-w-3xl">
           {TIMELINE.map(([year, event]) => (
-            <RevealItem key={year} className="grid md:grid-cols-[6rem_1fr] gap-4 py-8 border-b border-border">
+            <div key={year} className="grid md:grid-cols-[6rem_1fr] gap-4 py-8 border-b border-border">
               <div className="font-display text-xl text-primary">{year}</div>
               <p className="text-sm text-muted-foreground">{event}</p>
-            </RevealItem>
+            </div>
           ))}
-        </RevealStagger>
+        </div>
       </Section>
 
       <CtaBand title="Let's build your next chapter together" primaryLabel={PRIMARY_CTA} />
