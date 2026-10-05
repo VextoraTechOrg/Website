@@ -43,10 +43,10 @@ function BrandIcon({ icon }: { icon: IconData }) {
 
 export default function TechLogoStrip() {
   return (
-    <section className="section-y-sm border-b border-border bg-surface/40">
-      <div className="container-px flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+    <section className="border-b border-border bg-surface/70 section-y-sm">
+      <div className="container-px flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-10">
         <span className="label-quiet shrink-0">Tech we build with</span>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           {STACK.map((icon) => (
             <BrandIcon key={icon.title} icon={icon} />
           ))}

@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
 import { Logo } from "./Navbar";
 import { COMPANY } from "@/lib/site-copy";
 
+/** Layout adapted from 21st Agency Footer (shadcnspace/footer-01). */
 const services = [
   ["AI & Machine Learning", "/services"],
   ["Web Development", "/services"],
@@ -20,35 +21,47 @@ const company = [
   ["Contact Us", "/contact"],
 ] as const;
 
+const legal = [
+  ["Privacy Policy", "/privacy"],
+  ["Terms of Service", "/terms"],
+] as const;
+
 export default function Footer() {
   return (
-    <footer className="bg-surface border-t border-border mt-12">
-      <div className="container-px py-12 md:py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div>
-            <Logo />
-            <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-              We build intelligent software that scales with your ambition.
+    <footer className="relative mt-16 overflow-hidden border-t border-border bg-surface">
+      <div className="pointer-events-none absolute inset-0 brand-wash opacity-50" aria-hidden />
+      <div className="container-px relative">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-12 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-12 md:py-14">
+          <div className="col-span-full flex flex-col gap-5 lg:col-span-4">
+            <Logo variant="full" />
+            <p className="max-w-sm text-base text-muted-foreground leading-relaxed">
+              Smart solutions that grow with your business. We engineer AI, web,
+              and cloud products for teams that ship.
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="flex items-center gap-3">
               <a
                 href="https://www.linkedin.com/company/vextoratech"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 grid place-items-center rounded border border-border text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                className="grid h-10 w-10 place-items-center rounded border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-4 h-4" />
+                <Linkedin className="h-4 w-4" />
               </a>
             </div>
           </div>
 
-          <div>
-            <h4 className="label-quiet mb-4">Services</h4>
-            <ul className="space-y-3">
+          <div className="hidden lg:col-span-1 lg:block" aria-hidden />
+
+          <div className="col-span-2 flex flex-col gap-4">
+            <p className="text-sm font-medium text-foreground">Services</p>
+            <ul className="flex flex-col gap-3">
               {services.map(([label, to]) => (
                 <li key={label}>
-                  <Link to={to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    to={to}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
                     {label}
                   </Link>
                 </li>
@@ -56,12 +69,27 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h4 className="label-quiet mb-4">Company</h4>
-            <ul className="space-y-3">
+          <div className="col-span-2 flex flex-col gap-4">
+            <p className="text-sm font-medium text-foreground">Company</p>
+            <ul className="flex flex-col gap-3">
               {company.map(([label, to]) => (
                 <li key={label}>
-                  <Link to={to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    to={to}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-2 flex flex-col gap-3 border-t border-border pt-4">
+              {legal.map(([label, to]) => (
+                <li key={label}>
+                  <Link
+                    to={to}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
                     {label}
                   </Link>
                 </li>
@@ -69,23 +97,38 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h4 className="label-quiet mb-4">Get In Touch</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> {COMPANY.email}</li>
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> {COMPANY.phone}</li>
-              <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Lahore, Pakistan</li>
+          <div className="col-span-2 flex flex-col gap-4 sm:col-span-3 lg:col-span-3">
+            <p className="text-sm font-medium text-foreground">Contact</p>
+            <ul className="flex flex-col gap-3 text-sm text-muted-foreground">
+              <li>
+                <a
+                  href={`mailto:${COMPANY.email}`}
+                  className="inline-flex items-center gap-2 transition-colors hover:text-foreground"
+                >
+                  <Mail className="h-4 w-4 shrink-0 text-primary" />
+                  {COMPANY.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
+                  className="inline-flex items-center gap-2 transition-colors hover:text-foreground"
+                >
+                  <Phone className="h-4 w-4 shrink-0 text-primary" />
+                  {COMPANY.phone}
+                </a>
+              </li>
+              <li className="inline-flex items-center gap-2">
+                <MapPin className="h-4 w-4 shrink-0 text-primary" />
+                Lahore, Pakistan
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row justify-between gap-3 text-xs text-muted-foreground">
+        <div className="border-t border-border py-6 text-center text-sm text-muted-foreground md:text-left md:flex md:justify-between">
           <span>© 2026 VextoraTech. All rights reserved.</span>
-          <span className="flex flex-wrap gap-x-3 gap-y-1">
-            <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-            <span aria-hidden>·</span>
-            <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
-          </span>
+          <span className="mt-2 block md:mt-0">Built for teams that ship.</span>
         </div>
       </div>
     </footer>

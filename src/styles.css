@@ -47,42 +47,42 @@
 :root {
   --radius: 0.375rem;
 
-  /* Dark industrial / steel */
-  --background: oklch(0.13 0.012 250);
-  --foreground: oklch(0.93 0.01 250);
+  /* Light corporate — matches VextoraTech lockup (navy + cyan) */
+  --background: oklch(0.985 0.008 230);
+  --foreground: oklch(0.32 0.045 245);
 
-  --surface: oklch(0.17 0.014 250);
-  --surface-2: oklch(0.20 0.016 250);
+  --surface: oklch(1 0.004 230);
+  --surface-2: oklch(0.96 0.012 230);
 
   --card: var(--surface);
   --card-foreground: var(--foreground);
   --popover: var(--surface);
   --popover-foreground: var(--foreground);
 
-  /* Steel-cyan accent — no purple */
-  --primary: oklch(0.72 0.09 230);
-  --primary-foreground: oklch(0.14 0.02 250);
-  --primary-glow: oklch(0.72 0.09 230 / 0.12);
+  /* Logo cyan / sky blue accent */
+  --primary: oklch(0.68 0.09 230);
+  --primary-foreground: oklch(0.99 0.005 230);
+  --primary-glow: oklch(0.68 0.09 230 / 0.12);
 
-  --secondary: oklch(0.28 0.02 250);
-  --secondary-foreground: oklch(0.93 0.01 250);
+  --secondary: oklch(0.94 0.015 230);
+  --secondary-foreground: oklch(0.32 0.045 245);
 
-  --muted: oklch(0.20 0.016 250);
-  --muted-foreground: oklch(0.76 0.02 250);
-  --text-muted: oklch(0.76 0.02 250);
+  --muted: oklch(0.95 0.012 230);
+  --muted-foreground: oklch(0.48 0.03 245);
+  --text-muted: oklch(0.48 0.03 245);
 
-  --accent: oklch(0.72 0.09 230);
-  --accent-foreground: oklch(0.14 0.02 250);
+  --accent: oklch(0.68 0.09 230);
+  --accent-foreground: oklch(0.99 0.005 230);
 
-  --destructive: oklch(0.62 0.22 25);
+  --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: oklch(1 0 0);
 
-  --border: oklch(0.72 0.09 230 / 0.14);
-  --input: oklch(0.72 0.09 230 / 0.18);
-  --ring: oklch(0.72 0.09 230);
+  --border: oklch(0.32 0.045 245 / 0.12);
+  --input: oklch(0.32 0.045 245 / 0.14);
+  --ring: oklch(0.68 0.09 230);
 
-  --accent-solid: #5b9fd4;
-  --gradient-brand: linear-gradient(135deg, #4a8fc4 0%, #5b9fd4 100%);
+  --accent-solid: #4e9abf;
+  --gradient-brand: linear-gradient(135deg, #6ec4e0 0%, #4e9abf 55%, #2f6f9a 100%);
   --shadow-glow: none;
   --shadow-btn: none;
 
@@ -159,7 +159,7 @@
 }
 
 @utility bg-gradient-brand {
-  background: var(--accent-solid);
+  background: var(--gradient-brand);
 }
 
 @utility mono {
@@ -182,20 +182,27 @@
     0deg,
     transparent,
     transparent 23px,
-    oklch(0.72 0.09 230 / 0.06) 23px,
-    oklch(0.72 0.09 230 / 0.06) 24px
+    oklch(0.32 0.045 245 / 0.05) 23px,
+    oklch(0.32 0.045 245 / 0.05) 24px
   );
 }
 
 @utility noise-bg {
   background-image:
-    radial-gradient(oklch(0.72 0.09 230 / 0.04) 0.5px, transparent 0.5px);
+    radial-gradient(oklch(0.68 0.09 230 / 0.06) 0.5px, transparent 0.5px);
   background-size: 12px 12px;
+}
+
+/* Soft brand atmosphere — cool cyan wash from logo palette */
+@utility brand-wash {
+  background-image:
+    radial-gradient(ellipse 80% 55% at 100% 0%, oklch(0.78 0.08 220 / 0.22), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 0% 100%, oklch(0.72 0.07 240 / 0.12), transparent 50%);
 }
 
 /* Legacy alias — prefer line-texture / noise-bg */
 @utility dot-grid {
-  background-image: radial-gradient(oklch(0.72 0.09 230 / 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(oklch(0.68 0.09 230 / 0.1) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -375,7 +382,7 @@
 
 .article pre {
   margin-top: 1.5rem;
-  background: oklch(0.11 0.012 250);
+  background: oklch(0.94 0.012 230);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.15rem 1.25rem;
